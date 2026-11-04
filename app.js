@@ -62,7 +62,7 @@ const AGENTS = {
     name: "Research",
     words: ["built", "build", "project", "projects", "work", "made", "g-one", "gone", "agent", "plant", "seer", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience", "stack", "skill", "tech", "know", "react", "node", "mern", "blockchain", "database"],
     answer: [
-      "<b>G-One</b>: a multi-agent assistant with a router, four specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2026.",
+      "<b>G-One</b>: a multi-agent assistant with a router, four specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2.0.",
       "<b>Plant disease detection</b> for SEER Bharat Foundation: ML model integration, APIs and a farmer-friendly interface.",
       "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station.",
       "Day-to-day stack: React, Next.js, Node, Express, FastAPI, MongoDB and PostgreSQL, plus an interest in blockchain and smart contracts. The full list is in <a href=\"#skills\">Tech superpowers</a>."
@@ -90,7 +90,7 @@ const DEEP_ANSWERS = {
   wins: [
     "<b>3rd Prize</b> at Hack Your Path 6.0 (HITAM, Hyderabad) and <b>2nd Runner-up</b> at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur). Both certificates are in the Achievements section.",
     "At Hack Your Path, team DataWizard built a voice-first healthcare assistant that speaks many languages, works over a phone call or WhatsApp, and points people to the nearest health station.",
-    "Finalist at HackRX 5.0 (Bajaj Finserv), the Parul University AIML Hackathon, HackronyX and Hackzilla at IIIT Sonepat. Plus Top 50 at the VOIS Innovation Marathon 2026."
+    "Finalist at HackRX 5.0 (Bajaj Finserv), HackronyX and Hackzilla at IIIT Sonepat, took part in the AI/ML Hackathon 2.0 at Parul University, and made the Top 50 of the VOIS Innovation Marathon 2.0."
   ],
   who: [
     "Jagananmol Daneti is a final-year B.Tech CSE student at Symbiosis Institute of Technology, Pune, graduating in 2027.",
@@ -106,11 +106,11 @@ const DEEP_ANSWERS = {
   ],
   certs: [
     "Three CCNA courses: Introduction to Networks; Switching, Routing and Wireless Essentials; and Enterprise Networking, Security and Automation.",
-    "Also Nutanix Certified Associate 6 and the Deloitte cybersecurity virtual internship."
+    "Also Nutanix Certified Associate 6 (Multicloud Infrastructure) and the Deloitte cybersecurity virtual internship. Each one has a View certificate button in the Achievements section."
   ],
   facts: [
     ["He speaks four languages: English, Telugu, Hindi and Marathi.", "Telugu, Hindi and Marathi are all native for him."],
-    ["He's reached the final round at six hackathons, from Hyderabad to Sonepat.", "Two of them ended on the podium: 3rd Prize and 2nd Runner-up."],
+    ["He's been on the podium twice and reached the final round at three more hackathons, from Hyderabad to Sonepat.", "The podiums: 3rd Prize and 2nd Runner-up."],
     ["The diagram you just used is a simplified copy of G-One's architecture.", "The real one has the same router, the same four agents and the same \"refuse rather than guess\" validator."],
     ["He has CCNA training, which is why his skills section is laid out like a routing table.", "Old habits."]
   ]
@@ -332,7 +332,7 @@ if (certDialog && typeof certDialog.showModal === "function") {
   const title = document.getElementById("cert-title");
   const full = document.getElementById("cert-full");
   let opener = null;
-  document.querySelectorAll(".cert-thumb").forEach((btn) => {
+  document.querySelectorAll(".cert-thumb, .cert-open").forEach((btn) => {
     btn.addEventListener("click", () => {
       opener = btn;
       img.src = btn.dataset.cert;
@@ -345,10 +345,10 @@ if (certDialog && typeof certDialog.showModal === "function") {
   document.getElementById("cert-close").addEventListener("click", () => certDialog.close());
   // click on the dark backdrop closes it too
   certDialog.addEventListener("click", (e) => { if (e.target === certDialog) certDialog.close(); });
-  certDialog.addEventListener("close", () => { if (opener) opener.focus(); });
+  certDialog.addEventListener("close", () => { if (opener) opener.focus(); img.removeAttribute("src"); });
 } else {
   // very old browsers: just open the image
-  document.querySelectorAll(".cert-thumb").forEach((btn) => {
+  document.querySelectorAll(".cert-thumb, .cert-open").forEach((btn) => {
     btn.addEventListener("click", () => window.open(btn.dataset.cert, "_blank", "noopener"));
   });
 }
