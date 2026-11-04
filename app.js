@@ -60,13 +60,14 @@ const AGENTS = {
   },
   research: {
     name: "Research",
-    words: ["built", "build", "project", "projects", "work", "made", "g-one", "gone", "agent", "plant", "seer", "vois", "vodafone", "edunet", "intern", "experience", "stack", "skill", "tech", "know", "react", "node", "mern", "blockchain", "database"],
+    words: ["built", "build", "project", "projects", "work", "made", "g-one", "gone", "agent", "plant", "seer", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience", "stack", "skill", "tech", "know", "react", "node", "mern", "blockchain", "database"],
     answer: [
       "<b>G-One</b>: a multi-agent assistant with a router, four specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2026.",
       "<b>Plant disease detection</b> for SEER Bharat Foundation: ML model integration, APIs and a farmer-friendly interface.",
+      "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station.",
       "Day-to-day stack: React, Next.js, Node, Express, FastAPI, MongoDB and PostgreSQL, plus an interest in blockchain and smart contracts. The full list is in <a href=\"#skills\">Tech superpowers</a>."
     ],
-    checks: "2 projects checked against CV"
+    checks: "3 projects checked against CV and certificates"
   },
   finance: {
     name: "Finance",
@@ -88,6 +89,7 @@ const AGENTS = {
 const DEEP_ANSWERS = {
   wins: [
     "<b>3rd Prize</b> at Hack Your Path 6.0 (HITAM, Hyderabad) and <b>2nd Runner-up</b> at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur). Both certificates are in the Achievements section.",
+    "At Hack Your Path, team DataWizard built a voice-first healthcare assistant that speaks many languages, works over a phone call or WhatsApp, and points people to the nearest health station.",
     "Finalist at HackRX 5.0 (Bajaj Finserv), the Parul University AIML Hackathon, HackronyX and Hackzilla at IIIT Sonepat. Plus Top 50 at the VOIS Innovation Marathon 2026."
   ],
   who: [
