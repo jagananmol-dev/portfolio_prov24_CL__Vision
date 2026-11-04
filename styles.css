@@ -207,6 +207,8 @@ h1.name.dotted .name-text {
   background: var(--surface); border: 1.5px solid var(--ink); border-radius: var(--radius-l);
   padding: clamp(20px, 3vw, 32px); margin-bottom: 12px;
 }
+.project.feature.with-proof { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; align-items: start; }
+.project.feature .event-facts { margin-bottom: 4px; }
 .project.feature h3 { font-size: clamp(26px, 3vw, 34px); }
 .tag { display: inline-block; font-size: 14px; font-weight: 600; background: var(--packet); color: var(--ink); padding: 3px 10px; border-radius: 999px; margin-bottom: 12px; }
 .stack { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-wrap: wrap; gap: 6px; }
@@ -289,6 +291,7 @@ h1.name.dotted .name-text {
   .about-grid, .wins-grid { grid-template-columns: 1fr; gap: 28px; }
   .podium-card { grid-template-columns: 1fr; gap: 18px; }
   .podium-proof { position: static; }
+  .project.feature.with-proof { grid-template-columns: 1fr; gap: 18px; }
 }
 @media (max-width: 720px) {
   .menu-toggle {

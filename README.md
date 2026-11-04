@@ -15,7 +15,7 @@ Then the agent does something about it. Like G-One, it doesn't act until you app
 
 You can also speak your question, because G-One takes voice commands too. The mic button uses the browser's built-in speech recognition and only appears in browsers that support it.
 
-It's a small, rule-based copy of G-One, the multi-agent assistant I built during my Vodafone (VOIS) and Edunet Foundation internship, which made the Top 50 in the VOIS Innovation Marathon 2.0. G-One's main idea is that an AI system should refuse rather than guess, so the portfolio does the same thing. There's no model behind it on purpose. Every answer comes from my CV, and anything that doesn't match a rule gets blocked.
+It's a small, rule-based copy of G-One, the multi-agent assistant I built over the six-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava of Edunet Foundation. It made the Top 50. G-One's main idea is that an AI system should refuse rather than guess, so the portfolio does the same thing. There's no model behind it on purpose. Every answer comes from my CV, and anything that doesn't match a rule gets blocked.
 
 What visitors can do:
 - Click one of six example questions, including one that gets blocked on purpose

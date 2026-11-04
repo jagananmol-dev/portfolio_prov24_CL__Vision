@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
   <a class="skip" href="#about">Skip to content</a>
@@ -106,7 +106,7 @@
       <div class="about-grid">
         <div class="prose">
           <p>I'm a final-year B.Tech Computer Science student at SIT Pune, graduating in 2027. Most of what I know, I learned by building something and then figuring out why it broke.</p>
-          <p>The project I'm proudest of is G-One, a multi-agent assistant I built during a Vodafone (VOIS) and Edunet Foundation internship with Prof. Sudhanshu Gonge. It made the Top 50 in the VOIS Innovation Marathon 2.0. It taught me that useful AI is less about the model and more about the rules around it.</p>
+          <p>The project I'm proudest of is G-One, a multi-agent assistant I built over the six-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava of Edunet Foundation. It made the Top 50 in the VOIS Innovation Marathon 2.0. It taught me that useful AI is less about the model and more about the rules around it.</p>
           <p>Right now I'm working with SEER Bharat Foundation, an NGO in India, on a tool that uses satellite data and rainfall to tell farmers which crop suits their land best. Outside of projects, you'll usually find me at a hackathon.</p>
         </div>
         <dl class="facts">
@@ -138,16 +138,42 @@
 
     <section id="projects" class="section">
       <h2>Projects</h2>
-      <article class="project feature">
-        <div class="project-meta">
-          <span class="tag">Top 50, VOIS Innovation Marathon 2.0</span>
+      <article class="project feature with-proof">
+        <div class="feature-body">
+          <div class="project-meta">
+            <span class="tag">Top 50, VOIS Innovation Marathon 2.0</span>
+          </div>
+          <h3>G-One: a multi-agent assistant that does real tasks</h3>
+          <dl class="event-facts">
+            <div><dt>Event</dt><dd>VOIS Innovation Marathon 2.0 on Emerging Technologies, by Vodafone Idea Foundation and Edunet Foundation</dd></div>
+            <div><dt>Length</dt><dd>6 months, September 2025 to February 2026</dd></div>
+            <div><dt>Mentor</dt><dd>Dr. Aman Srivastava, Edunet Foundation</dd></div>
+          </dl>
+          <div class="story">
+            <h4>The journey</h4>
+            <p>The marathon selected students from across India and paired them with mentors for six months. Ours was Dr. Aman Srivastava from Edunet Foundation, who guided us from the first idea through to the final build. G-One is what came out of it.</p>
+            <h4>What G-One does</h4>
+            <p>G-One is about automation: you ask once, by typing or by voice, and the right agents do the work.</p>
+            <ul class="story-points">
+              <li><b>Email agent.</b> Writes and sends a mail to the person you name, from a single prompt or a voice chat.</li>
+              <li><b>Research agent.</b> Summarises research work into plain language, because papers are hard going for beginners.</li>
+              <li><b>Wikipedia agent.</b> Looks topics up on Wikipedia for quick background.</li>
+              <li><b>DeepSearch agent.</b> Goes deeper when a question needs more than one source.</li>
+            </ul>
+            <h4>The orchestrator</h4>
+            <p>An orchestrator reads each question and decides which agents are needed. Only those agents start, and they work independently, side by side. Agents that aren't needed never run, so G-One spends far fewer tokens on a request than one big prompt that tries to do everything. A deterministic validation layer then checks each action, like an email's recipient, before it happens.</p>
+          </div>
+          <ul class="stack">
+            <li>React / Next.js</li><li>FastAPI</li><li>MongoDB</li><li>Ollama + Mistral</li><li>LoRA adapters</li><li>Voice input</li>
+          </ul>
+          <p class="small">The "Ask my portfolio" panel at the top of this page is a tiny, rule-based version of the same idea.</p>
         </div>
-        <h3>G-One: a multi-agent assistant that does real tasks</h3>
-        <p>Most chatbots stop at the answer. G-One goes further. A central router sends each request to a specialist agent (Email, Research, Finance or DeepSearch), and a deterministic validation layer checks every action before it runs. That gate cut wrong actions more than any prompt tweak I tried.</p>
-        <ul class="stack">
-          <li>React / Next.js</li><li>FastAPI</li><li>MongoDB</li><li>Ollama + Mistral</li><li>LoRA adapters</li><li>Voice input</li>
-        </ul>
-        <p class="small">Built during the Vodafone (VOIS) and Edunet Foundation internship, guided by Prof. Sudhanshu Gonge. The widget at the top of this page is a tiny, rule-based version of the same idea.</p>
+        <aside class="podium-proof">
+          <button class="cert-thumb" type="button" data-cert="certs/vois-innovation-marathon-2.jpg" data-title="VOIS Innovation Marathon 2.0, certificate of achievement">
+            <img src="certs/vois-innovation-marathon-2.jpg" alt="" loading="lazy" width="320" height="226">
+            <span>View certificate</span>
+          </button>
+        </aside>
       </article>
 
       <article class="project">
@@ -286,7 +312,7 @@
     <p>Built by Jagananmol Daneti. Hosted on AWS Amplify.</p>
   </footer>
 
-  <script src="app.js?v=13"></script>
-  <script src="name-dots.js?v=13"></script>
+  <script src="app.js?v=14"></script>
+  <script src="name-dots.js?v=14"></script>
 </body>
 </html>
