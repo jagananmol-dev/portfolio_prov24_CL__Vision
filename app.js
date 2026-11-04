@@ -107,7 +107,7 @@ const AGENTS = {
   },
   projects: {
     name: "Projects",
-    words: ["built", "build", "project", "work", "made", "g-one", "gone", "agent", "portfolio", "plant", "seer", "crop", "farmer", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience"],
+    words: ["built", "build", "project", "work", "made", "g-one", "gone", "agent", "plant", "seer", "crop", "farmer", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience"],
     answer: () => [
       "<b>G-One</b>: a multi-agent assistant with a router, specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2.0.",
       "<b>Crop suitability from satellite data</b> with SEER Bharat Foundation, an NGO: mark a spot on the map, and the model uses satellite imagery and rainfall to suggest the best crop for that land.",
@@ -229,7 +229,7 @@ async function dispatch(question) {
     document.getElementById("n-gate").classList.add("no");
     log(`validator: <b>blocked</b>, ${r.reason}`, "bad");
     answerBox.classList.add("rejected");
-    answerBox.innerHTML = `<p>Request blocked. This portfolio only answers questions about Jagananmol: his projects, wins, skills, costs or how to contact him.</p><p class="from">G-One works the same way. When it isn't sure, it stops instead of making something up.</p>`;
+    answerBox.innerHTML = `<p>Request blocked. This portfolio only answers questions about Jagananmol: who he is, his skills, projects and achievements, or how to contact him.</p><p class="from">G-One works the same way. When it isn't sure, it stops instead of making something up.</p>`;
     answerBox.hidden = false;
   } else {
     const agent = AGENTS[r.agent];
