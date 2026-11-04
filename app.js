@@ -13,8 +13,6 @@ function wireLink(id, url) {
 }
 wireLink("cv-github", LINKS.github);
 wireLink("contact-github", LINKS.github);
-wireLink("gone-github", LINKS.gOneRepo || LINKS.github);
-if (!LINKS.gOneRepo && LINKS.github) document.getElementById("gone-github").textContent = "See my code on GitHub";
 wireLink("contact-linkedin", LINKS.linkedin);
 
 // ---- Mobile menu ----
