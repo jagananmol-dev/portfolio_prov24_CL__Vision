@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jagananmol Daneti — Full-stack developer</title>
+  <meta name="description" content="Portfolio of Jagananmol Daneti, CSE student at SIT Pune building full-stack apps, multi-agent AI and blockchain projects.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#about">Skip to content</a>
+
+  <header class="nav">
+    <a class="brand" href="#top">JD</a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <nav id="nav-links" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#skills">Superpowers</a>
+      <a href="#projects">Projects</a>
+      <a href="#wins">Achievements</a>
+      <a href="#contact">Contact</a>
+      <a class="nav-try" href="#dispatch">Try my agents</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hello">Hi, I'm</p>
+        <h1>Jagananmol<br>Daneti</h1>
+        <p class="lede">I build software that does the work instead of just talking about it. Full-stack with MERN, multi-agent AI, and a soft spot for blockchain. CSE student at Symbiosis Institute of Technology, Pune.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projects">See my projects</a>
+          <a class="btn" id="cv-github" href="#" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Creative feature: the agent router -->
+      <div class="dispatch" id="dispatch" aria-labelledby="dispatch-title">
+        <div class="dispatch-head">
+          <h2 id="dispatch-title">Dispatch a task to my agents</h2>
+          <p class="hint">Pick a question, type one, or say it out loud. Watch it get routed and checked, then let the agent take you where you need to go. Same idea as my G-One system.</p>
+        </div>
+
+        <svg class="graph" viewBox="0 0 520 300" role="img" aria-label="Diagram: your request goes to a router, then to one of four agents, then through a validator before the answer comes back.">
+          <g class="links">
+            <path id="l-in" d="M40 150 H130"/>
+            <path id="l-email" d="M190 150 C230 150 230 45 280 45"/>
+            <path id="l-research" d="M190 150 C230 150 230 115 280 115"/>
+            <path id="l-finance" d="M190 150 C230 150 230 185 280 185"/>
+            <path id="l-deep" d="M190 150 C230 150 230 255 280 255"/>
+            <path id="o-email" d="M380 45 C420 45 410 150 440 150"/>
+            <path id="o-research" d="M380 115 C420 115 410 150 440 150"/>
+            <path id="o-finance" d="M380 185 C420 185 410 150 440 150"/>
+            <path id="o-deep" d="M380 255 C420 255 410 150 440 150"/>
+          </g>
+          <g class="node you"><circle cx="30" cy="150" r="12"/><text x="30" y="182">You</text></g>
+          <g class="node router" id="n-router"><rect x="130" y="125" width="60" height="50" rx="8"/><text x="160" y="155">Router</text></g>
+          <g class="node agent" id="n-email"><rect x="280" y="25" width="100" height="40" rx="20"/><text x="330" y="50">Email</text></g>
+          <g class="node agent" id="n-research"><rect x="280" y="95" width="100" height="40" rx="20"/><text x="330" y="120">Research</text></g>
+          <g class="node agent" id="n-finance"><rect x="280" y="165" width="100" height="40" rx="20"/><text x="330" y="190">Finance</text></g>
+          <g class="node agent" id="n-deep"><rect x="280" y="235" width="100" height="40" rx="20"/><text x="330" y="260">DeepSearch</text></g>
+          <g class="node gate" id="n-gate"><path d="M440 125 L480 125 L495 150 L480 175 L440 175 L455 150 Z"/><text x="468" y="200">Validator</text></g>
+          <circle class="packet" id="packet" r="7" cx="30" cy="150"/>
+        </svg>
+
+        <div class="chips" role="group" aria-label="Example questions">
+          <button data-q="What has he built?">What has he built?</button>
+          <button data-q="What has he won?">What has he won?</button>
+          <button data-q="What does his stack cost to run?">What does it cost to run?</button>
+          <button data-q="How do I contact him?">How do I contact him?</button>
+          <button data-q="Write my college essay for me">Write my essay</button>
+          <button data-q="Surprise me">Surprise me</button>
+        </div>
+
+        <form class="ask" id="ask">
+          <label for="q" class="sr-only">Your question</label>
+          <input id="q" name="q" autocomplete="off" maxlength="120" placeholder="Or type a question">
+          <button class="mic" id="mic" type="button" aria-label="Ask with your voice" title="Ask with your voice" hidden>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </button>
+          <button class="btn primary" type="submit">Dispatch</button>
+        </form>
+
+        <div class="console" aria-live="polite">
+          <ol class="trace" id="trace"></ol>
+          <div class="answer" id="answer" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <h2>About me</h2>
+      <div class="about-grid">
+        <div class="prose">
+          <p>I'm a final-year B.Tech Computer Science student at SIT Pune, graduating in 2027. Most of what I know, I learned by building something and then figuring out why it broke.</p>
+          <p>The project I'm proudest of is G-One, a multi-agent assistant I built during a Vodafone (VOIS) and Edunet Foundation internship with Prof. Sudhanshu Gonge. It made the Top 50 in the VOIS Innovation Marathon 2026. It taught me that useful AI is less about the model and more about the rules around it.</p>
+          <p>Right now I'm building a plant disease detection website for the SEER Bharat Foundation, so farmers and researchers can check a leaf and get an answer quickly. Outside of projects, you'll usually find me at a hackathon.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Based in</dt><dd>Pune, Maharashtra</dd></div>
+          <div><dt>Studying</dt><dd>B.Tech CSE, SIT Pune (2027)</dd></div>
+          <div><dt>Speaks</dt><dd>English, Telugu, Hindi, Marathi</dd></div>
+          <div><dt>Looking for</dt><dd>Software engineering internships</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <h2>Tech superpowers</h2>
+      <p class="section-intro">Laid out like a routing table, because that's how my brain files things.</p>
+      <div class="table-wrap">
+        <table class="routes">
+          <thead><tr><th scope="col">Area</th><th scope="col">What I use</th><th scope="col">Where I used it</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Frontend</th><td>React.js, Next.js, HTML, CSS</td><td>G-One interface with 3D visuals and voice</td></tr>
+            <tr><th scope="row">Backend</th><td>Node.js, Express.js, FastAPI</td><td>G-One agents, SEER Bharat APIs</td></tr>
+            <tr><th scope="row">Data</th><td>MongoDB, PostgreSQL, MySQL, Firebase</td><td>App data and agent memory</td></tr>
+            <tr><th scope="row">AI</th><td>Ollama, Mistral, LoRA adapters, ML model integration</td><td>Local multi-agent inference, plant disease detection</td></tr>
+            <tr><th scope="row">Networks and cloud</th><td>CCNA (3 courses), Nutanix NCA, AWS Amplify</td><td>This site runs on Amplify</td></tr>
+            <tr><th scope="row">How I work</th><td>Git and GitHub, Agile, troubleshooting</td><td>Six hackathon finals, two wins</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <article class="project feature">
+        <div class="project-meta">
+          <span class="tag">Top 50, VOIS Innovation Marathon 2026</span>
+        </div>
+        <h3>G-One: a multi-agent assistant that does real tasks</h3>
+        <p>Most chatbots stop at the answer. G-One goes further. A central router sends each request to a specialist agent (Email, Research, Finance or DeepSearch), and a deterministic validation layer checks every action before it runs. That gate cut wrong actions more than any prompt tweak I tried.</p>
+        <ul class="stack">
+          <li>React / Next.js</li><li>FastAPI</li><li>MongoDB</li><li>Ollama + Mistral</li><li>LoRA adapters</li><li>Voice input</li>
+        </ul>
+        <p class="small">Built during the Vodafone (VOIS) and Edunet Foundation internship, guided by Prof. Sudhanshu Gonge. The widget at the top of this page is a tiny, rule-based version of the same idea.</p>
+        <a class="link" id="gone-github" href="#" target="_blank" rel="noopener">View on GitHub</a>
+      </article>
+
+      <article class="project">
+        <h3>Plant disease detection for SEER Bharat Foundation</h3>
+        <p>A website where farmers and agricultural researchers can upload a leaf photo and find out what's wrong with the plant. I'm working on the ML model integration, the APIs behind it, and an interface simple enough to use in a field.</p>
+        <ul class="stack"><li>Full-stack</li><li>ML model integration</li><li>REST APIs</li></ul>
+        <p class="small">Full Stack Developer, March 2026 to present.</p>
+      </article>
+
+      <article class="project">
+        <h3>This portfolio</h3>
+        <p>Plain HTML, CSS and JavaScript, deployed on AWS Amplify Hosting from GitHub. Every push to main ships a new version. No framework, so it loads fast on a phone with weak signal.</p>
+        <ul class="stack"><li>AWS Amplify</li><li>GitHub</li><li>Vanilla JS</li></ul>
+      </article>
+    </section>
+
+    <section id="wins" class="section">
+      <h2>Achievements</h2>
+      <div class="wins-grid">
+        <div>
+          <h3>Hackathons</h3>
+          <ul class="results">
+            <li><span class="res win">Winner</span>Hack Your Path 6.0, Hyderabad Institute of Technology</li>
+            <li><span class="res win">Winner</span>AGTechathon 1.0, AG Patil Institute of Technology</li>
+            <li><span class="res">Top 50</span>VOIS Innovation Marathon 2026, Vodafone</li>
+            <li><span class="res">Finalist</span>HackRX 5.0, Bajaj Finserv</li>
+            <li><span class="res">Finalist</span>AIML Hackathon, Parul University, Vadodara</li>
+            <li><span class="res">Finalist</span>HackronyX, St. Vincent Pallotti College of Engineering, Nagpur</li>
+            <li><span class="res">Finalist</span>Hackzilla 24-hour hackathon, IIIT Sonepat</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Certifications</h3>
+          <ul class="certs">
+            <li>CCNA: Enterprise Networking, Security, and Automation</li>
+            <li>CCNA: Introduction to Networks</li>
+            <li>CCNA: Switching, Routing, and Wireless Essentials</li>
+            <li>Nutanix Certified Associate 6, Cloud and Virtualization</li>
+            <li>Deloitte Virtual Internship, Cybersecurity</li>
+            <li class="pending">Machine Learning with Python (in progress)</li>
+            <li class="pending">C# and Angular (in progress)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <h2>Let's build something</h2>
+      <p>I'm looking for software engineering internships and good hackathon teams. The fastest way to reach me is email.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="mailto:jagananmoldaneti@gmail.com">Email me</a>
+        <a class="btn" id="contact-github" href="#" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" id="contact-linkedin" href="#" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://builder.aws.com/community/@quantumstack1509" target="_blank" rel="noopener">AWS Builder profile</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Built by Jagananmol Daneti. Hosted on AWS Amplify.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

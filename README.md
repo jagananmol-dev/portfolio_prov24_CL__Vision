@@ -1,0 +1,60 @@
+# Jagananmol Daneti: a portfolio you can dispatch tasks to
+
+My entry for the AWS Student Builder Challenge: Build Your Tech Superpower.
+
+- Live site: ADD_AMPLIFY_URL
+- Repository: https://github.com/jagananmol-dev/portfolio_prov24_CL__Vision
+
+## The creative feature
+
+The first thing on the page is a small control panel called **Dispatch a task to my agents**. You pick a question (or type your own), and a packet travels across a diagram: from you, to a router, to one of four agents (Email, Research, Finance, DeepSearch), and through a validator before the answer comes back. A trace log underneath shows each step as it happens.
+
+Ask something the site isn't built to answer, like "write my essay", and the validator turns red and blocks it instead of making something up.
+
+Then the agent does something about it. Like G-One, it doesn't act until you approve: a button appears, and clicking it lets the agent take the action. The Email agent opens a draft email to me, the Research agent takes you to G-One and highlights it, and DeepSearch opens my achievements or About section. Every step shows up in the trace, including "waiting for your OK" and "approved".
+
+You can also speak your question, because G-One takes voice commands too. The mic button uses the browser's built-in speech recognition and only appears in browsers that support it.
+
+It's a small, rule-based copy of G-One, the multi-agent assistant I built during my Vodafone (VOIS) and Edunet Foundation internship, which made the Top 50 in the VOIS Innovation Marathon 2026. G-One's main idea is that an AI system should refuse rather than guess, so the portfolio does the same thing. There's no model behind it on purpose. Every answer comes from my CV, and anything that doesn't match a rule gets blocked.
+
+What visitors can do:
+- Click one of six example questions, including one that gets blocked on purpose
+- Type or say their own question and watch which agent it gets routed to
+- Approve the agent's action: draft an email, jump to a project, open achievements
+- Press "Surprise me" more than once to get different facts
+
+I tested the router with 46 different questions, including typos, plurals, empty input, script injection and "ignore your rules" attempts. All of them land on the right agent or get blocked.
+
+How visitors find it: it sits right next to my name in the hero, with the heading "Dispatch a task to my agents" and a one-line instruction. The navigation bar also has a highlighted "Try my agents" link that scrolls straight to it.
+
+## Portfolio sections
+
+| Required section | Where it lives |
+|---|---|
+| About Me | About me (#about) |
+| Skills | Tech superpowers (#skills), laid out as a routing table, since I trained on CCNA |
+| Projects / Achievements | Projects (#projects) and Achievements (#wins): G-One, SEER Bharat plant disease detection, 2 hackathon wins, 4 more hackathon finals, 5 certifications |
+
+The site works on phones too. Below 720px the navigation collapses into a menu, the diagram scales down, and nothing scrolls sideways.
+
+## AWS services used
+
+- **AWS Amplify Hosting** hosts the site.
+- **Deployment:** Amplify is connected to this GitHub repository on the main branch, so every push to main publishes a new version.
+- **Build:** none needed. It's plain HTML, CSS and JavaScript, so Amplify serves the files as they are.
+- **Delivery:** Amplify serves the site over HTTPS through its managed CDN. I didn't set up an S3 bucket or a CloudFront distribution myself.
+
+The only thing loaded from outside AWS is Google Fonts.
+
+## What I learned and the challenges I hit
+
+ADD_YOUR_OWN_NOTES. A few prompts to help:
+- The router uses keyword matching, so "who is he" and "about him" both had to land somewhere sensible. How did you decide which agent wins when two match?
+- The packet animation follows SVG paths with `getPointAtLength`. Respecting `prefers-reduced-motion` meant skipping the animation entirely, not just making it faster.
+- Anything that went wrong while connecting Amplify to GitHub, and how you fixed it.
+
+## Run it locally
+
+Open `index.html` in a browser. There's nothing to install.
+
+To add your links, edit the `LINKS` object at the top of `app.js`.
