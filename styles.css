@@ -83,18 +83,29 @@ h1 {
   letter-spacing: -0.045em;
   margin: 6px 0 22px;
 }
-/* The name: plain black, Space Grotesk Bold. White + "difference" blending
-   means it shows pure black on white boxes and flips to white over a black box,
-   so it never disappears while the grid reacts. */
+/* The name: solid black, Space Grotesk Bold. The grid never darkens behind it. */
 h1.name {
   font-family: "Space Grotesk", var(--display);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 0.9;
-  color: #fff;
-  mix-blend-mode: difference;
+  color: #000;
 }
-@supports not (mix-blend-mode: difference) { h1.name { color: #000; } }
+/* Cracked name (name-cracks.js). The real text stays in .name-base for layout,
+   search and screen readers; the visible pieces are clipped copies on top. */
+h1.name { position: relative; }
+h1.name .name-base { display: inline-block; }
+h1.name.cracked .name-base { color: transparent; }
+.name-layer { position: absolute; pointer-events: none; }
+.name-shard {
+  position: absolute; left: 0; top: 0; display: inline-block;
+  pointer-events: auto; cursor: crosshair;
+  transition: transform 0.2s cubic-bezier(.2,.8,.2,1);
+}
+.name-shard.lift { transform: scale(1.22); z-index: 3; }
+/* the cracks are real gaps between pieces, so they show the white page through the letters */
+.name-shard { background: transparent; }
+@media (prefers-reduced-motion: reduce) { .name-shard { transition: none; } }
 .lede { font-size: 19px; max-width: 34ch; margin: 0 0 28px; background: #fff; box-shadow: 0 0 0 10px #fff; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .btn {

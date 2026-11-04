@@ -22,6 +22,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     cols = Math.ceil(w / CELL); rows = Math.ceil(h / CELL);
     level = new Float32Array(cols * rows);
+    measureName();
     draw();
   }
 
@@ -59,13 +60,28 @@
     if (!raf) last = 0;
   }
 
+  // boxes behind the name never turn black, so the cracked name always reads clearly
+  const name = document.querySelector("h1.name .name-base");
+  let nameBox = null;
+  function measureName() {
+    if (!name) return;
+    const hr = hero.getBoundingClientRect(), nr = name.getBoundingClientRect();
+    const pad = CELL;
+    nameBox = { l: nr.left - hr.left - pad, t: nr.top - hr.top - pad, r: nr.right - hr.left + pad, b: nr.bottom - hr.top + pad };
+  }
+
   function light(x, y) {
     const c = Math.floor(x / CELL), r = Math.floor(y / CELL);
+    if (nameBox) {
+      const cx = c * CELL, cy = r * CELL;
+      if (cx + CELL > nameBox.l && cx < nameBox.r && cy + CELL > nameBox.t && cy < nameBox.b) return;
+    }
     if (c < 0 || r < 0 || c >= cols || r >= rows) return;
     level[r * cols + c] = 1;
   }
 
   function onMove(e) {
+    if (!nameBox) measureName();
     const rect = hero.getBoundingClientRect();
     const x = e.clientX - rect.left, y = e.clientY - rect.top;
     // fill in every box between the last position and this one, so a fast
