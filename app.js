@@ -28,6 +28,24 @@ navLinks.addEventListener("click", (e) => {
   if (e.target.tagName === "A") { navLinks.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); }
 });
 
+// ---- Highlight the section you're reading in the nav ----
+const sectionLinks = [...document.querySelectorAll('#nav-links a[href^="#"]:not(.nav-try)')];
+if ("IntersectionObserver" in window) {
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      sectionLinks.forEach((a) => {
+        const here = a.getAttribute("href") === "#" + entry.target.id;
+        if (here) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+      });
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  sectionLinks.forEach((a) => {
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) spy.observe(target);
+  });
+}
+
 // ---- The agent router ----
 // Rule-based on purpose: no model, no guessing. If nothing matches, the validator blocks it.
 const AGENTS = {
