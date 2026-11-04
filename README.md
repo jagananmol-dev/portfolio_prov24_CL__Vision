@@ -2,7 +2,7 @@
 
 My entry for the AWS Student Builder Challenge: Build Your Tech Superpower.
 
-- Live site: ADD_AMPLIFY_URL
+- Live site: https://main.dxr78ekpgci7i.amplifyapp.com
 - Repository: https://github.com/jagananmol-dev/portfolio_prov24_CL__Vision
 
 ## The creative feature
@@ -41,7 +41,9 @@ The site works on phones too. Below 720px the navigation collapses into a menu, 
 
 - **AWS Amplify Hosting** hosts the site.
 - **Deployment:** Amplify is connected to this GitHub repository on the main branch, so every push to main publishes a new version.
-- **Build:** none needed. It's plain HTML, CSS and JavaScript, so Amplify serves the files as they are.
+- **Build:** none needed. It's plain HTML, CSS and JavaScript. `amplify.yml` tells Amplify to publish the repo root as it is.
+- **Region:** US East (N. Virginia), us-east-1.
+- **Rewrites and redirects:** one rule, `/<*>` → `/404.html` with status 404, so a mistyped link shows my own "no route for this path" page instead of a blank error.
 - **Delivery:** Amplify serves the site over HTTPS through its managed CDN. I didn't set up an S3 bucket or a CloudFront distribution myself.
 
 The only thing loaded from outside AWS is Google Fonts.
