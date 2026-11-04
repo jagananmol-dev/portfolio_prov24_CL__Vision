@@ -43,6 +43,8 @@
     for (let x = 0; x <= w; x += CELL) { ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, h); }
     for (let y = 0; y <= h; y += CELL) { ctx.moveTo(0, y + 0.5); ctx.lineTo(w, y + 0.5); }
     ctx.stroke();
+    // a clean white plate behind the name, so cracks only ever show on the letters
+    if (namePlate) { ctx.fillStyle = "#fff"; ctx.fillRect(namePlate.x, namePlate.y, namePlate.w, namePlate.h); }
   }
 
   function tick(now) {
@@ -62,12 +64,13 @@
 
   // boxes behind the name never turn black, so the cracked name always reads clearly
   const name = document.querySelector("h1.name .name-base");
-  let nameBox = null;
+  let nameBox = null, namePlate = null;
   function measureName() {
     if (!name) return;
     const hr = hero.getBoundingClientRect(), nr = name.getBoundingClientRect();
     const pad = CELL;
     nameBox = { l: nr.left - hr.left - pad, t: nr.top - hr.top - pad, r: nr.right - hr.left + pad, b: nr.bottom - hr.top + pad };
+    namePlate = { x: nr.left - hr.left - 8, y: nr.top - hr.top - 4, w: nr.width + 16, h: nr.height + 8 };
   }
 
   function light(x, y) {
@@ -99,7 +102,11 @@
   hero.addEventListener("pointermove", onMove);
   hero.addEventListener("pointerleave", () => { prev = null; });
 
-  if ("ResizeObserver" in window) new ResizeObserver(size).observe(hero);
+  if ("ResizeObserver" in window) {
+    const ro = new ResizeObserver(size);
+    ro.observe(hero);
+    if (name) ro.observe(name);
+  }
   else window.addEventListener("resize", size);
   size();
 })();

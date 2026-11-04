@@ -103,8 +103,9 @@ h1.name.cracked .name-base { color: transparent; }
   transition: transform 0.2s cubic-bezier(.2,.8,.2,1);
 }
 .name-shard.lift { transform: scale(1.22); z-index: 3; }
-/* the cracks are real gaps between pieces, so they show the white page through the letters */
-.name-shard { background: transparent; }
+/* jagged white crack lines drawn over the black letters */
+.name-cracks { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 2; overflow: visible; }
+.name-cracks path { fill: none; stroke: #fff; stroke-linejoin: miter; stroke-linecap: round; }
 @media (prefers-reduced-motion: reduce) { .name-shard { transition: none; } }
 .lede { font-size: 19px; max-width: 34ch; margin: 0 0 28px; background: #fff; box-shadow: 0 0 0 10px #fff; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
