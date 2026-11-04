@@ -56,8 +56,8 @@
     canvas.style.height = height + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    step = Math.max(4, Math.round(fontSize / 15));
-    baseR = step * 0.42;
+    step = Math.max(4, Math.round(fontSize / 14));
+    baseR = step / 2;                       // half the side of one square cell
     lens = fontSize * 0.75;
     dots = [];
     for (let y = step / 2; y < height; y += step) {
@@ -72,9 +72,12 @@
     draw();
   }
 
+  const BLACK = "#000", LINE = "#fff";
+
   function draw() {
     ctx.clearRect(0, 0, width, height);
     let moving = false;
+    const placed = [];
     for (const d of dots) {
       let target = 1, push = 0, dx = 0, dy = 0;
       if (pointer) {
@@ -91,10 +94,19 @@
       const len = Math.hypot(dx, dy) || 1;
       const px = d.x + (dx / len) * push * (d.s - 1) / 1.7;
       const py = d.y + (dy / len) * push * (d.s - 1) / 1.7;
-      ctx.beginPath();
-      ctx.fillStyle = d.s > 1.25 ? glow : ink;
-      ctx.arc(px, py, baseR * d.s, 0, Math.PI * 2);
-      ctx.fill();
+      placed.push({ x: px, y: py, s: d.s });
+    }
+    // draw small squares first so the zoomed cluster sits on top
+    placed.sort((a, b) => a.s - b.s);
+    const gap = Math.max(1, step * 0.16);   // the white line between squares
+    for (const p of placed) {
+      const half = baseR * p.s;
+      // white cell first, then the black square inset by the line width
+      ctx.fillStyle = LINE;
+      ctx.fillRect(p.x - half, p.y - half, half * 2, half * 2);
+      const inset = gap * Math.min(p.s, 1.6) / 2;
+      ctx.fillStyle = BLACK;
+      ctx.fillRect(p.x - half + inset, p.y - half + inset, half * 2 - inset * 2, half * 2 - inset * 2);
     }
     raf = moving ? requestAnimationFrame(draw) : null;
   }
