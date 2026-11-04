@@ -62,20 +62,20 @@ a { color: var(--signal-ink); }
 
 /* Hero */
 .hero {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: clamp(24px, 4vw, 56px);
   align-items: start;
   padding: clamp(36px, 6vw, 80px) clamp(16px, 4vw, 48px) 56px;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 28px 28px;
-  background-position: -1px -1px;
+  background: #fff;
   border-bottom: 1px solid var(--line);
 }
+/* White boxes that turn black under the pointer (hero-grid.js) */
+.hero-grid { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero-text, .dispatch { position: relative; }
 .hero-text { padding-top: 12px; }
-.hello { margin: 0; color: var(--muted); font-size: 18px; }
+.hello { display: inline-block; margin: 0; color: var(--muted); font-size: 18px; background: #fff; box-shadow: 0 0 0 6px #fff; }
 h1 {
   font-size: clamp(52px, 8vw, 104px);
   line-height: 0.92;
@@ -83,14 +83,19 @@ h1 {
   letter-spacing: -0.045em;
   margin: 6px 0 22px;
 }
-/* Name drawn as dots (name-dots.js). The real text stays for screen readers and search. */
-.name-dots { display: none; max-width: 100%; touch-action: pan-y; cursor: crosshair; }
-h1.name.dotted .name-dots { display: block; }
-h1.name.dotted .name-text {
-  position: absolute; width: 1px; height: 1px; overflow: hidden;
-  clip: rect(0 0 0 0); white-space: nowrap;
+/* The name: plain black, Space Grotesk Bold. White + "difference" blending
+   means it shows pure black on white boxes and flips to white over a black box,
+   so it never disappears while the grid reacts. */
+h1.name {
+  font-family: "Space Grotesk", var(--display);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: #fff;
+  mix-blend-mode: difference;
 }
-.lede { font-size: 19px; max-width: 34ch; margin: 0 0 28px; background: var(--paper); box-shadow: 0 0 0 10px var(--paper); }
+@supports not (mix-blend-mode: difference) { h1.name { color: #000; } }
+.lede { font-size: 19px; max-width: 34ch; margin: 0 0 28px; background: #fff; box-shadow: 0 0 0 10px #fff; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .btn {
   display: inline-block; font: inherit; font-size: 16px; font-weight: 600;
