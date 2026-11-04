@@ -87,7 +87,7 @@ const AGENTS = {
 
 const DEEP_ANSWERS = {
   wins: [
-    "Winner of <b>Hack Your Path 6.0</b> and <b>AGTechathon 1.0</b>.",
+    "<b>3rd Prize</b> at Hack Your Path 6.0 (HITAM, Hyderabad) and <b>2nd Runner-up</b> at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur). Both certificates are in the Achievements section.",
     "Finalist at HackRX 5.0 (Bajaj Finserv), the Parul University AIML Hackathon, HackronyX and Hackzilla at IIIT Sonepat. Plus Top 50 at the VOIS Innovation Marathon 2026."
   ],
   who: [
@@ -108,7 +108,7 @@ const DEEP_ANSWERS = {
   ],
   facts: [
     ["He speaks four languages: English, Telugu, Hindi and Marathi.", "Telugu, Hindi and Marathi are all native for him."],
-    ["He's reached the final round at six hackathons, from Hyderabad to Sonepat.", "Two of them he won."],
+    ["He's reached the final round at six hackathons, from Hyderabad to Sonepat.", "Two of them ended on the podium: 3rd Prize and 2nd Runner-up."],
     ["The diagram you just used is a simplified copy of G-One's architecture.", "The real one has the same router, the same four agents and the same \"refuse rather than guess\" validator."],
     ["He has CCNA training, which is why his skills section is laid out like a routing table.", "Old habits."]
   ]
@@ -139,7 +139,7 @@ function route(question) {
 
 function deepAnswer(question) {
   const q = normalise(question);
-  if (/\b(certified|certification|certificate|ccna|nutanix)\b/.test(q)) return DEEP_ANSWERS.certs;
+  if (/\b(certified|certifications?|certificates?|ccna|nutanix)\b/.test(q)) return DEEP_ANSWERS.certs;
   if (/\b(win|wins|won|winner|hackathons?|awards?|achievements?)\b/.test(q)) return DEEP_ANSWERS.wins;
   if (/\b(education|study|studied|college|university|degree|cgpa|school)\b/.test(q)) return DEEP_ANSWERS.education;
   if (/\b(languages?|speaks?)\b/.test(q)) return DEEP_ANSWERS.languages;
@@ -278,7 +278,7 @@ function actionFor(agentKey, question) {
   if (/\b(education|study|studied|college|university|degree|cgpa|school|who|about|languages?|speaks?)\b/.test(q)) {
     return { label: "Open About me", run: () => jumpTo("#about") };
   }
-  if (/\b(certified|certification|certificate|ccna|nutanix)\b/.test(q)) return { label: "Show certifications", run: () => jumpTo("#wins") };
+  if (/\b(certified|certifications?|certificates?|ccna|nutanix)\b/.test(q)) return { label: "Show certifications", run: () => jumpTo("#wins") };
   if (/\b(win|wins|won|winner|hackathons?|awards?|achievements?)\b/.test(q)) return { label: "Show achievements", run: () => jumpTo("#wins") };
   return null;
 }
@@ -322,3 +322,31 @@ document.getElementById("ask").addEventListener("submit", e => {
   dispatch(input.value);
   input.value = "";
 });
+
+// ---- Certificate viewer ----
+const certDialog = document.getElementById("cert-dialog");
+if (certDialog && typeof certDialog.showModal === "function") {
+  const img = document.getElementById("cert-img");
+  const title = document.getElementById("cert-title");
+  const full = document.getElementById("cert-full");
+  let opener = null;
+  document.querySelectorAll(".cert-thumb").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      opener = btn;
+      img.src = btn.dataset.cert;
+      img.alt = btn.dataset.title;
+      title.textContent = btn.dataset.title;
+      full.href = btn.dataset.cert;
+      certDialog.showModal();
+    });
+  });
+  document.getElementById("cert-close").addEventListener("click", () => certDialog.close());
+  // click on the dark backdrop closes it too
+  certDialog.addEventListener("click", (e) => { if (e.target === certDialog) certDialog.close(); });
+  certDialog.addEventListener("close", () => { if (opener) opener.focus(); });
+} else {
+  // very old browsers: just open the image
+  document.querySelectorAll(".cert-thumb").forEach((btn) => {
+    btn.addEventListener("click", () => window.open(btn.dataset.cert, "_blank", "noopener"));
+  });
+}

@@ -127,7 +127,7 @@
             <tr><th scope="row">Data</th><td>MongoDB, PostgreSQL, MySQL, Firebase</td><td>App data and agent memory</td></tr>
             <tr><th scope="row">AI</th><td>Ollama, Mistral, LoRA adapters, ML model integration</td><td>Local multi-agent inference, plant disease detection</td></tr>
             <tr><th scope="row">Networks and cloud</th><td>CCNA (3 courses), Nutanix NCA, AWS Amplify</td><td>This site runs on Amplify</td></tr>
-            <tr><th scope="row">How I work</th><td>Git and GitHub, Agile, troubleshooting</td><td>Six hackathon finals, two wins</td></tr>
+            <tr><th scope="row">How I work</th><td>Git and GitHub, Agile, troubleshooting</td><td>Two hackathon podiums, four more finals</td></tr>
           </tbody>
         </table>
       </div>
@@ -164,12 +164,48 @@
 
     <section id="wins" class="section">
       <h2>Achievements</h2>
+
+      <div class="podium">
+        <article class="podium-card">
+          <div class="podium-body">
+            <span class="res win">3rd Prize</span>
+            <h3>Hack Your Path 6.0</h3>
+            <dl class="event-facts">
+              <div><dt>Host</dt><dd>Hyderabad Institute of Technology and Management (HITAM), with Google Developer Groups On Campus HITAM and DoLittle Technologies</dd></div>
+              <div><dt>When</dt><dd>9 to 10 May 2025</dd></div>
+              <div><dt>Team</dt><dd>DataWizard</dd></div>
+            </dl>
+          </div>
+          <aside class="podium-proof">
+            <button class="cert-thumb" type="button" data-cert="certs/hack-your-path-6.jpg" data-title="Hack Your Path 6.0, certificate of merit (3rd Prize)">
+              <img src="certs/hack-your-path-6.jpg" alt="" loading="lazy" width="320" height="226">
+              <span>View certificate</span>
+            </button>
+          </aside>
+        </article>
+
+        <article class="podium-card">
+          <div class="podium-body">
+            <span class="res win">2nd Runner-up</span>
+            <h3>AGTechathon 1.0 2k25</h3>
+            <dl class="event-facts">
+              <div><dt>Host</dt><dd>A. G. Patil Institute of Technology, Solapur, organised by Code Club AGPIT</dd></div>
+              <div><dt>When</dt><dd>14 to 15 June 2025, a 24-hour national-level hackathon</dd></div>
+            </dl>
+          </div>
+          <aside class="podium-proof">
+            <button class="cert-thumb" type="button" data-cert="certs/agtechathon-2025.jpg" data-title="AGTechathon 1.0 2k25, certificate (2nd Runner-up)">
+              <img src="certs/agtechathon-2025.jpg" alt="" loading="lazy" width="320" height="226">
+              <span>View certificate</span>
+            </button>
+          </aside>
+        </article>
+      </div>
+
       <div class="wins-grid">
         <div>
-          <h3>Hackathons</h3>
+          <h3>More hackathons</h3>
           <ul class="results">
-            <li><span class="res win">Winner</span>Hack Your Path 6.0, Hyderabad Institute of Technology</li>
-            <li><span class="res win">Winner</span>AGTechathon 1.0, AG Patil Institute of Technology</li>
             <li><span class="res">Top 50</span>VOIS Innovation Marathon 2026, Vodafone</li>
             <li><span class="res">Finalist</span>HackRX 5.0, Bajaj Finserv</li>
             <li><span class="res">Finalist</span>AIML Hackathon, Parul University, Vadodara</li>
@@ -203,6 +239,15 @@
       </div>
     </section>
   </main>
+
+  <dialog class="cert-dialog" id="cert-dialog" aria-labelledby="cert-title">
+    <div class="cert-dialog-head">
+      <h2 id="cert-title">Certificate</h2>
+      <button type="button" class="btn" id="cert-close">Close</button>
+    </div>
+    <img id="cert-img" src="" alt="">
+    <a id="cert-full" href="" target="_blank" rel="noopener">Open full size in a new tab</a>
+  </dialog>
 
   <footer class="foot">
     <p>Built by Jagananmol Daneti. Hosted on AWS Amplify.</p>
