@@ -70,7 +70,7 @@ const ABOUT = {
 const WINS = {
   podiums: [
     "<b>3rd Prize</b> at Hack Your Path 6.0 (HITAM, Hyderabad) and <b>2nd Runner-up</b> at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur).",
-    "Finalist at HackRX 5.0 (Bajaj Finserv), HackronyX and Hackzilla at IIIT Sonepat, took part in the AI/ML Hackathon 2.0 at Parul University, and made the Top 50 of the VOIS Innovation Marathon 2.0."
+    "Finalist at HackRX 5.0 (Bajaj Finserv), HackronyX and Hackzilla at IIIT Sonepat, took part in the AI/ML Hackathon 2.0 at Parul University, and successfully completed the six-month VOIS Innovation Marathon 2.0."
   ],
   certs: [
     "Three CCNA courses: Introduction to Networks; Switching, Routing and Wireless Essentials; and Enterprise Networking, Security and Automation.",
@@ -109,7 +109,7 @@ const AGENTS = {
     name: "Projects",
     words: ["built", "build", "project", "work", "made", "g-one", "gone", "agent", "orchestrator", "automation", "wikipedia", "mentor", "plant", "seer", "crop", "farmer", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "neet", "leak", "cryptography", "encryption", "encrypt", "aes", "rsa", "cybersecurity", "secure", "experience"],
     answer: () => [
-      "<b>G-One</b>: an orchestrator starts only the agents a question needs (Email, Research, Wikipedia, DeepSearch), so it saves tokens. Built over the 6-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava (Edunet Foundation). Top 50.",
+      "<b>G-One</b>: an orchestrator starts only the agents a question needs (Email, Research, Wikipedia, DeepSearch), so it saves tokens. Built over the 6-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava (Edunet Foundation), and completed successfully.",
       "<b>Crop suitability from satellite data</b> with SEER Bharat Foundation, an NGO: mark a spot on the map, and the model uses satellite imagery and rainfall to suggest the best crop for that land.",
       "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station.",
       "<b>Secure exam-paper transfer</b> (2nd Runner-up, AGTechathon 1.0): a response to the NEET paper leak. Papers are locked with AES-256, the key is locked with RSA-2048, and any tampering is caught before the file opens."
