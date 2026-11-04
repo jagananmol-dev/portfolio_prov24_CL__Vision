@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
   <a class="skip" href="#about">Skip to content</a>
@@ -104,7 +104,7 @@
         <div class="prose">
           <p>I'm a final-year B.Tech Computer Science student at SIT Pune, graduating in 2027. Most of what I know, I learned by building something and then figuring out why it broke.</p>
           <p>The project I'm proudest of is G-One, a multi-agent assistant I built during a Vodafone (VOIS) and Edunet Foundation internship with Prof. Sudhanshu Gonge. It made the Top 50 in the VOIS Innovation Marathon 2.0. It taught me that useful AI is less about the model and more about the rules around it.</p>
-          <p>Right now I'm building a plant disease detection website for the SEER Bharat Foundation, so farmers and researchers can check a leaf and get an answer quickly. Outside of projects, you'll usually find me at a hackathon.</p>
+          <p>Right now I'm working with SEER Bharat Foundation, an NGO in India, on a tool that uses satellite data and rainfall to tell farmers which crop suits their land best. Outside of projects, you'll usually find me at a hackathon.</p>
         </div>
         <dl class="facts">
           <div><dt>Based in</dt><dd>Pune, Maharashtra</dd></div>
@@ -123,9 +123,9 @@
           <thead><tr><th scope="col">Area</th><th scope="col">What I use</th><th scope="col">Where I used it</th></tr></thead>
           <tbody>
             <tr><th scope="row">Frontend</th><td>React.js, Next.js, HTML, CSS</td><td>G-One interface with 3D visuals and voice</td></tr>
-            <tr><th scope="row">Backend</th><td>Node.js, Express.js, FastAPI</td><td>G-One agents, SEER Bharat APIs</td></tr>
+            <tr><th scope="row">Backend</th><td>Node.js, Express.js, FastAPI</td><td>G-One agents, SEER Bharat crop recommendation APIs</td></tr>
             <tr><th scope="row">Data</th><td>MongoDB, PostgreSQL, MySQL, Firebase</td><td>App data and agent memory</td></tr>
-            <tr><th scope="row">AI</th><td>Ollama, Mistral, LoRA adapters, ML model integration</td><td>Local multi-agent inference, plant disease detection</td></tr>
+            <tr><th scope="row">AI</th><td>Ollama, Mistral, LoRA adapters, ML model integration</td><td>Local multi-agent inference, crop prediction from satellite data</td></tr>
             <tr><th scope="row">Networks and cloud</th><td>CCNA (3 courses), Nutanix NCA, AWS Amplify</td><td>This site runs on Amplify</td></tr>
             <tr><th scope="row">How I work</th><td>Git and GitHub, Agile, troubleshooting</td><td>Two hackathon podiums, three more finals</td></tr>
           </tbody>
@@ -148,9 +148,14 @@
       </article>
 
       <article class="project">
-        <h3>Plant disease detection for SEER Bharat Foundation</h3>
-        <p>A website where farmers and agricultural researchers can upload a leaf photo and find out what's wrong with the plant. I'm working on the ML model integration, the APIs behind it, and an interface simple enough to use in a field.</p>
-        <ul class="stack"><li>Full-stack</li><li>ML model integration</li><li>REST APIs</li></ul>
+        <h3>Crop suitability from satellite data, with SEER Bharat Foundation</h3>
+        <p>Choosing what to plant is one of the biggest bets a farmer makes each season, and it's often based on habit or guesswork rather than data about their own land. Working with SEER Bharat Foundation, an NGO in India, we're building a tool that turns satellite data into a plain answer: which crop suits this piece of land best.</p>
+        <ul class="story-points">
+          <li><b>Pick a spot.</b> Enter coordinates or simply mark the location on a map.</li>
+          <li><b>Read the land from space.</b> The system pulls satellite imagery and environmental parameters such as rainfall for that area.</li>
+          <li><b>Get a recommendation.</b> A model predicts the crops best suited to those conditions, so farmers can plan with data instead of guesswork.</li>
+        </ul>
+        <ul class="stack"><li>Satellite imagery</li><li>Rainfall and climate data</li><li>ML prediction</li><li>Interactive map</li><li>Full-stack</li></ul>
         <p class="small">Full Stack Developer, March 2026 to present.</p>
       </article>
 
@@ -262,7 +267,7 @@
     <p>Built by Jagananmol Daneti. Hosted on AWS Amplify.</p>
   </footer>
 
-  <script src="app.js?v=9"></script>
-  <script src="name-dots.js?v=9"></script>
+  <script src="app.js?v=10"></script>
+  <script src="name-dots.js?v=10"></script>
 </body>
 </html>

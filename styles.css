@@ -314,3 +314,4 @@ h1.name.dotted .name-text {
   .nav .nav-try::before, .mic.listening { animation: none; }
   .flash { animation: none; outline: 4px solid var(--packet); }
 }
+.project .story-points { margin-bottom: 14px; }

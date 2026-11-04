@@ -58,10 +58,10 @@ const AGENTS = {
   },
   research: {
     name: "Research",
-    words: ["built", "build", "project", "projects", "work", "made", "g-one", "gone", "agent", "plant", "seer", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience", "stack", "skill", "tech", "know", "react", "node", "mern", "blockchain", "database"],
+    words: ["built", "build", "project", "projects", "work", "made", "g-one", "gone", "agent", "plant", "seer", "crop", "crops", "farmer", "farmers", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience", "stack", "skill", "tech", "know", "react", "node", "mern", "blockchain", "database"],
     answer: [
       "<b>G-One</b>: a multi-agent assistant with a router, four specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2.0.",
-      "<b>Plant disease detection</b> for SEER Bharat Foundation: ML model integration, APIs and a farmer-friendly interface.",
+      "<b>Crop suitability from satellite data</b> with SEER Bharat Foundation, an NGO: mark a spot on the map, and the model uses satellite imagery and rainfall to suggest the best crop for that land.",
       "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station.",
       "Day-to-day stack: React, Next.js, Node, Express, FastAPI, MongoDB and PostgreSQL, plus an interest in blockchain and smart contracts. The full list is in <a href=\"#skills\">Tech superpowers</a>."
     ],

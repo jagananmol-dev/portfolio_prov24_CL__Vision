@@ -33,7 +33,7 @@ How visitors find it: it sits right next to my name in the hero, with the headin
 |---|---|
 | About Me | About me (#about) |
 | Skills | Tech superpowers (#skills), laid out as a routing table, since I trained on CCNA |
-| Projects / Achievements | Projects (#projects) and Achievements (#wins): G-One, SEER Bharat plant disease detection, 2 hackathon podium finishes (with certificates you can open), 3 more hackathon finals, 5 certifications (4 with certificates you can open) |
+| Projects / Achievements | Projects (#projects) and Achievements (#wins): G-One, SEER Bharat crop suitability from satellite data, 2 hackathon podium finishes (with certificates you can open), 3 more hackathon finals, 5 certifications (4 with certificates you can open) |
 
 The site works on phones too. Below 720px the navigation collapses into a menu, the diagram scales down, and nothing scrolls sideways.
 
