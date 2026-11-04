@@ -107,13 +107,14 @@ const AGENTS = {
   },
   projects: {
     name: "Projects",
-    words: ["built", "build", "project", "work", "made", "g-one", "gone", "agent", "plant", "seer", "crop", "farmer", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience"],
+    words: ["built", "build", "project", "work", "made", "g-one", "gone", "agent", "plant", "seer", "crop", "farmer", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "neet", "leak", "cryptography", "encryption", "encrypt", "aes", "rsa", "cybersecurity", "secure", "experience"],
     answer: () => [
       "<b>G-One</b>: a multi-agent assistant with a router, specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2.0.",
       "<b>Crop suitability from satellite data</b> with SEER Bharat Foundation, an NGO: mark a spot on the map, and the model uses satellite imagery and rainfall to suggest the best crop for that land.",
-      "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station."
+      "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station.",
+      "<b>Secure exam-paper transfer</b> (2nd Runner-up, AGTechathon 1.0): a response to the NEET paper leak. Papers are locked with AES-256, the key is locked with RSA-2048, and any tampering is caught before the file opens."
     ],
-    checks: "3 projects checked against CV and certificates",
+    checks: "4 projects checked against CV and certificates",
     action: { label: "Show projects", target: "#projects" }
   },
   wins: {

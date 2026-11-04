@@ -231,6 +231,9 @@ h1.name.dotted .name-text {
 .story p { margin: 0 0 8px; max-width: 62ch; }
 .story-points { margin: 6px 0 0; padding-left: 18px; }
 .story-points li { margin: 0 0 6px; max-width: 62ch; }
+.story-steps { margin: 6px 0 0; padding-left: 22px; }
+.story-steps li { margin: 0 0 8px; max-width: 62ch; padding-left: 2px; }
+.story .stack { margin-top: 14px; }
 .podium-card { align-items: start; }
 .podium-proof { position: sticky; top: 84px; }
 .cert-thumb {

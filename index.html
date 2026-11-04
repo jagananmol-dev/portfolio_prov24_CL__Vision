@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
   <a class="skip" href="#about">Skip to content</a>
@@ -206,6 +206,27 @@
               <div><dt>Host</dt><dd>A. G. Patil Institute of Technology, Solapur, organised by Code Club AGPIT</dd></div>
               <div><dt>When</dt><dd>14 to 15 June 2025, a 24-hour national-level hackathon</dd></div>
             </dl>
+            <div class="story">
+              <h4>The problem</h4>
+              <p>The NEET paper leak showed how fragile an exam paper is on its way from the people who set it to the centres that print and hand it out. It passes through many hands and systems, and a single leak can undo the exam for lakhs of students. We asked a simple question: what if the paper stayed locked the whole way, so a leaked copy was useless?</p>
+              <h4>What we built</h4>
+              <p>A secure file transfer website with a <b>sender</b> page and a <b>receiver</b> page, built on hybrid cryptography.</p>
+              <ol class="story-steps">
+                <li><b>Fresh keys for every transfer.</b> The platform creates a new RSA-2048 key pair. The public key can only lock, and only the matching private key can unlock.</li>
+                <li><b>The file is locked with AES-256.</b> A new random 256-bit key encrypts the paper in EAX mode, which keeps it secret and also stamps it with a tag that proves it hasn't been changed.</li>
+                <li><b>The AES key is locked with RSA.</b> That AES key is then encrypted with the receiver's public key using RSA-OAEP. AES is fast enough for large files, and RSA solves the hard part: getting the key to the right person safely.</li>
+                <li><b>Only one bundle travels.</b> The locked key, nonce, tag and encrypted file go out together. Anyone who intercepts it, or finds it on a server, sees only scrambled bytes.</li>
+                <li><b>Unlock and check.</b> The receiver unlocks the AES key with their private key, decrypts the file and checks the tag. If even one byte was altered, or the wrong key is used, it refuses to open and flags tampering.</li>
+                <li><b>Prove it's the same paper.</b> A SHA-256 fingerprint of the original is compared with the decrypted file, and every key generation, encryption and decryption is written to a timestamped audit log.</li>
+              </ol>
+              <h4>How it answers the leak problem</h4>
+              <ul class="story-points">
+                <li><b>Confidential:</b> the paper is never readable in transit or in storage, only on the intended receiver's side.</li>
+                <li><b>Tamper-evident:</b> any change to the file is caught before it opens.</li>
+                <li><b>Traceable:</b> the audit log shows when each step happened, so a leak can be traced instead of guessed at.</li>
+              </ul>
+              <ul class="stack"><li>Python</li><li>Flask</li><li>PyCryptodome</li><li>RSA-2048 (OAEP)</li><li>AES-256 (EAX)</li><li>SHA-256</li></ul>
+            </div>
           </div>
           <aside class="podium-proof">
             <button class="cert-thumb" type="button" data-cert="certs/agtechathon-2025.jpg" data-title="AGTechathon 1.0 2k25, certificate (2nd Runner-up)">
@@ -265,7 +286,7 @@
     <p>Built by Jagananmol Daneti. Hosted on AWS Amplify.</p>
   </footer>
 
-  <script src="app.js?v=12"></script>
-  <script src="name-dots.js?v=12"></script>
+  <script src="app.js?v=13"></script>
+  <script src="name-dots.js?v=13"></script>
 </body>
 </html>
