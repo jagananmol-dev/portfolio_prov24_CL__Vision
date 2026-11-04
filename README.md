@@ -1,4 +1,4 @@
-# Jagananmol Daneti: a portfolio you can dispatch tasks to
+# Jagananmol Daneti: a portfolio you can ask questions
 
 My entry for the AWS Student Builder Challenge: Build Your Tech Superpower.
 
@@ -7,11 +7,11 @@ My entry for the AWS Student Builder Challenge: Build Your Tech Superpower.
 
 ## The creative feature
 
-The first thing on the page is a small control panel called **Dispatch a task to my agents**. You pick a question (or type your own), and a packet travels across a diagram: from you, to a router, to one of four agents (Email, Research, Finance, DeepSearch), and through a validator before the answer comes back. A trace log underneath shows each step as it happens.
+The first thing on the page is a small panel called **Ask my portfolio**. You pick a question (or type or say your own), and a packet travels across a diagram: from you, to a router, to the section of the portfolio that can answer it (About, Skills, Projects, Achievements or Contact), and through a validator before the answer comes back. A trace log underneath shows each step as it happens.
 
 Ask something the site isn't built to answer, like "write my essay", and the validator turns red and blocks it instead of making something up.
 
-Then the agent does something about it. Like G-One, it doesn't act until you approve: a button appears, and clicking it lets the agent take the action. The Email agent opens a draft email to me, the Research agent takes you to G-One and highlights it, and DeepSearch opens my achievements or About section. Every step shows up in the trace, including "waiting for your OK" and "approved".
+Then the agent does something about it. Like G-One, it doesn't act until you approve: a button appears, and clicking it lets the agent take the action. Contact opens a draft email to me, and every other section scrolls you to the matching part of the page and highlights it. Every step shows up in the trace, including "waiting for your OK" and "approved".
 
 You can also speak your question, because G-One takes voice commands too. The mic button uses the browser's built-in speech recognition and only appears in browsers that support it.
 
@@ -25,7 +25,7 @@ What visitors can do:
 
 I tested the router with 46 different questions, including typos, plurals, empty input, script injection and "ignore your rules" attempts. All of them land on the right agent or get blocked.
 
-How visitors find it: it sits right next to my name in the hero, with the heading "Dispatch a task to my agents" and a one-line instruction. The navigation bar also has a highlighted "Try my agents" link that scrolls straight to it.
+How visitors find it: it sits right next to my name in the hero, with the heading "Ask my portfolio" and a one-line instruction. The navigation bar also has a highlighted "Ask my portfolio" link that scrolls straight to it.
 
 ## Portfolio sections
 

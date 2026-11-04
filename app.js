@@ -46,53 +46,10 @@ if ("IntersectionObserver" in window) {
 
 // ---- The agent router ----
 // Rule-based on purpose: no model, no guessing. If nothing matches, the validator blocks it.
-const AGENTS = {
-  email: {
-    name: "Email",
-    words: ["contact", "email", "mail", "reach", "hire", "hiring", "linkedin", "github", "talk", "message", "connect", "internship", "available", "open to"],
-    answer: [
-      "Best way to reach Jagananmol: <a href=\"mailto:jagananmoldaneti@gmail.com\">jagananmoldaneti@gmail.com</a>.",
-      "He's looking for software engineering internships and good hackathon teams. His GitHub and LinkedIn are in the <a href=\"#contact\">Contact section</a>."
-    ],
-    checks: "email address matches CV"
-  },
-  research: {
-    name: "Research",
-    words: ["built", "build", "project", "projects", "work", "made", "g-one", "gone", "agent", "plant", "seer", "crop", "crops", "farmer", "farmers", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience", "stack", "skill", "tech", "know", "react", "node", "mern", "blockchain", "database"],
-    answer: [
-      "<b>G-One</b>: a multi-agent assistant with a router, four specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2.0.",
-      "<b>Crop suitability from satellite data</b> with SEER Bharat Foundation, an NGO: mark a spot on the map, and the model uses satellite imagery and rainfall to suggest the best crop for that land.",
-      "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station.",
-      "Day-to-day stack: React, Next.js, Node, Express, FastAPI, MongoDB and PostgreSQL, plus an interest in blockchain and smart contracts. The full list is in <a href=\"#skills\">Tech superpowers</a>."
-    ],
-    checks: "3 projects checked against CV and certificates"
-  },
-  finance: {
-    name: "Finance",
-    words: ["cost", "price", "money", "budget", "cheap", "pay", "bill", "spend", "run", "salary", "afford"],
-    answer: [
-      "Running costs, as close to zero as he can get them.",
-      "G-One runs locally on Ollama with Mistral and LoRA adapters, so there's no per-call API bill. This site is static files on AWS Amplify Hosting."
-    ],
-    checks: "no made-up numbers"
-  },
-  deep: {
-    name: "DeepSearch",
-    words: ["win", "won", "winner", "hackathon", "award", "achievement", "certified", "certification", "certificate", "ccna", "nutanix", "surprise", "fun", "fact", "secret", "random", "who", "about", "language", "speak", "education", "study", "studied", "college", "university", "degree", "cgpa", "school"],
-    answer: null, // picked at dispatch time
-    checks: "claims match certificates"
-  }
-};
-
-const DEEP_ANSWERS = {
-  wins: [
-    "<b>3rd Prize</b> at Hack Your Path 6.0 (HITAM, Hyderabad) and <b>2nd Runner-up</b> at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur). Both certificates are in the Achievements section.",
-    "At Hack Your Path, team DataWizard built a voice-first healthcare assistant that speaks many languages, works over a phone call or WhatsApp, and points people to the nearest health station.",
-    "Finalist at HackRX 5.0 (Bajaj Finserv), HackronyX and Hackzilla at IIIT Sonepat, took part in the AI/ML Hackathon 2.0 at Parul University, and made the Top 50 of the VOIS Innovation Marathon 2.0."
-  ],
+const ABOUT = {
   who: [
     "Jagananmol Daneti is a final-year B.Tech CSE student at Symbiosis Institute of Technology, Pune, graduating in 2027.",
-    "He builds full-stack apps and multi-agent AI, and he's usually at a hackathon. Read more in <a href=\"#about\">About me</a>."
+    "He builds full-stack apps and multi-agent AI, and he's usually at a hackathon."
   ],
   education: [
     "B.Tech in Computer Science and Engineering at Symbiosis Institute of Technology, Pune, expected June 2027.",
@@ -102,20 +59,87 @@ const DEEP_ANSWERS = {
     "He speaks four languages: English, Telugu, Hindi and Marathi.",
     "Telugu, Hindi and Marathi are all native for him."
   ],
-  certs: [
-    "Three CCNA courses: Introduction to Networks; Switching, Routing and Wireless Essentials; and Enterprise Networking, Security and Automation.",
-    "Also Nutanix Certified Associate 6 (Multicloud Infrastructure) and the Deloitte cybersecurity virtual internship. Each one has a View certificate button in the Achievements section."
-  ],
   facts: [
     ["He speaks four languages: English, Telugu, Hindi and Marathi.", "Telugu, Hindi and Marathi are all native for him."],
     ["He's been on the podium twice and reached the final round at three more hackathons, from Hyderabad to Sonepat.", "The podiums: 3rd Prize and 2nd Runner-up."],
-    ["The diagram you just used is a simplified copy of G-One's architecture.", "The real one has the same router, the same four agents and the same \"refuse rather than guess\" validator."],
+    ["This panel works the same way as his G-One project.", "A router decides who should answer, and a validator checks the answer before you see it. If it isn't sure, it refuses instead of guessing."],
     ["He has CCNA training, which is why his skills section is laid out like a routing table.", "Old habits."]
   ]
 };
+
+const WINS = {
+  podiums: [
+    "<b>3rd Prize</b> at Hack Your Path 6.0 (HITAM, Hyderabad) and <b>2nd Runner-up</b> at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur).",
+    "Finalist at HackRX 5.0 (Bajaj Finserv), HackronyX and Hackzilla at IIIT Sonepat, took part in the AI/ML Hackathon 2.0 at Parul University, and made the Top 50 of the VOIS Innovation Marathon 2.0."
+  ],
+  certs: [
+    "Three CCNA courses: Introduction to Networks; Switching, Routing and Wireless Essentials; and Enterprise Networking, Security and Automation.",
+    "Also Nutanix Certified Associate 6 (Multicloud Infrastructure) and the Deloitte cybersecurity virtual internship. Each certificate can be opened in the Achievements section."
+  ]
+};
+
+// Rule-based on purpose: no model, no guessing. Each agent is one section of
+// this portfolio. If nothing matches, the validator blocks the question.
+const AGENTS = {
+  about: {
+    name: "About",
+    words: ["who", "about", "yourself", "himself", "background", "education", "study", "studied", "college", "university", "degree", "cgpa", "school", "language", "speak", "surprise", "fun", "fact", "secret", "random"],
+    answer: (q) => {
+      if (/\b(education|study|studied|college|university|degree|cgpa|school)\b/.test(q)) return ABOUT.education;
+      if (/\b(languages?|speaks?)\b/.test(q)) return ABOUT.languages;
+      if (/\b(who|about|yourself|himself|background)\b/.test(q)) return ABOUT.who;
+      const fact = ABOUT.facts[factIndex % ABOUT.facts.length];
+      factIndex++;
+      return fact;
+    },
+    checks: "facts match CV",
+    action: { label: "Open About me", target: "#about" }
+  },
+  skills: {
+    name: "Skills",
+    words: ["skill", "stack", "tech", "technology", "know", "react", "next", "node", "mern", "blockchain", "database", "mongodb", "frontend", "backend", "tools", "programming", "cost", "price", "money", "budget", "cheap", "run"],
+    answer: () => [
+      "Frontend: React.js, Next.js, HTML and CSS. Backend: Node.js, Express.js and FastAPI. Data: MongoDB, PostgreSQL, MySQL and Firebase.",
+      "AI: Ollama, Mistral and LoRA adapters. G-One runs locally, so there's no per-call API bill, and this site is plain files on AWS Amplify Hosting."
+    ],
+    checks: "skills match CV",
+    action: { label: "Show skills", target: "#skills" }
+  },
+  projects: {
+    name: "Projects",
+    words: ["built", "build", "project", "work", "made", "g-one", "gone", "agent", "portfolio", "plant", "seer", "crop", "farmer", "farming", "agriculture", "satellite", "rainfall", "ngo", "vois", "vodafone", "edunet", "intern", "healthcare", "health", "voice", "whatsapp", "elevenlabs", "experience"],
+    answer: () => [
+      "<b>G-One</b>: a multi-agent assistant with a router, specialist agents and a validation gate. Top 50 in the VOIS Innovation Marathon 2.0.",
+      "<b>Crop suitability from satellite data</b> with SEER Bharat Foundation, an NGO: mark a spot on the map, and the model uses satellite imagery and rainfall to suggest the best crop for that land.",
+      "<b>Voice healthcare assistant</b> (3rd Prize, Hack Your Path 6.0): talks in many languages over a phone call or WhatsApp and suggests the nearest health station."
+    ],
+    checks: "3 projects checked against CV and certificates",
+    action: { label: "Show projects", target: "#projects" }
+  },
+  wins: {
+    name: "Achievements",
+    words: ["win", "won", "winner", "hackathon", "award", "achievement", "prize", "podium", "certified", "certification", "certificate", "ccna", "nutanix", "deloitte"],
+    answer: (q) => /\b(certified|certifications?|certificates?|ccna|nutanix|deloitte)\b/.test(q) ? WINS.certs : WINS.podiums,
+    checks: "claims match certificates",
+    action: { label: "Show achievements", target: "#wins" }
+  },
+  contact: {
+    name: "Contact",
+    words: ["contact", "email", "mail", "reach", "hire", "hiring", "linkedin", "github", "talk", "message", "connect", "internship", "available", "open to"],
+    answer: () => [
+      "Best way to reach Jagananmol: <a href=\"mailto:jagananmoldaneti@gmail.com\">jagananmoldaneti@gmail.com</a>.",
+      "He's looking for software engineering internships and good hackathon teams."
+    ],
+    checks: "email address matches CV",
+    action: { label: "Open a draft email", email: true }
+  }
+};
+
 let factIndex = 0;
 
 const BLOCK_WORDS = ["essay", "homework", "assignment", "password", "hack into", "write my", "do my", "exam answers", "cheat"];
+
+const WEAK_WORDS = new Set(["about", "who", "know", "run"]);
 
 function normalise(text) { return text.toLowerCase().replace(/[^a-z0-9\- ]/g, " "); }
 
@@ -128,7 +152,8 @@ function route(question) {
       // allow simple plurals and verb endings: internship(s), project(s), win(s), speak(s)
       const re = new RegExp("\\b" + w + "(s|es|ed|ing)?\\b");
       if (re.test(q)) {
-        const score = w.length;
+        // generic words like "about" only win when nothing more specific matched
+        const score = WEAK_WORDS.has(w) ? 1 : w.length;
         if (score > bestScore) { best = key; bestScore = score; hit = w; }
       }
     }
@@ -137,17 +162,6 @@ function route(question) {
   return { agent: best, keyword: hit };
 }
 
-function deepAnswer(question) {
-  const q = normalise(question);
-  if (/\b(certified|certifications?|certificates?|ccna|nutanix)\b/.test(q)) return DEEP_ANSWERS.certs;
-  if (/\b(win|wins|won|winner|hackathons?|awards?|achievements?)\b/.test(q)) return DEEP_ANSWERS.wins;
-  if (/\b(education|study|studied|college|university|degree|cgpa|school)\b/.test(q)) return DEEP_ANSWERS.education;
-  if (/\b(languages?|speaks?)\b/.test(q)) return DEEP_ANSWERS.languages;
-  if (/\b(who|about)\b/.test(q)) return DEEP_ANSWERS.who;
-  const fact = DEEP_ANSWERS.facts[factIndex % DEEP_ANSWERS.facts.length];
-  factIndex++;
-  return fact;
-}
 
 // ---- Animation helpers ----
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -227,8 +241,8 @@ async function dispatch(question) {
     await travel(`o-${r.agent}`);
     document.getElementById("n-gate").classList.add("ok");
     log(`validator: <b>passed</b>, ${agent.checks}`, "good");
-    const lines = agent.answer || deepAnswer(question);
-    const act = actionFor(r.agent, question);
+    const lines = agent.answer(normalise(question));
+    const act = actionFor(r.agent);
     answerBox.innerHTML = lines.map(l => `<p>${l}</p>`).join("") +
       `<p class="from">Answered by the ${agent.name} agent</p>`;
     if (act) {
@@ -261,11 +275,12 @@ function jumpTo(selector) {
   setTimeout(() => el.classList.remove("flash"), 2200);
 }
 
-function actionFor(agentKey, question) {
-  const q = normalise(question);
-  if (agentKey === "email") {
+function actionFor(agentKey) {
+  const a = AGENTS[agentKey].action;
+  if (!a) return null;
+  if (a.email) {
     return {
-      label: "Open a draft email",
+      label: a.label,
       run: () => {
         const subject = encodeURIComponent("Hi Jagananmol, I found your portfolio");
         const body = encodeURIComponent("Hi Jagananmol,\n\nI came across your portfolio and wanted to get in touch about:\n\n");
@@ -273,14 +288,7 @@ function actionFor(agentKey, question) {
       }
     };
   }
-  if (agentKey === "research") return { label: "Take me to G-One", run: () => jumpTo(".project.feature") };
-  if (agentKey === "finance") return { label: "Show me the stack", run: () => jumpTo("#skills") };
-  if (/\b(education|study|studied|college|university|degree|cgpa|school|who|about|languages?|speaks?)\b/.test(q)) {
-    return { label: "Open About me", run: () => jumpTo("#about") };
-  }
-  if (/\b(certified|certifications?|certificates?|ccna|nutanix)\b/.test(q)) return { label: "Show certifications", run: () => jumpTo("#wins") };
-  if (/\b(win|wins|won|winner|hackathons?|awards?|achievements?)\b/.test(q)) return { label: "Show achievements", run: () => jumpTo("#wins") };
-  return null;
+  return { label: a.label, run: () => jumpTo(a.target) };
 }
 
 // ---- Voice input (G-One takes voice commands too). Hidden where the browser can't do it. ----

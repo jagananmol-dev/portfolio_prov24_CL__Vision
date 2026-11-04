@@ -306,6 +306,7 @@ h1.name.dotted .name-text {
   .ask button[type="submit"] { flex: 1 1 100%; }
   body { font-size: 16px; }
   .graph text { font-size: 17px; }
+  .graph .agent text { font-size: 14.5px; }
   .graph .router text { font-size: 14px; }
 }
 
