@@ -48,28 +48,18 @@ a { color: var(--signal-ink); }
 .nav nav a { color: var(--muted); text-decoration: none; font-size: 15px; }
 .nav nav a:hover { color: var(--ink); }
 .nav nav a[aria-current="true"] { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--packet); text-decoration-thickness: 3px; text-underline-offset: 6px; }
-.nav .nav-try {
-  color: var(--ink); background: #fff; border: 1.5px solid var(--packet);
-  padding: 5px 12px; border-radius: 999px; position: relative;
-}
-.nav .nav-try::before {
-  content: ""; position: absolute; left: -4px; top: -4px; width: 9px; height: 9px;
-  background: var(--packet); border-radius: 50%;
-  animation: blink 1.6s ease-in-out infinite;
-}
 @keyframes blink { 50% { opacity: 0.25; } }
 .menu-toggle { display: none; }
-/* the Surprise me badge sitting on the "Ask my portfolio" button */
-.nav-try-wrap { position: relative; display: inline-flex; }
-.nav .nav-try-wrap .nav-try::before { display: none; }
+/* the Surprise me button in the navigation bar: a small copy of the main one */
 .nav-surprise {
-  position: absolute; top: -13px; right: -13px; width: 26px; height: 26px; padding: 0;
-  display: grid; place-items: center; border-radius: 50%; cursor: pointer;
-  background: #000; border: 2px solid #fff; animation: s-ping 1.6s ease-out infinite;
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  font: inherit; font-family: "Space Grotesk", var(--display); font-size: 15px; font-weight: 700;
+  padding: 6px 14px; border-radius: 999px; background: #000; color: #fff; border: 2px solid #000;
+  animation: s-ping 1.6s ease-out infinite;
 }
 .nav-surprise svg { width: 14px; height: 14px; fill: var(--packet); animation: s-twinkle 1.2s ease-in-out infinite; }
-@media (hover: hover) { .nav-surprise:hover { background: var(--packet); } .nav-surprise:hover svg { fill: #000; } }
-.nav-surprise:focus-visible { outline: 2px solid var(--packet); outline-offset: 2px; }
+@media (hover: hover) { .nav-surprise:hover { background: var(--packet); color: #000; } .nav-surprise:hover svg { fill: #000; } }
+.nav-surprise:focus-visible { outline: 2px solid var(--packet); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .nav-surprise, .nav-surprise svg { animation: none; } }
 
 /* Hero */
@@ -335,7 +325,7 @@ h1.name.cracked .name-base { color: transparent; }
   }
   .nav nav.open { display: flex; }
   .nav nav a { padding: 10px 0; font-size: 17px; }
-  .nav .nav-try { margin-top: 6px; padding: 8px 14px; }
+  .nav-surprise { margin-top: 6px; align-self: flex-start; padding: 9px 16px; font-size: 16px; }
   .dispatch { box-shadow: 4px 4px 0 var(--ink); }
   .ask { flex-wrap: wrap; }
   .ask button[type="submit"] { flex: 1 1 100%; }
@@ -347,7 +337,7 @@ h1.name.cracked .name-base { color: transparent; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .nav .nav-try::before, .mic.listening { animation: none; }
+  .nav-surprise, .nav-surprise svg, .mic.listening { animation: none; }
   .flash { animation: none; outline: 4px solid var(--packet); }
 }
 .project .story-points { margin-bottom: 14px; }
