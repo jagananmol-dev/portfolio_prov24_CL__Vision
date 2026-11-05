@@ -292,6 +292,20 @@ h1.name.cracked .name-base { color: transparent; }
 
 .wins-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 48px; }
 .wins-grid h3 { font-size: 20px; margin: 0 0 12px; }
+
+/* AWS Builder Center badges */
+.aws-badges { margin-top: 48px; padding-top: 28px; border-top: 2px solid var(--ink); }
+.aws-badges-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 18px; }
+.aws-badges-head h3 { font-size: 20px; margin: 0; }
+.aws-badges-head a { font-weight: 600; color: var(--ink); }
+.badge-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.badge-list li { display: flex; align-items: center; gap: 14px; padding: 12px; background: var(--surface); border: 1.5px solid var(--ink); border-radius: var(--radius-l); box-shadow: 3px 3px 0 var(--ink); }
+.badge-list img { flex: none; width: 64px; height: 64px; border-radius: 8px; image-rendering: pixelated; background: #42b4ff; }
+.badge-list span { display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--muted); line-height: 1.35; }
+.badge-list b { font-size: 16px; color: var(--ink); }
+.badge-note { margin: 16px 0 0; font-size: 14px; color: var(--muted); max-width: 70ch; }
+@media (max-width: 899px) { .badge-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .badge-list { grid-template-columns: 1fr; } }
 .results, .certs { list-style: none; margin: 0; padding: 0; }
 .results li, .certs li { padding: 10px 0; border-bottom: 1px solid var(--line); }
 .res {
