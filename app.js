@@ -70,7 +70,7 @@ const ABOUT = {
 const WINS = {
   podiums: [
     "<b>3rd Prize</b> at Hack Your Path 6.0 (HITAM, Hyderabad) and <b>2nd Runner-up</b> at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur).",
-    "Finalist at HackRX 5.0 (Bajaj Finserv), HackronyX and Hackzilla at IIIT Sonepat, took part in the AI/ML Hackathon 2.0 at Parul University, and successfully completed the six-month VOIS Innovation Marathon 2.0."
+    "Finalist at HackRX 5.0 (Bajaj Finserv), HacKronyX (SVPCET Nagpur) and Hackzilla at IIIT Sonepat, took part in the AI/ML Hackathon 2.0 at Parul University, and successfully completed the six-month VOIS Innovation Marathon 2.0."
   ],
   certs: [
     "Three CCNA courses: Introduction to Networks; Switching, Routing and Wireless Essentials; and Enterprise Networking, Security and Automation.",

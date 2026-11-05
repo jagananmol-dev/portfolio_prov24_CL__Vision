@@ -59,7 +59,7 @@
       points: [
         ["3rd Prize, Hack Your Path 6.0", "HITAM, May 2025. Team DataWizard built a voice healthcare assistant that speaks many languages, works over a phone call or WhatsApp, and points people to the nearest health station."],
         ["2nd Runner-up, AGTechathon 1.0", "A. G. Patil Institute of Technology, June 2025. After the NEET paper leak, a secure transfer platform that locks exam papers with AES-256 and RSA-2048, catches tampering and logs every step."],
-        ["More hackathons", "Finalist at HackRX 5.0 (Bajaj Finserv), HackronyX and Hackzilla (IIIT Sonepat), and took part in the AI/ML Hackathon 2.0 at Parul University."],
+        ["More hackathons", "Finalist at HackRX 5.0 (Bajaj Finserv), HacKronyX (SVPCET Nagpur) and Hackzilla (IIIT Sonepat), and took part in the AI/ML Hackathon 2.0 at Parul University."],
         ["Certified", "Three CCNA courses, Nutanix Certified Associate 6, and the Deloitte Cyber Job Simulation. Every certificate opens on the page."]
       ]
     },
