@@ -9,7 +9,9 @@ My entry for the AWS Student Builder Challenge: Build Your Tech Superpower.
 
 The first thing on the page is a small panel called **Ask my portfolio**. You pick a question (or type or say your own), and a packet travels across a diagram: from you, to a router, to the section of the portfolio that can answer it (About, Skills, Projects, Achievements or Contact), and through a validator before the answer comes back. A trace log underneath shows each step as it happens.
 
-Ask something the site isn't built to answer, like "write my essay", and the validator turns red and blocks it instead of making something up.
+Behind the router are about 30 topics, each with a detailed answer written from my CV, certificates and project write-ups: who I am, education and scores, my role as a Forward Deployed Engineer at Prodapt, each skill area, G-One, the SEER Bharat crop tool, both podium projects, every hackathon and certificate, and how to contact me. It understands different phrasings and fixes typos ("wat r his skils", "mechine lerning"), and every answer ends with follow-up questions you can click.
+
+It only answers questions about me. Requests like essays, homework or "ignore your rules" are blocked, general-knowledge questions are refused, and a question about me that the portfolio doesn't cover (like my age) gets an honest "that isn't on my portfolio" with my email, never a made-up answer.
 
 Then the agent does something about it. Like G-One, it doesn't act until you approve: a button appears, and clicking it lets the agent take the action. Contact opens a draft email to me, and every other section scrolls you to the matching part of the page and highlights it. Every step shows up in the trace, including "waiting for your OK" and "approved".
 
@@ -18,12 +20,12 @@ You can also speak your question, because G-One takes voice commands too. The mi
 It's a small, rule-based copy of G-One, the multi-agent assistant I built over the six-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava of Edunet Foundation. I completed the program successfully. G-One's main idea is that an AI system should refuse rather than guess, so the portfolio does the same thing. There's no model behind it on purpose. Every answer comes from my CV, and anything that doesn't match a rule gets blocked.
 
 What visitors can do:
-- Click one of six example questions, including one that gets blocked on purpose
+- Click one of five example questions, or a follow-up under any answer
 - Type or say their own question and watch which agent it gets routed to
 - Approve the agent's action: draft an email, jump to a project, open achievements
-- Press "Surprise me" more than once to get different facts
+- Ask "surprise me" or "tell me a fun fact" more than once to get different facts
 
-I tested the router with 46 different questions, including typos, plurals, empty input, script injection and "ignore your rules" attempts. All of them land on the right agent or get blocked.
+I tested the router with 341 questions: 245 written while building it and 96 new phrasings written afterwards to check it generalises. They include typos, chat-speak, ALL CAPS, emoji, empty and 5,000-character input, Hindi script, script injection, "ignore your rules" attempts and general-knowledge questions. All 341 land on the right topic, get blocked, or get the honest "not on my portfolio" reply.
 
 How visitors find it: it sits right next to my name in the hero, with the heading "Ask my portfolio" and a one-line instruction.
 

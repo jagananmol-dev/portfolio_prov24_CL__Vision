@@ -697,3 +697,14 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
 .ax-role p { margin: 0 0 6px; }
 .ax-duties { margin: 0; padding-left: 18px; }
 .ax-duties li { margin: 0 0 6px; max-width: 64ch; }
+
+/* follow-up questions under each chatbot answer */
+.next-qs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.next-qs span { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-right: 2px; }
+.next-qs button {
+  font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+}
+.next-qs button:hover { border-color: var(--packet); background: #fff7ea; }
+.next-qs button:disabled { opacity: .5; cursor: default; }
+.answer.rejected .next-qs { border-top-color: #e8b9b4; }
