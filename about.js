@@ -16,9 +16,10 @@
       marker.style.height = tab.offsetHeight + "px";
       marker.style.width = "";
     } else {
-      marker.style.transform = `translateX(${tab.offsetLeft}px)`;
+      // a row on tablets, a 2 x 2 grid on phones: follow the tab in both directions
+      marker.style.transform = `translate(${tab.offsetLeft}px, ${tab.offsetTop}px)`;
       marker.style.width = tab.offsetWidth + "px";
-      marker.style.height = "";
+      marker.style.height = tab.offsetHeight + "px";
     }
   }
 

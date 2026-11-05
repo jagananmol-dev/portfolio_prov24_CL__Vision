@@ -688,9 +688,14 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
   }
   .ax-tabs::-webkit-scrollbar { display: none; }
   .ax-tab { white-space: nowrap; padding: 10px 14px; font-size: 15px; }
-  .ax-marker { left: 0; right: auto; top: 8px; height: auto; bottom: 8px; }
+  .ax-marker { left: 0; right: auto; top: 0; }
   .ax-marker::before { display: none; }
   .ax-cards { grid-template-columns: 1fr; }
+}
+/* phones: all four tabs visible at once in a 2 x 2 grid, no hidden sideways scroll */
+@media (max-width: 600px) {
+  .about-explorer.ax-ready .ax-tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; gap: 4px; }
+  .ax-tab { white-space: normal; padding: 10px 12px; line-height: 1.2; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ax-marker { transition: none; }
