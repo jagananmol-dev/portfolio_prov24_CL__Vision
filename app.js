@@ -74,7 +74,7 @@ const WINS = {
   ],
   certs: [
     "Three CCNA courses: Introduction to Networks; Switching, Routing and Wireless Essentials; and Enterprise Networking, Security and Automation.",
-    "Also Nutanix Certified Associate 6 (Multicloud Infrastructure) and the Deloitte cybersecurity virtual internship. Each certificate can be opened in the Achievements section."
+    "Also Nutanix Certified Associate 6 (Multicloud Infrastructure) and the Deloitte Cyber Job Simulation on Forage (June 2025). Each certificate can be opened in the Achievements section."
   ]
 };
 
@@ -336,23 +336,29 @@ document.getElementById("ask").addEventListener("submit", e => {
 const certDialog = document.getElementById("cert-dialog");
 if (certDialog && typeof certDialog.showModal === "function") {
   const img = document.getElementById("cert-img");
+  const pdf = document.getElementById("cert-pdf");
   const title = document.getElementById("cert-title");
   const full = document.getElementById("cert-full");
   let opener = null;
   document.querySelectorAll(".cert-thumb, .cert-open").forEach((btn) => {
     btn.addEventListener("click", () => {
+      const src = btn.dataset.cert;
+      const isPdf = /\.pdf$/i.test(src);
+      // phones can't show a PDF inside the page, so open it in a new tab there
+      if (isPdf && window.matchMedia("(max-width: 719px)").matches) { window.open(src, "_blank", "noopener"); return; }
       opener = btn;
-      img.src = btn.dataset.cert;
-      img.alt = btn.dataset.title;
+      img.hidden = isPdf; pdf.hidden = !isPdf;
+      if (isPdf) { pdf.src = src + "#view=FitH&toolbar=0&navpanes=0"; pdf.title = btn.dataset.title; }
+      else { img.src = src; img.alt = btn.dataset.title; }
       title.textContent = btn.dataset.title;
-      full.href = btn.dataset.cert;
+      full.href = src;
       certDialog.showModal();
     });
   });
   document.getElementById("cert-close").addEventListener("click", () => certDialog.close());
   // click on the dark backdrop closes it too
   certDialog.addEventListener("click", (e) => { if (e.target === certDialog) certDialog.close(); });
-  certDialog.addEventListener("close", () => { if (opener) opener.focus(); img.removeAttribute("src"); });
+  certDialog.addEventListener("close", () => { if (opener) opener.focus(); img.removeAttribute("src"); pdf.removeAttribute("src"); });
 } else {
   // very old browsers: just open the image
   document.querySelectorAll(".cert-thumb, .cert-open").forEach((btn) => {
