@@ -277,7 +277,7 @@
   function botX(i) {
     const st = stage.getBoundingClientRect();
     const w = bot.getBoundingClientRect().width || 200;
-    if (isNarrow()) return [0.06, 0.6, 0.3, 0.66, 0.4][i] * Math.max(0, st.width - w);
+    if (isNarrow()) return [0.42, 0.66, 0.3, 0.66, 0.4][i] * Math.max(0, st.width - w);
     const cardW = card.getBoundingClientRect().width || Math.min(620, st.width * 0.54);
     const gutter = Math.max(16, Math.min(64, st.width * 0.05));
     const free = st.width - cardW - gutter;
@@ -378,7 +378,6 @@
   async function assemble3d(src) {
     r3.resize();
     r3.setCar();
-    r3.setFacing(r3.HALF);
     r3.setScreen("");
     const x = botX(0); bot.dataset.x = x; setPos(x);
     const rect = r3.screenRect();
@@ -408,13 +407,13 @@
     } else {
       await r3.materialize();
     }
-    await wait(250);
-    r3.face(idleTurn(0));
-    await r3.toRobot();
+    await r3.driveIn();                         // the finished truck rolls in, headlights flashing
+    await wait(350);
+    await r3.toRobot(idleTurn(0));              // then transforms, stage by stage
   }
 
   async function disassemble3d(src) {
-    if (r3.mode > 0.01) { r3.setTalking(false); r3.face(r3.HALF); await r3.toCar(); }
+    if (r3.mode > 0.01) { r3.setTalking(false); await r3.toCar(); }
     const rect = r3.screenRect();
     if (src.list.length && !reduceMotion) {
       const flyers = makeFlyers(src);
@@ -614,7 +613,7 @@
     busy = true;
     card.classList.add("out");
     if (use3d && r3) {                          // the robot folds back into a car while you watch
-      try { r3.setTalking(false); r3.face(r3.HALF); await r3.toCar(); } catch (e) {}
+      try { r3.setTalking(false); await r3.toCar(); r3.flash(); await wait(450); } catch (e) {}
     }
     tour.classList.remove("show");
     await disassemble();                        // the robot's tiles fly back into the name

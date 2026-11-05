@@ -565,3 +565,18 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
 @media (max-width: 899px) {
   .tour-3d { top: 6px; bottom: auto; height: var(--bot-h, 40vh); }
 }
+
+/* caption naming each stage of the 3D transformation */
+.r3-caption {
+  position: absolute; left: 50%; top: 0; transform: translate(-50%, 6px);
+  display: flex; align-items: center; gap: 10px; white-space: nowrap;
+  padding: 7px 12px; background: #000; color: #fff; border-radius: 999px;
+  font: 500 12px/1 "IBM Plex Mono", monospace; letter-spacing: .02em;
+  opacity: 0; transition: opacity .3s ease, transform .3s ease; pointer-events: none;
+}
+.r3-caption.show { opacity: 1; transform: translate(-50%, 0); }
+.r3-n { color: var(--packet, #f2a93b); }
+.r3-bar { display: inline-flex; gap: 3px; }
+.r3-bar i { width: 10px; height: 3px; border-radius: 2px; background: #444; }
+.r3-bar i.on { background: var(--packet, #f2a93b); }
+@media (max-width: 899px) { .r3-caption { font-size: 11px; gap: 7px; padding: 6px 10px; } .r3-bar i { width: 7px; } }

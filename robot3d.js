@@ -29,7 +29,7 @@
   const clamp01 = (t) => Math.max(0, Math.min(1, t));
   const ease = {
     inOut: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
-    backOut: (t) => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
+    backOut: (t) => { const c1 = 1.15, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
   };
   const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -45,6 +45,13 @@
     renderer.outputEncoding = T.sRGBEncoding;
     renderer.domElement.className = "robot3d-canvas";
     container.appendChild(renderer.domElement);
+
+    // a caption naming each stage of the transformation
+    const cap = document.createElement("div");
+    cap.className = "r3-caption";
+    cap.innerHTML = '<span class="r3-n"></span><span class="r3-t"></span><span class="r3-bar"></span>';
+    container.appendChild(cap);
+    const capN = cap.querySelector(".r3-n"), capT = cap.querySelector(".r3-t"), capBar = cap.querySelector(".r3-bar");
 
     const scene = new T.Scene();
     const camera = new T.PerspectiveCamera(30, 1, 0.1, 200);
@@ -102,8 +109,10 @@
       m.position.set(x, y, z);
       return add(m, parent, mat === M.body || mat === M.trim);
     }
+    const wheels = [];
     function wheel(parent, x, y, z) {
       const g = G();
+      wheels.push(g);
       g.position.set(x, y, z);
       parent.add(g);
       const tyre = new T.Mesh(new T.CylinderGeometry(0.31, 0.31, 0.24, 28), M.tyre);
@@ -112,6 +121,9 @@
       const hub = new T.Mesh(new T.CylinderGeometry(0.17, 0.17, 0.26, 6), M.rim);
       hub.rotation.z = Math.PI / 2;
       add(hub, g, false);
+      // spokes, so you can see the wheels turn
+      const spoke = new T.Mesh(new T.BoxGeometry(0.27, 0.05, 0.3), M.trim);
+      add(spoke, g, false);
       return g;
     }
 
@@ -122,6 +134,7 @@
     root.add(pelvis);
     box(1.15, 0.38, 0.72, M.trim, 0, 0, 0, pelvis);
     hex(0.15, 0.74, M.glow, 0, 0, 0, pelvis);
+    box(1.3, 0.14, 0.14, M.rim, 0, -0.08, 0.42, pelvis);          // chrome bumper
 
     const torso = G();
     torso.position.set(0, 0.2, 0);
@@ -133,6 +146,18 @@
     hex(0.12, 0.08, M.glow, -0.62, 0.55, 0.49, torso);
     hex(0.12, 0.08, M.glow, 0.62, 0.55, 0.49, torso);
     box(1.12, 0.18, 0.52, M.trim, 0, 1.5, -0.1, torso);
+    // truck details: radiator grille, roof lights, exhaust stacks
+    box(0.82, 0.38, 0.03, M.rim, 0, 0.21, 0.315, torso);
+    for (let k = -2.5; k <= 2.5; k++) box(0.045, 0.32, 0.03, M.trim, k * 0.12, 0.21, 0.335, torso);
+    for (let k = -2; k <= 2; k++) box(0.1, 0.06, 0.06, M.glow, k * 0.2, 1.62, 0.15, torso);
+    for (const sx of [-1, 1]) {
+      const stack = new T.Mesh(new T.CylinderGeometry(0.07, 0.07, 1.35, 14), M.rim);
+      stack.position.set(sx * 0.7, 1.15, -0.56);
+      add(stack, torso, false);
+      const cap = new T.Mesh(new T.CylinderGeometry(0.09, 0.07, 0.08, 14), M.trim);
+      cap.position.set(sx * 0.7, 1.86, -0.56);
+      add(cap, torso, false);
+    }
 
     // chest screen, showing the chapter number
     const scrCanvas = document.createElement("canvas");
@@ -201,6 +226,7 @@
       const thigh = G();
       hip.add(thigh);
       box(0.42, 0.86, 0.48, M.body, 0, -0.43, 0, thigh);
+      wheel(thigh, s * 0.38, -0.5, 0);
       const shin = G();
       shin.position.set(0, -0.88, 0);
       thigh.add(shin);
@@ -232,26 +258,41 @@
         }
       });
     }
-    joint(pelvis, { p: [0, 0.62, -0.15], r: [-HALF, 0, 0] }, [0, 0.45]);
-    joint(legL.hip, { p: [-0.62, -0.12, -0.32] }, [0.1, 0.5]);
-    joint(legR.hip, { p: [0.62, -0.12, -0.32] }, [0.1, 0.5]);
-    joint(legL.thigh, { r: [0.0, 0, 0] }, [0.15, 0.55]);
-    joint(legR.thigh, { r: [0.0, 0, 0] }, [0.15, 0.55]);
-    joint(legL.shin, { r: [0, 0, 0] }, [0.2, 0.6]);
-    joint(legR.shin, { r: [0, 0, 0] }, [0.2, 0.6]);
-    joint(legL.foot, { r: [0, 0, 0] }, [0.3, 0.65]);
-    joint(legR.foot, { r: [0, 0, 0] }, [0.3, 0.65]);
-    joint(torso, { p: [0, 0.2, 0] }, [0.25, 0.6]);
-    joint(armL.shoulder, { p: [-0.95, 1.15, -0.32] }, [0.35, 0.75]);
-    joint(armR.shoulder, { p: [0.95, 1.15, -0.32] }, [0.35, 0.75]);
-    joint(armL.upper, { r: [0, 0, 0] }, [0.45, 0.8]);
-    joint(armR.upper, { r: [0, 0, 0] }, [0.45, 0.8]);
-    joint(armL.fore, { r: [0, 0, 0] }, [0.5, 0.85]);
-    joint(armR.fore, { r: [0, 0, 0] }, [0.5, 0.85]);
-    joint(armL.hand, { s: 0.01 }, [0.6, 0.9]);
-    joint(armR.hand, { s: 0.01 }, [0.6, 0.9]);
-    joint(neck, { p: [0, 0.95, 0], s: 0.01 }, [0.62, 0.92]);
-    joint(antenna, { s: 0.01 }, [0.8, 1]);
+    // truck mode: the chest is the cab (windows become the windshield, the
+    // abdomen the grille), the legs lie flat behind it as the chassis, the
+    // shoulders drop to become the front wheels, the arms tuck inside the cab
+    // and the head sinks into the chest.
+    const PHASES = [
+      { win: [0.0, 0.24], robot: "Cab tilts up, legs swing down", truck: "Legs swing back into the chassis" },
+      { win: [0.22, 0.34], robot: "Hips lock into place", truck: "Hips spread to the axle width" },
+      { win: [0.34, 0.5], robot: "Front wheels rise into shoulders", truck: "Shoulders drop to become the front wheels" },
+      { win: [0.48, 0.68], robot: "Arms swing out and down", truck: "Arms fold up inside the cab" },
+      { win: [0.66, 0.75], robot: "Hands deploy", truck: "Hands retract" },
+      { win: [0.74, 0.88], robot: "Head rises out of the cab", truck: "Head sinks into the cab" },
+      { win: [0.86, 1.0], robot: "Antennas up, systems online", truck: "Antennas down, truck mode" }
+    ];
+    const W = (i) => PHASES[i].win;
+    joint(pelvis, { p: [0, 0.43, 0.3] }, W(0));
+    joint(legL.thigh, { r: [HALF, 0, 0] }, W(0));
+    joint(legR.thigh, { r: [HALF, 0, 0] }, W(0));
+    joint(legL.shin, { r: [0, 0, 0] }, W(0));
+    joint(legR.shin, { r: [0, 0, 0] }, W(0));
+    joint(legL.foot, { r: [0, 0, 0] }, W(0));
+    joint(legR.foot, { r: [0, 0, 0] }, W(0));
+    joint(legL.hip, { p: [-0.5, -0.12, -0.45] }, W(1));
+    joint(legR.hip, { p: [0.5, -0.12, -0.45] }, W(1));
+    joint(torso, { p: [0, 0.2, 0] }, W(1));
+    joint(armL.shoulder, { p: [-0.5, -0.32, 0.1] }, W(2));
+    joint(armR.shoulder, { p: [0.5, -0.32, 0.1] }, W(2));
+    joint(armL.upper, { r: [-Math.PI, 0, 0] }, W(3));
+    joint(armR.upper, { r: [-Math.PI, 0, 0] }, W(3));
+    joint(armL.fore, { r: [0, 0, 0] }, W(3));
+    joint(armR.fore, { r: [0, 0, 0] }, W(3));
+    joint(armL.hand, { s: 0.01 }, W(4));
+    joint(armR.hand, { s: 0.01 }, W(4));
+    joint(neck, { p: [0, 0.95, 0], s: 0.01 }, W(5));
+    joint(antenna, { s: 0.01 }, W(6));
+    const TRUCK_FACE = 1.15;   // mostly side-on, a little toward you
 
     let mode = 1;           // 1 = robot, 0 = car
     function applyMode(u) {
@@ -264,6 +305,9 @@
         const s = Math.max(0.001, lerp(j.car.s, j.robot.s, ease.inOut(t)));
         n.scale.set(s, s, s);
       }
+      // while the legs swing, lift the body so the feet never sink into the floor
+      const legReach = 0.12 + 1.94 * Math.cos(legL.thigh.rotation.x);
+      if (u < 1 && pelvis.position.y < legReach) pelvis.position.y = legReach;
       mode = u;
     }
 
@@ -286,7 +330,8 @@
     const state = {
       x: 0, targetX: 0, walking: false, phase: 0,
       facing: 0, faceTarget: 0, idleTurn: 0,
-      talking: false, time: 0, shake: 0, onArrive: null
+      talking: false, time: 0, shake: 0, onArrive: null,
+      drive: null, flash: 0
     };
     let running = false, last = 0, raf = 0;
     let anim = null; // { from, to, start, ms, resolve, fired }
@@ -335,6 +380,21 @@
       if (anim) {
         const t = clamp01((now - anim.start) / anim.ms);
         const u = lerp(anim.from, anim.to, t);
+        // turn from the truck's side view to face you (or back) during the first stages
+        const ft = clamp01((u - 0.08) / 0.34);
+        state.facing = state.faceTarget = lerp(anim.truckFace, anim.robotFace, ft * ft * (3 - 2 * ft));
+        // caption: which stage is running now
+        const up = anim.to > anim.from;
+        let k = -1;
+        PHASES.forEach((ph, i) => { if (u >= ph.win[0] - 1e-6 && u <= ph.win[1] + 1e-6) k = up ? Math.max(k, i) : (k === -1 ? i : Math.min(k, i)); });
+        if (k !== -1 && k !== anim.phase) {
+          anim.phase = k;
+          const n = up ? k + 1 : PHASES.length - k;
+          capN.textContent = String(n).padStart(2, "0") + "/" + String(PHASES.length).padStart(2, "0");
+          capT.textContent = up ? PHASES[k].robot : PHASES[k].truck;
+          capBar.innerHTML = PHASES.map((_, i) => `<i class="${i < n ? "on" : ""}"></i>`).join("");
+          cap.classList.add("show");
+        }
         // a burst of sparks as each joint starts to move
         for (const j of JOINTS) {
           const edge = anim.to > anim.from ? j.win[0] : j.win[1];
@@ -345,7 +405,28 @@
           }
         }
         applyMode(u);
-        if (t >= 1) { const r = anim.resolve; anim = null; r(); }
+        if (t >= 1) {
+          const r = anim.resolve; anim = null;
+          setTimeout(() => cap.classList.remove("show"), 700);
+          r();
+        }
+      }
+
+      // driving (truck mode): roll along the floor with the wheels turning
+      if (state.drive) {
+        const d = state.drive;
+        const t = clamp01((now - d.start) / d.ms);
+        const nx = lerp(d.from, d.to, 1 - Math.pow(1 - t, 3));
+        const spin = (nx - state.x) / 0.31;
+        wheels.forEach((w) => { w.rotation.x += spin; });
+        state.x = nx;
+        if (t >= 1) { const r = d.resolve; state.drive = null; r(); }
+      }
+      if (cap.classList.contains("show")) {
+        const v = new T.Vector3(root.position.x, 0, 0).project(camera);
+        const cw = container.clientWidth, half = cap.offsetWidth / 2 + 8;
+        cap.style.left = Math.max(half, Math.min(cw - half, (v.x + 1) / 2 * cw)).toFixed(0) + "px";
+        cap.style.top = ((1 - v.y) / 2 * container.clientHeight + 14).toFixed(0) + "px";
       }
 
       // walking
@@ -402,9 +483,9 @@
           armR.upper.rotation.z = 0; armR.fore.rotation.z = 0;
         }
       }
-      // wheels spin while in car mode and moving
       M.visor.emissiveIntensity = state.talking ? 0.8 + Math.abs(Math.sin(state.time * 16)) * 0.9 : 1.0;
-      M.glow.emissiveIntensity = 0.75 + Math.sin(state.time * 2.5) * 0.2;
+      state.flash = Math.max(0, state.flash - dt);
+      M.glow.emissiveIntensity = 0.75 + Math.sin(state.time * 2.5) * 0.2 + (state.flash > 0 ? (Math.sin(state.flash * 30) > 0 ? 1.6 : 0) : 0);
 
       // sparks
       for (let i = sparks.length - 1; i >= 0; i--) {
@@ -419,8 +500,13 @@
       // a small camera shake when parts lock in
       state.shake = Math.max(0, state.shake - dt);
       const k = reduceMotion ? 0 : state.shake;
-      camera.position.x = (Math.random() - 0.5) * k * 0.6;
-      camera.position.y = LOOK_Y + 1.1 + (Math.random() - 0.5) * k * 0.6;
+      // the camera moves in close on the truck and pulls back as the robot stands
+      const zmin = camera.aspect < 1.6 ? 0.8 : 0.6;   // narrow screens: zoom in less so the truck fits
+      const zt = clamp01(mode / 0.3), z = zmin + (1 - zmin) * zt * zt * (3 - 2 * zt);
+      const lookY = lerp(0.95, LOOK_Y, z === 1 ? 1 : (z - zmin) / (1 - zmin));
+      const cx = root.position.x * (1 - z);   // keeps the robot at the same spot on screen
+      camera.position.set(cx + (Math.random() - 0.5) * k * 0.6, lookY + 1.1 * z + (Math.random() - 0.5) * k * 0.6, camDist * z);
+      camera.lookAt(cx, lookY, 0);
       key.position.set(root.position.x + 5, 10, 8);
       key.target.position.set(root.position.x, 0, 0);
 
@@ -438,10 +524,18 @@
       raf = 0;
     }
 
-    function transform(to, ms = 2600) {
+    function transform(to, ms, robotFace) {
       return new Promise((resolve) => {
-        if (reduceMotion) { applyMode(to); resolve(); return; }
-        anim = { from: mode, to, start: performance.now(), ms, resolve, fired: new Set() };
+        if (reduceMotion) { applyMode(to); state.facing = state.faceTarget = to ? robotFace : TRUCK_FACE; resolve(); return; }
+        anim = { from: mode, to, start: performance.now(), ms, resolve, fired: new Set(), phase: -1, truckFace: TRUCK_FACE, robotFace };
+      });
+    }
+    function drive(dx, ms = 1300) {
+      return new Promise((resolve) => {
+        if (reduceMotion) { resolve(); return; }
+        state.drive = { from: state.x - dx, to: state.x, start: performance.now(), ms, resolve };
+        state.x -= dx;
+        state.flash = 0.5;
       });
     }
 
@@ -487,9 +581,11 @@
 
     return {
       start, stop, resize, placeAt, walkTo, face, setFacing, screenRect, HALF,
-      toRobot: () => transform(1),
-      toCar: () => transform(0, 2000),
-      setCar: () => applyMode(0),
+      toRobot: (face = 0) => transform(1, 6800, face),
+      toCar: () => transform(0, 5200, state.facing),
+      setCar: () => { applyMode(0); state.facing = state.faceTarget = TRUCK_FACE; root.rotation.y = TRUCK_FACE; },
+      driveIn: (px) => drive(px == null ? 2.2 : px),
+      flash: () => { state.flash = 0.5; },
       materialize: () => popParts(true),
       dematerialize: () => popParts(false, 700),
       hideAll: () => setPartsScale(0),
