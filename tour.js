@@ -43,7 +43,12 @@
         ["G-One", "Built over the six-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava of Edunet Foundation, and completed successfully."],
         ["The orchestrator", "It reads each request and starts only the agents it needs: Email, Research, Wikipedia or DeepSearch. Idle agents never run, so it uses far fewer tokens."],
         ["Safety first", "A validation layer checks every action, like an email's recipient, before it happens."],
-        ["Crop suitability", "With SEER Bharat Foundation: mark a spot on the map, the system reads satellite imagery and rainfall, and a model suggests the crop that suits that land."]
+        ["SEER Bharat Foundation", "An NGO in India. He has been working with them as a Full Stack Developer since March 2026, building a crop suitability tool."],
+        ["The problem", "Choosing what to plant is one of the biggest bets a farmer makes each season, and it's often based on habit or guesswork rather than data about their own land."],
+        ["1. Pick a spot", "The farmer enters coordinates, or simply marks the location on a map."],
+        ["2. Read the land from space", "The system pulls satellite imagery for that area, along with environmental data such as rainfall."],
+        ["3. Get a recommendation", "A model predicts the crops best suited to those conditions, so farmers can plan with data instead of guesswork."],
+        ["Built with", "Satellite imagery, rainfall and climate data, an ML prediction model, an interactive map, and crop recommendation APIs on the backend."]
       ]
     },
     {
@@ -408,8 +413,7 @@
       await r3.materialize();
     }
     await r3.driveIn();                         // the finished truck rolls in, headlights flashing
-    await r3.showcase();                        // the camera shows off the truck's parts
-    await wait(250);
+    await wait(500);
     await r3.toRobot(idleTurn(0));              // then transforms, stage by stage
   }
 

@@ -268,7 +268,8 @@
       box(0.52, 0.88, 0.58, M.body, 0, -0.44, 0, shin);
       hex(0.11, 0.06, M.glow, 0, -0.26, 0.3, shin);
       wheel(shin, s * 0.38, -0.18, 0);          // tandem rear axles
-      wheel(shin, s * 0.38, -0.8, 0);
+      // the second rear wheel tucks up behind the calf in robot mode, so it never touches the floor
+      const wheel2 = wheel(shin, s * 0.24, -0.5, -0.36);
       const foot = G();
       foot.position.set(0, -0.9, 0);
       shin.add(foot);
@@ -277,7 +278,7 @@
       box(0.14, 0.03, 0.1, M.tail, -0.17, -0.17, 0.36, foot);
       box(0.14, 0.03, 0.1, M.tail, 0.17, -0.17, 0.36, foot);
       box(0.3, 0.03, 0.05, M.glow, 0, -0.17, 0.1, foot);
-      return { hip, thigh, shin, foot };
+      return { hip, thigh, shin, foot, wheel2 };
     }
     const armL = arm(-1), armR = arm(1), legL = leg(-1), legR = leg(1);
     pelvis.position.set(0, 2.06, 0);
@@ -302,15 +303,14 @@
     // abdomen the grille), the legs lie flat behind it as the chassis, the
     // shoulders drop to become the front wheels, the arms tuck inside the cab
     // and the head sinks into the chest.
-    // each stage has a part the camera moves in on, and how close it gets
     const PHASES = [
-      { win: [0.0, 0.24], robot: "Cab tilts up, legs swing down", truck: "Legs swing back into the chassis", focus: () => legR.shin, zoom: 0.78 },
-      { win: [0.22, 0.34], robot: "Hips lock into place", truck: "Hips spread to the axle width", focus: () => pelvis, zoom: 0.62 },
-      { win: [0.34, 0.5], robot: "Front wheels rise into shoulders", truck: "Shoulders drop to become the front wheels", focus: () => armR.shoulder, zoom: 0.6 },
-      { win: [0.48, 0.68], robot: "Arms swing out and down", truck: "Arms fold up inside the cab", focus: () => armR.fore, zoom: 0.66 },
-      { win: [0.66, 0.75], robot: "Hands deploy", truck: "Hands retract", focus: () => armR.hand, zoom: 0.5 },
-      { win: [0.74, 0.88], robot: "Head rises out of the cab", truck: "Head sinks into the cab", focus: () => head, zoom: 0.48 },
-      { win: [0.86, 1.0], robot: "Antennas up, systems online", truck: "Antennas down, truck mode", focus: () => antenna, zoom: 0.5 }
+      { win: [0.0, 0.24], robot: "Chassis lifts, legs swing down", truck: "Legs swing back into the chassis" },
+      { win: [0.22, 0.34], robot: "Hips lock, rear wheel tucks behind the calf", truck: "Hips spread, rear wheels drop to the axle" },
+      { win: [0.34, 0.5], robot: "Front wheels rise into the shoulders", truck: "Shoulders drop to become the front wheels" },
+      { win: [0.48, 0.7], robot: "Arms swing out from behind the cab", truck: "Arms swing up behind the cab" },
+      { win: [0.68, 0.78], robot: "Wrists unfold", truck: "Wrists fold in" },
+      { win: [0.76, 0.9], robot: "Head rises out of the cab", truck: "Head lowers into the cab" },
+      { win: [0.88, 1.0], robot: "Antennas up, systems online", truck: "Antennas fold flat, truck mode" }
     ];
     const W = (i) => PHASES[i].win;
     joint(pelvis, { p: [0, 0.43, 0.3] }, W(0));
@@ -325,14 +325,19 @@
     joint(torso, { p: [0, 0.2, 0] }, W(1));
     joint(armL.shoulder, { p: [-0.5, -0.32, 0.1] }, W(2));
     joint(armR.shoulder, { p: [0.5, -0.32, 0.1] }, W(2));
-    joint(armL.upper, { r: [-Math.PI, 0, 0] }, W(3));
-    joint(armR.upper, { r: [-Math.PI, 0, 0] }, W(3));
+    // in truck mode the arms stand upright just behind the cab; they swing out
+    // sideways and down into place. Nothing shrinks or vanishes: every part
+    // moves into its spot.
+    joint(legL.wheel2, { p: [-0.38, -0.8, 0] }, W(1));
+    joint(legR.wheel2, { p: [0.38, -0.8, 0] }, W(1));
+    joint(armL.upper, { p: [0.15, 0.2, -0.66], r: [0, 0, -Math.PI] }, W(3));
+    joint(armR.upper, { p: [-0.15, 0.2, -0.66], r: [0, 0, Math.PI] }, W(3));
     joint(armL.fore, { r: [0, 0, 0] }, W(3));
     joint(armR.fore, { r: [0, 0, 0] }, W(3));
-    joint(armL.hand, { s: 0.01 }, W(4));
-    joint(armR.hand, { s: 0.01 }, W(4));
-    joint(neck, { p: [0, 0.95, 0], s: 0.01 }, W(5));
-    joint(antenna, { s: 0.01 }, W(6));
+    joint(armL.hand, { r: [1.4, 0, 0] }, W(4));
+    joint(armR.hand, { r: [1.4, 0, 0] }, W(4));
+    joint(neck, { p: [0, 0.42, -0.04] }, W(5));
+    joint(antenna, { r: [-HALF, 0, 0] }, W(6));
     const TRUCK_FACE = 1.15;   // mostly side-on, a little toward you
 
     let mode = 1;           // 1 = robot, 0 = car
@@ -372,9 +377,8 @@
       x: 0, targetX: 0, walking: false, phase: 0,
       facing: 0, faceTarget: 0, idleTurn: 0,
       talking: false, time: 0, shake: 0, onArrive: null,
-      drive: null, flash: 0, focus: null, turnRate: 9
+      drive: null, flash: 0
     };
-    const cam = { x: 0, y: LOOK_Y, z: 0, d: 1, ready: false };
     let running = false, last = 0, raf = 0;
     let anim = null; // { from, to, start, ms, resolve, fired }
 
@@ -433,7 +437,6 @@
           anim.phase = k;
           const n = up ? k + 1 : PHASES.length - k;
           caption(String(n).padStart(2, "0") + "/" + String(PHASES.length).padStart(2, "0"), up ? PHASES[k].robot : PHASES[k].truck, n, PHASES.length);
-          state.focus = { node: PHASES[k].focus(), zoom: PHASES[k].zoom };
         }
         // a burst of sparks as each joint starts to move
         for (const j of JOINTS) {
@@ -447,8 +450,7 @@
         applyMode(u);
         if (t >= 1) {
           const r = anim.resolve; anim = null;
-          state.focus = null;
-          setTimeout(() => { if (!anim && !state.focus) cap.classList.remove("show"); }, 700);
+          setTimeout(() => { if (!anim) cap.classList.remove("show"); }, 700);
           r();
         }
       }
@@ -489,7 +491,7 @@
         }
       }
       // turn smoothly toward where it should face
-      state.facing += (state.faceTarget - state.facing) * Math.min(1, dt * state.turnRate);
+      state.facing += (state.faceTarget - state.facing) * Math.min(1, dt * 9);
       root.rotation.y = state.facing;
       root.position.x = state.x;
 
@@ -541,22 +543,8 @@
       // a small camera shake when parts lock in
       state.shake = Math.max(0, state.shake - dt);
       const k = reduceMotion ? 0 : state.shake;
-      // the camera: close on the truck, pulled back for the robot, and moving in
-      // on whichever part is transforming (or being shown) right now
-      const zmin = camera.aspect < 1.6 ? 0.8 : 0.6;   // narrow screens: zoom in less so the truck fits
-      const zt = clamp01(mode / 0.3), z = zmin + (1 - zmin) * zt * zt * (3 - 2 * zt);
-      let tx = root.position.x * (1 - z), ty = lerp(0.95, LOOK_Y, z === 1 ? 1 : (z - zmin) / (1 - zmin)), tz = 0, td = z;
-      if (state.focus && !reduceMotion) {
-        const fp = new T.Vector3();
-        state.focus.node.getWorldPosition(fp);
-        const fz = camera.aspect < 1.6 ? Math.min(1, state.focus.zoom + 0.15) : state.focus.zoom;
-        tx = fp.x; ty = Math.max(0.5, fp.y); tz = fp.z * 0.5; td = fz;
-      }
-      const ease_ = cam.ready ? 1 - Math.exp(-dt * 3.2) : 1;
-      cam.ready = true;
-      cam.x += (tx - cam.x) * ease_; cam.y += (ty - cam.y) * ease_; cam.z += (tz - cam.z) * ease_; cam.d += (td - cam.d) * ease_;
-      camera.position.set(cam.x + (Math.random() - 0.5) * k * 0.6, cam.y + 1.1 * cam.d + (Math.random() - 0.5) * k * 0.6, cam.z + camDist * cam.d);
-      camera.lookAt(cam.x, cam.y, cam.z);
+      // a steady camera: it only shakes a little when a part locks in
+      camera.position.set((Math.random() - 0.5) * k * 0.6, LOOK_Y + 1.1 + (Math.random() - 0.5) * k * 0.6, camDist);
       key.position.set(root.position.x + 5, 10, 8);
       key.target.position.set(root.position.x, 0, 0);
 
@@ -579,30 +567,6 @@
         if (reduceMotion) { applyMode(to); state.facing = state.faceTarget = to ? robotFace : TRUCK_FACE; resolve(); return; }
         anim = { from: mode, to, start: performance.now(), ms, resolve, fired: new Set(), phase: -1, truckFace: TRUCK_FACE, robotFace };
       });
-    }
-    // a short tour of the truck before it transforms: the camera moves in on
-    // each part while the truck turns to show it off
-    async function showcase() {
-      if (reduceMotion) return;
-      const stops = [
-        { text: "Cab-over truck: windshield, chrome grille and headlights", node: torso, zoom: 0.42, face: 0.45 },
-        { text: "Chrome fuel tanks and twin exhaust stacks", node: legR.thigh, zoom: 0.46, face: 1.35 },
-        { text: "Tandem rear axles and tail lights", node: legR.shin, zoom: 0.48, face: 2.35 }
-      ];
-      state.turnRate = 2.2;
-      for (let i = 0; i < stops.length; i++) {
-        const st = stops[i];
-        caption("TRUCK", st.text, i + 1, stops.length);
-        state.faceTarget = st.face;
-        state.focus = { node: st.node, zoom: st.zoom };
-        await new Promise((r) => setTimeout(r, 1700));
-      }
-      state.focus = null;
-      state.faceTarget = TRUCK_FACE;
-      cap.classList.remove("show");
-      await new Promise((r) => setTimeout(r, 1100));
-      state.facing = state.faceTarget = TRUCK_FACE;
-      state.turnRate = 9;
     }
     function drive(dx, ms = 1300) {
       return new Promise((resolve) => {
@@ -657,10 +621,9 @@
       start, stop, resize, placeAt, walkTo, face, setFacing, screenRect, HALF,
       toRobot: (face = 0) => transform(1, 6800, face),
       toCar: () => transform(0, 5200, state.facing),
-      setCar: () => { applyMode(0); cam.ready = false; state.facing = state.faceTarget = TRUCK_FACE; root.rotation.y = TRUCK_FACE; },
+      setCar: () => { applyMode(0); state.facing = state.faceTarget = TRUCK_FACE; root.rotation.y = TRUCK_FACE; },
       driveIn: (px) => drive(px == null ? 2.2 : px),
       flash: () => { state.flash = 0.5; },
-      showcase,
       materialize: () => popParts(true),
       dematerialize: () => popParts(false, 700),
       hideAll: () => setPartsScale(0),
