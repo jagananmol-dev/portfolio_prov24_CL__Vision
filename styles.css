@@ -329,6 +329,11 @@ h1.name.cracked .name-base { color: transparent; }
 .contact { border-bottom: 0; }
 .contact p { max-width: 56ch; }
 .foot { text-align: center; color: var(--muted); font-size: 14px; padding: 24px 16px 40px; }
+.foot p { margin: 0 0 10px; }
+.foot-aws { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; }
+.foot-aws li { font-family: var(--mono); font-size: 12px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.foot-aws b { color: var(--ink); font-weight: 500; }
+.foot-aws a { color: var(--ink); }
 
 /* Mobile */
 @media (max-width: 900px) {
