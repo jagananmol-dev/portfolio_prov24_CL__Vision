@@ -1,7 +1,9 @@
 // A 3D Transformer for the "Surprise me" tour, built with Three.js (loaded on
 // demand). It starts as a car, transforms joint by joint into a robot, walks,
-// talks, and transforms back. Black armour with white seam lines (like the
-// cracks in the name) and orange glowing hexagon cores.
+// talks, and transforms back. Clear-coated graphite armour with a deep amber
+// livery, brushed-metal joints, chrome wheels, hydraulic pistons at the knees
+// and elbows, glowing eyes that blink, and orange hexagon cores. Studio
+// reflections come from a small virtual light box baked into an environment map.
 (function () {
   const SRC = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
   let loading = null;
@@ -39,10 +41,15 @@
 
     // ---------- renderer, camera, lights ----------
     const renderer = new T.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    // phones and small tablets get a lighter setup: fewer pixels, a smaller shadow map
+    const light = window.matchMedia("(max-width: 820px), (pointer: coarse)").matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, light ? 1.5 : 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = T.PCFSoftShadowMap;
     renderer.outputEncoding = T.sRGBEncoding;
+    // filmic tone mapping: bright highlights roll off softly, like a photo
+    renderer.toneMapping = T.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.95;
     renderer.domElement.className = "robot3d-canvas";
     container.appendChild(renderer.domElement);
 
@@ -64,15 +71,39 @@
     const LOOK_Y = 2.35;
     let camDist = 16;
 
-    scene.add(new T.HemisphereLight(0xffffff, 0x3a3f48, 0.95));
-    const key = new T.DirectionalLight(0xffffff, 0.95);
+    // studio reflections: a small virtual photo studio (softboxes, an amber
+    // strip light) is blurred into an environment map, so paint, chrome and
+    // glass reflect something real instead of flat colour
+    const pmrem = new T.PMREMGenerator(renderer);
+    const studio = new T.Scene();
+    studio.add(new T.Mesh(new T.BoxGeometry(24, 14, 24), new T.MeshBasicMaterial({ color: 0x121418, side: T.BackSide })));
+    function softbox(w, h, hex, power, x, y, z) {
+      const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color: new T.Color(hex).multiplyScalar(power), side: T.DoubleSide }));
+      m.position.set(x, y, z);
+      m.lookAt(0, 1.5, 0);
+      studio.add(m);
+    }
+    softbox(10, 2.2, 0xffffff, 3.2, 0, 6.8, 1);      // overhead strip
+    softbox(4, 6, 0xffffff, 2.4, 8, 2.5, 7);          // key softbox, front right
+    softbox(3, 5, 0xdfe8ff, 1.2, -9, 2, 4);           // cool fill, left
+    softbox(9, 0.8, 0xf2a93b, 3.0, -2, 1.8, -11);     // amber rim strip behind
+    const floorGlow = new T.Mesh(new T.PlaneGeometry(24, 24), new T.MeshBasicMaterial({ color: 0x0c0d10 }));
+    floorGlow.rotation.x = -Math.PI / 2; floorGlow.position.y = -6.9;
+    studio.add(floorGlow);
+    scene.environment = pmrem.fromScene(studio, 0.03).texture;
+    pmrem.dispose();
+
+    scene.add(new T.HemisphereLight(0xffffff, 0x3a3f48, 0.45));
+    const key = new T.DirectionalLight(0xffffff, 1.5);
     key.position.set(5, 10, 8);
     key.castShadow = true;
-    key.shadow.mapSize.set(1024, 1024);
+    key.shadow.mapSize.set(light ? 1024 : 2048, light ? 1024 : 2048);
+    key.shadow.bias = -0.0004;
+    key.shadow.normalBias = 0.02;
     Object.assign(key.shadow.camera, { left: -12, right: 12, top: 10, bottom: -3, near: 1, far: 40 });
     scene.add(key);
     scene.add(key.target);
-    const rim = new T.DirectionalLight(0xf2a93b, 0.55);
+    const rim = new T.DirectionalLight(0xf2a93b, 1.1);
     rim.position.set(-7, 5, -6);
     scene.add(rim);
     const ground = new T.Mesh(new T.PlaneGeometry(80, 30), new T.ShadowMaterial({ opacity: 0.17 }));
@@ -80,25 +111,63 @@
     ground.receiveShadow = true;
     scene.add(ground);
 
+    // ---------- procedural textures ----------
+    // brushed metal: fine horizontal streaks, used as a roughness map
+    function canvasTex(w, h, draw, repeat) {
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      draw(c.getContext("2d"), w, h);
+      const t = new T.CanvasTexture(c);
+      t.wrapS = t.wrapT = T.RepeatWrapping;
+      if (repeat) t.repeat.set(repeat[0], repeat[1]);
+      return t;
+    }
+    const brushed = canvasTex(256, 256, (g, w, h) => {
+      g.fillStyle = "#b4b4b4"; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 900; i++) {
+        const v = 140 + Math.floor(Math.random() * 115);
+        g.fillStyle = `rgba(${v},${v},${v},0.55)`;
+        g.fillRect(Math.random() * w, Math.random() * h, 20 + Math.random() * 120, 1);
+      }
+    }, [2, 2]);
+    // tyre tread: grooves running across the tread, as a bump map
+    const tread = canvasTex(256, 32, (g, w, h) => {
+      g.fillStyle = "#fff"; g.fillRect(0, 0, w, h);
+      g.fillStyle = "#000";
+      for (let i = 0; i < 32; i++) {
+        const x = i * 8;
+        g.fillRect(x, 0, 3, h * 0.45);
+        g.fillRect(x + 4, h * 0.55, 3, h * 0.45);
+      }
+      g.fillRect(0, h * 0.47, w, 2);
+    });
+
     // ---------- materials ----------
+    // graphite clear-coated armour, a deep amber livery on the main plates,
+    // brushed gunmetal for the mechanical parts, polished chrome, rubber, glass
     const M = {
-      body: new T.MeshStandardMaterial({ color: 0x111318, metalness: 0.55, roughness: 0.34 }),
-      trim: new T.MeshStandardMaterial({ color: 0x272c35, metalness: 0.6, roughness: 0.4 }),
-      glow: new T.MeshStandardMaterial({ color: 0xf2a93b, emissive: 0xf2a93b, emissiveIntensity: 0.9, metalness: 0.2, roughness: 0.4 }),
-      visor: new T.MeshStandardMaterial({ color: 0xf2a93b, emissive: 0xf2a93b, emissiveIntensity: 1.0, metalness: 0.2, roughness: 0.3 }),
-      glass: new T.MeshStandardMaterial({ color: 0x1b2633, metalness: 0.9, roughness: 0.12, emissive: 0xf2a93b, emissiveIntensity: 0.06 }),
-      tyre: new T.MeshStandardMaterial({ color: 0x0a0a0c, metalness: 0.1, roughness: 0.85 }),
-      rim: new T.MeshStandardMaterial({ color: 0xd9dee6, metalness: 0.9, roughness: 0.25 }),
-      line: new T.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 }),
-      spark: new T.MeshBasicMaterial({ color: 0xf2a93b }),
-      lamp: new T.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff6e0, emissiveIntensity: 1.2, roughness: 0.2 }),
-      tail: new T.MeshStandardMaterial({ color: 0xd8262c, emissive: 0xd8262c, emissiveIntensity: 1.0, roughness: 0.3 })
+      body: new T.MeshPhysicalMaterial({ color: 0x0c0e12, metalness: 0.6, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 0.6 }),
+      paint: new T.MeshPhysicalMaterial({ color: 0xa8480a, metalness: 0.25, roughness: 0.38, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 0.55 }),
+      trim: new T.MeshStandardMaterial({ color: 0x2a2e35, metalness: 0.85, roughness: 0.48, roughnessMap: brushed, envMapIntensity: 0.6 }),
+      dark: new T.MeshStandardMaterial({ color: 0x07080a, metalness: 0.3, roughness: 0.7 }),
+      glow: new T.MeshStandardMaterial({ color: 0x2a1600, emissive: 0xf2a93b, emissiveIntensity: 1.4, metalness: 0.1, roughness: 0.35, toneMapped: false }),
+      visor: new T.MeshStandardMaterial({ color: 0x2a1600, emissive: 0xffb04a, emissiveIntensity: 1.8, metalness: 0, roughness: 0.2, toneMapped: false }),
+      glass: new T.MeshPhysicalMaterial({ color: 0x0d141c, metalness: 0.2, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.6, emissive: 0xf2a93b, emissiveIntensity: 0.04 }),
+      tyre: new T.MeshStandardMaterial({ color: 0x111113, metalness: 0, roughness: 0.92 }),
+      tread: new T.MeshStandardMaterial({ color: 0x0e0e10, metalness: 0, roughness: 0.95, bumpMap: tread, bumpScale: 0.03 }),
+      rim: new T.MeshStandardMaterial({ color: 0xe8ecf2, metalness: 1, roughness: 0.12, envMapIntensity: 1.3 }),
+      line: new T.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.45 }),
+      spark: new T.MeshBasicMaterial({ color: 0xffc46b, toneMapped: false }),
+      lamp: new T.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff6e0, emissiveIntensity: 1.6, roughness: 0.2, toneMapped: false }),
+      tail: new T.MeshStandardMaterial({ color: 0xd8262c, emissive: 0xd8262c, emissiveIntensity: 1.3, roughness: 0.3, toneMapped: false })
     };
 
     const parts = [];   // every visible piece, for the build-up and break-down effects
     const G = () => new T.Group();
     function add(mesh, parent, edges) {
-      mesh.castShadow = true;
+      // small details (nuts, bolts, vents) skip the shadow pass
+      if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
+      mesh.castShadow = mesh.geometry.boundingSphere.radius > 0.09;
       mesh.receiveShadow = true;
       if (edges) mesh.add(new T.LineSegments(new T.EdgesGeometry(mesh.geometry, 20), M.line));
       parent.add(mesh);
@@ -121,7 +190,7 @@
       return g;
     }
     function box(w, h, d, mat, x, y, z, parent) {
-      const curved = mat === M.body;
+      const curved = mat === M.body || mat === M.paint;
       const m = new T.Mesh(curved ? roundedBox(w, h, d) : new T.BoxGeometry(w, h, d), mat);
       m.position.set(x, y, z);
       return add(m, parent, mat === M.trim);
@@ -139,14 +208,33 @@
       wheels.push(g);
       g.position.set(x, y, z);
       parent.add(g);
-      const tyre = new T.Mesh(new T.CylinderGeometry(0.31, 0.31, 0.24, 28), M.tyre);
+      const sg = Math.sign(x) || 1;               // which side faces out
+      // tyre: treaded rubber round the outside, smooth sidewalls
+      const tyre = new T.Mesh(new T.CylinderGeometry(0.31, 0.31, 0.24, 36), [M.tread, M.tyre, M.tyre]);
       tyre.rotation.z = Math.PI / 2;
       add(tyre, g, false);
-      const hub = new T.Mesh(new T.CylinderGeometry(0.17, 0.17, 0.26, 6), M.rim);
+      const wall = new T.Mesh(new T.TorusGeometry(0.255, 0.035, 8, 32), M.tyre);
+      wall.rotation.y = Math.PI / 2; wall.position.x = sg * 0.115;
+      add(wall, g, false);
+      // polished rim with a lip, a dished centre and six lug nuts
+      const dish = new T.Mesh(new T.CylinderGeometry(0.2, 0.2, 0.245, 28), M.trim);
+      dish.rotation.z = Math.PI / 2;
+      add(dish, g, false);
+      const lip = new T.Mesh(new T.TorusGeometry(0.2, 0.018, 8, 32), M.rim);
+      lip.rotation.y = Math.PI / 2; lip.position.x = sg * 0.124;
+      add(lip, g, false);
+      const hub = new T.Mesh(new T.CylinderGeometry(0.1, 0.13, 0.27, 6), M.rim);
       hub.rotation.z = Math.PI / 2;
       add(hub, g, false);
+      for (let i = 0; i < 6; i++) {
+        const a = i / 6 * Math.PI * 2;
+        const nut = new T.Mesh(new T.CylinderGeometry(0.022, 0.022, 0.03, 6), M.rim);
+        nut.rotation.z = Math.PI / 2;
+        nut.position.set(sg * 0.14, Math.cos(a) * 0.155, Math.sin(a) * 0.155);
+        add(nut, g, false);
+      }
       // spokes, so you can see the wheels turn
-      const spoke = new T.Mesh(new T.BoxGeometry(0.27, 0.05, 0.3), M.trim);
+      const spoke = new T.Mesh(new T.BoxGeometry(0.255, 0.045, 0.34), M.dark);
       add(spoke, g, false);
       return g;
     }
@@ -190,6 +278,7 @@
       horn.position.set(sx * 0.3, 1.64, -0.05);
       add(horn, torso, false);
     }
+    for (const sx of [-1, 1]) for (const vy of [0.11, 0.21, 0.31]) box(0.02, 0.04, 0.42, M.dark, sx * 0.48, vy, 0, torso);   // waist vents
     box(0.82, 0.38, 0.03, M.rim, 0, 0.21, 0.315, torso);
     for (let k = -2.5; k <= 2.5; k++) box(0.045, 0.32, 0.03, M.trim, k * 0.12, 0.21, 0.335, torso);
     for (let k = -2; k <= 2; k++) box(0.1, 0.06, 0.06, M.glow, k * 0.2, 1.62, 0.15, torso);
@@ -208,7 +297,7 @@
     const sctx = scrCanvas.getContext("2d");
     const scrTex = new T.CanvasTexture(scrCanvas);
     scrTex.encoding = T.sRGBEncoding;
-    const screen = new T.Mesh(new T.PlaneGeometry(0.46, 0.23), new T.MeshBasicMaterial({ map: scrTex }));
+    const screen = new T.Mesh(new T.PlaneGeometry(0.46, 0.23), new T.MeshBasicMaterial({ map: scrTex, toneMapped: false }));
     screen.position.set(0, 0.64, 0.481);
     torso.add(screen);
     parts.push(screen);
@@ -226,12 +315,36 @@
     torso.add(neck);
     const head = G();
     neck.add(head);
+    const neckCol = new T.Mesh(new T.CylinderGeometry(0.13, 0.16, 0.2, 16), M.trim);
+    neckCol.position.y = 0.0;
+    add(neckCol, head, false);
     box(0.62, 0.56, 0.6, M.body, 0, 0.32, 0, head);
-    box(0.78, 0.16, 0.5, M.trim, 0, 0.63, -0.03, head);
-    box(0.5, 0.13, 0.05, M.visor, 0, 0.37, 0.31, head);
+    box(0.78, 0.16, 0.5, M.paint, 0, 0.63, -0.03, head);           // crest
+    box(0.12, 0.2, 0.4, M.paint, 0, 0.72, 0.02, head);              // centre fin
+    // face: a dark recessed plate, a brow, two angled eye slits that glow,
+    // and a chrome mouth guard with vents
+    box(0.48, 0.36, 0.04, M.dark, 0, 0.3, 0.3, head);
+    box(0.52, 0.06, 0.1, M.trim, 0, 0.46, 0.3, head);
+    const eyes = [];
+    for (const sx of [-1, 1]) {
+      const e = box(0.15, 0.05, 0.03, M.visor, sx * 0.105, 0.37, 0.33, head);
+      e.rotation.z = sx * 0.2;
+      eyes.push(e);
+    }
+    box(0.28, 0.14, 0.05, M.rim, 0, 0.2, 0.33, head);
+    for (const vy of [0.17, 0.2, 0.23]) box(0.2, 0.014, 0.01, M.dark, 0, vy, 0.36, head);
     box(0.08, 0.32, 0.4, M.trim, -0.36, 0.3, 0, head);
     box(0.08, 0.32, 0.4, M.trim, 0.36, 0.3, 0, head);
-    box(0.34, 0.06, 0.04, M.trim, 0, 0.17, 0.31, head);
+    for (const sx of [-1, 1]) {
+      const ear = new T.Mesh(new T.CylinderGeometry(0.085, 0.085, 0.04, 6), M.glow);
+      ear.rotation.z = Math.PI / 2;
+      ear.position.set(sx * 0.41, 0.32, 0);
+      add(ear, head, false);
+    }
+    // the eyes light up the face around them
+    const eyeLight = new T.PointLight(0xffb84d, 0.7, 1.4, 2);
+    eyeLight.position.set(0, 0.38, 0.55);
+    head.add(eyeLight);
     const antenna = G();
     antenna.position.set(0, 0.7, -0.1);
     head.add(antenna);
@@ -247,15 +360,34 @@
       box(0.55, 0.5, 0.72, M.trim, s * 0.05, 0, 0, shoulder);
       hex(0.13, 0.06, M.glow, s * 0.05, 0.08, 0.37, shoulder);
       wheel(shoulder, s * 0.38, 0, 0);
+      // a painted pauldron over the wheel; in truck mode it is the front fender
+      const pad = box(0.66, 0.11, 0.8, M.paint, s * 0.1, 0.31, 0, shoulder);
+      pad.rotation.z = -s * 0.16;
+      for (const bz of [-0.28, 0.28]) {
+        const bolt = new T.Mesh(new T.CylinderGeometry(0.025, 0.025, 0.03, 6), M.rim);
+        bolt.position.set(s * 0.02, 0.37, bz);
+        add(bolt, shoulder, false);
+      }
       const upper = G();
       upper.position.set(s * 0.05, -0.2, 0);
       shoulder.add(upper);
       box(0.32, 0.72, 0.34, M.body, 0, -0.38, 0, upper);
+      box(0.2, 0.5, 0.36, M.trim, 0, -0.38, 0, upper);              // inner actuator showing at the sides
       const fore = G();
       fore.position.set(0, -0.76, 0);
       upper.add(fore);
-      box(0.4, 0.66, 0.42, M.body, 0, -0.33, 0, fore);
-      hex(0.08, 0.44, M.glow, 0, -0.16, 0, fore);
+      // elbow: a gunmetal joint barrel with chrome caps
+      const elbow = new T.Mesh(new T.CylinderGeometry(0.15, 0.15, 0.38, 18), M.trim);
+      elbow.rotation.z = Math.PI / 2;
+      add(elbow, fore, false);
+      for (const cx of [-0.2, 0.2]) {
+        const cap = new T.Mesh(new T.CylinderGeometry(0.09, 0.09, 0.03, 18), M.rim);
+        cap.rotation.z = Math.PI / 2; cap.position.x = cx;
+        add(cap, fore, false);
+      }
+      box(0.4, 0.66, 0.42, M.body, 0, -0.36, 0, fore);
+      box(0.07, 0.46, 0.36, M.paint, s * 0.215, -0.36, 0, fore);   // forearm armour plate
+      hex(0.08, 0.44, M.glow, 0, -0.18, 0, fore);
       const hand = G();
       hand.position.set(0, -0.69, 0);
       hand.rotation.y = s * 0.55;                    // turned a little toward you, so the fingers show
@@ -282,7 +414,7 @@
         t1.rotation.z = -s * a * 0.9;
         t2.rotation.z = -s * a * 0.8;
       }
-      return { shoulder, upper, fore, hand, curl };
+      return { shoulder, upper, fore, hand, curl, s };
     }
     function leg(s) {
       const hip = G();
@@ -290,7 +422,11 @@
       pelvis.add(hip);
       const thigh = G();
       hip.add(thigh);
+      const hipCap = new T.Mesh(new T.CylinderGeometry(0.16, 0.16, 0.05, 18), M.rim);
+      hipCap.rotation.z = Math.PI / 2; hipCap.position.set(s * 0.235, -0.06, 0);
+      add(hipCap, thigh, false);
       box(0.42, 0.86, 0.48, M.body, 0, -0.43, 0, thigh);
+      box(0.3, 0.6, 0.5, M.trim, 0, -0.45, 0, thigh);                // inner frame showing front and back
       // chrome fuel tank with straps (sits right behind the cab in truck mode)
       const tank = new T.Mesh(new T.CylinderGeometry(0.17, 0.17, 0.62, 18), M.rim);
       tank.position.set(s * 0.29, -0.42, 0.02);
@@ -303,8 +439,15 @@
       const shin = G();
       shin.position.set(0, -0.88, 0);
       thigh.add(shin);
-      box(0.52, 0.88, 0.58, M.body, 0, -0.44, 0, shin);
-      hex(0.11, 0.06, M.glow, 0, -0.26, 0.3, shin);
+      // knee: joint barrel, then a painted kneepad and shin plate
+      const knee = new T.Mesh(new T.CylinderGeometry(0.19, 0.19, 0.46, 18), M.trim);
+      knee.rotation.z = Math.PI / 2;
+      add(knee, shin, false);
+      box(0.52, 0.88, 0.58, M.body, 0, -0.46, 0, shin);
+      box(0.38, 0.26, 0.12, M.paint, 0, 0.02, 0.27, shin);
+      box(0.4, 0.34, 0.06, M.paint, 0, -0.6, 0.3, shin);
+      hex(0.11, 0.06, M.glow, 0, -0.27, 0.3, shin);
+      for (const vy of [-0.38, -0.46, -0.54]) box(0.025, 0.035, 0.4, M.dark, -s * 0.265, vy, 0, shin);   // calf vents
       wheel(shin, s * 0.38, -0.18, 0);          // tandem rear axles
       // the second rear wheel tucks up behind the calf in robot mode, so it never touches the floor
       const wheel2 = wheel(shin, s * 0.24, -0.5, -0.36);
@@ -320,6 +463,47 @@
     }
     const armL = arm(-1), armR = arm(1), legL = leg(-1), legR = leg(1);
     pelvis.position.set(0, 2.06, 0);
+
+    // hydraulic pistons across the knees and elbows: a barrel fixed to one
+    // limb and a chrome rod fixed to the other, re-aimed every frame so the
+    // rod slides in and out of the barrel as the joint bends
+    const pistons = [];
+    function piston(pa, a, pb, b, len, r = 0.036) {
+      const A = G(); A.position.set(...a); pa.add(A);
+      const B = G(); B.position.set(...b); pb.add(B);
+      const barrel = new T.Mesh(new T.CylinderGeometry(r, r, len, 12), M.trim);
+      barrel.rotation.x = Math.PI / 2; barrel.position.z = len / 2;
+      add(barrel, A, false);
+      const collar = new T.Mesh(new T.CylinderGeometry(r * 1.25, r * 1.25, 0.03, 12), M.rim);
+      collar.rotation.x = Math.PI / 2; collar.position.z = len;
+      add(collar, A, false);
+      const rod = new T.Mesh(new T.CylinderGeometry(r * 0.5, r * 0.5, len, 10), M.rim);
+      rod.rotation.x = Math.PI / 2; rod.position.z = len / 2;
+      add(rod, B, false);
+      pistons.push({ A, B });
+    }
+    for (const L of [legL, legR]) piston(L.thigh, [0, -0.28, -0.27], L.shin, [0, -0.3, -0.3], 0.5);
+    for (const A of [armL, armR]) piston(A.upper, [0, -0.2, 0.19], A.fore, [0, -0.3, 0.23], 0.46, 0.03);
+    const pv = new T.Vector3();
+    function aimPistons() {
+      root.updateMatrixWorld(true);
+      for (const p of pistons) {
+        p.B.getWorldPosition(pv); p.A.lookAt(pv);
+        p.A.getWorldPosition(pv); p.B.lookAt(pv);
+      }
+    }
+
+    // soft contact shadow under the feet (or the wheels), grounding it on the page
+    const blobTex = canvasTex(128, 128, (g, w) => {
+      const gr = g.createRadialGradient(w / 2, w / 2, 0, w / 2, w / 2, w / 2);
+      gr.addColorStop(0, "rgba(0,0,0,0.55)"); gr.addColorStop(0.55, "rgba(0,0,0,0.22)"); gr.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = gr; g.fillRect(0, 0, w, w);
+    });
+    const blob = new T.Mesh(new T.PlaneGeometry(2.4, 2.0), new T.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false, toneMapped: false }));
+    blob.rotation.x = -Math.PI / 2;
+    blob.position.y = 0.012;
+    blob.renderOrder = -1;
+    root.add(blob);
 
     // ---------- the two modes: robot and car ----------
     // Each joint stores both poses. Transforming blends between them, each joint
@@ -574,9 +758,20 @@
           armR.upper.rotation.z = 0; armR.fore.rotation.z = 0; armR.hand.rotation.y = 0.55;
         }
       }
-      M.visor.emissiveIntensity = state.talking ? 0.8 + Math.abs(Math.sin(state.time * 16)) * 0.9 : 1.0;
+      // eyes: brighter flicker while talking, a quick blink every few seconds
+      const eyeOn = state.talking ? 1.0 + Math.abs(Math.sin(state.time * 16)) * 0.9 : 1.3;
+      M.visor.emissiveIntensity = eyeOn;
+      eyeLight.intensity = 0.45 * eyeOn * clamp01((mode - 0.8) / 0.2);
+      const bt = state.time % 4.3;
+      const blink = bt < 0.14 ? 0.15 + Math.abs(bt - 0.07) / 0.07 * 0.85 : 1;
+      for (const e of eyes) if (e.scale.x > 0.99) e.scale.y = blink;
       state.flash = Math.max(0, state.flash - dt);
-      M.glow.emissiveIntensity = 0.75 + Math.sin(state.time * 2.5) * 0.2 + (state.flash > 0 ? (Math.sin(state.flash * 30) > 0 ? 1.6 : 0) : 0);
+      M.glow.emissiveIntensity = 0.9 + Math.sin(state.time * 2.5) * 0.15 + (state.flash > 0 ? (Math.sin(state.flash * 30) > 0 ? 2 : 0) : 0);
+      // contact shadow: round under the feet, long under the truck, fades with the parts
+      blob.scale.set(1, lerp(2.1, 1, mode), 1);
+      blob.position.z = lerp(-0.85, 0.05, mode);
+      blob.material.opacity = clamp01(parts[0].scale.x);
+      aimPistons();
 
       // sparks
       for (let i = sparks.length - 1; i >= 0; i--) {
