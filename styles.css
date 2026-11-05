@@ -432,7 +432,7 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
 .tour-bot.face-left .bot-screen { transform: scaleX(-1); transform-origin: 110px 175px; }
 
 /* idle: breathe, blink, glow */
-.tour-bot.ready .bot-body { animation: bot-breathe 2.6s ease-in-out infinite; }
+.tour-bot.ready:not(.booting):not(.hopping) .bot-body { animation: bot-breathe 2.6s ease-in-out infinite; }
 @keyframes bot-breathe { 50% { transform: translateY(-3px); } }
 .bot-bulb { animation: bot-bulb 1.4s ease-in-out infinite; }
 @keyframes bot-bulb { 50% { opacity: .25; } }
@@ -442,15 +442,13 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
 .bot-arm-r { transform-origin: 174px 142px; }
 .bot-leg-l { transform-origin: 91px 238px; }
 .bot-leg-r { transform-origin: 129px 238px; }
-.tour-bot.ready:not(.walking) .bot-arm-r { animation: bot-wave 2.4s ease-in-out infinite; }
+.bot-torso { transform-origin: 110px 180px; }
+.bot-chest { transform-origin: 110px 168px; }
+.bot-headg { transform-origin: 110px 124px; }
+.bot-antenna { transform-origin: 110px 46px; }
+.bot-body { transform-origin: 110px 306px; }
+.tour-bot.ready:not(.booting):not(.hopping) .bot-arm-r { animation: bot-wave 2.4s ease-in-out infinite; }
 @keyframes bot-wave { 0%, 60%, 100% { transform: rotate(0); } 70% { transform: rotate(-24deg); } 80% { transform: rotate(-10deg); } 90% { transform: rotate(-24deg); } }
-
-/* walking */
-.tour-bot.walking .bot-body { animation: bot-bob .36s ease-in-out infinite alternate; }
-.tour-bot.walking .bot-leg-l, .tour-bot.walking .bot-arm-r { animation: bot-swing .36s ease-in-out infinite alternate; }
-.tour-bot.walking .bot-leg-r, .tour-bot.walking .bot-arm-l { animation: bot-swing .36s ease-in-out infinite alternate-reverse; }
-@keyframes bot-swing { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
-@keyframes bot-bob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
 
 /* talking */
 .bot-mouth rect { transform-box: fill-box; transform-origin: center; }
@@ -518,4 +516,59 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
   .surprise-btn, .surprise-btn .spark, .s-arrow { animation: none; }
   .tour-bot .bot-body, .tour-bot .bot-arm-r, .bot-bulb, .bot-eyes, .tour-bot.talking .bot-mouth rect { animation: none !important; }
   .tour, .tour-top, .tour-stage, .tour-card, .tc-points li { transition: none; }
+}
+
+/* ---------- Transformer: every part moves on its own, with a mechanical overshoot ---------- */
+.bot-body, .bot-leg, .bot-arm, .bot-torso, .bot-chest, .bot-headg, .bot-antenna {
+  transition: transform .5s cubic-bezier(.34, 1.56, .64, 1);
+}
+.tour-bot.f-legs .bot-body { transform: translateY(46px); }
+.tour-bot.f-legs .bot-leg { transform: scaleY(.3); }
+.tour-bot.f-torso .bot-torso { transform: rotate(180deg) scale(.92); }
+.tour-bot.f-chest .bot-chest { transform: scaleX(0); }
+.tour-bot.f-arms .bot-arm-l { transform: rotate(-90deg) scale(.7); }
+.tour-bot.f-arms .bot-arm-r { transform: rotate(90deg) scale(.7); }
+.tour-bot.f-head .bot-headg { transform: translateY(78px) scale(.6); }
+.tour-bot.f-antenna .bot-antenna { transform: scaleY(0); }
+.tour-bot.f-eyes .bot-eyes circle { opacity: 0; }
+.tour-bot.power .bot-eyes circle { animation: bot-power .7s ease-out; }
+@keyframes bot-power { 0% { opacity: 0; } 20% { opacity: 1; } 32% { opacity: .15; } 50% { opacity: 1; } 62% { opacity: .4; } 100% { opacity: 1; } }
+
+.spark { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.spark.pop { animation: bot-spark .5s ease-out; }
+@keyframes bot-spark { 0% { opacity: 1; transform: scale(.35); } 100% { opacity: 0; transform: scale(1.5); } }
+
+/* ---------- Grasshopper hops ---------- */
+.tour-bot.hopping .bot-body, .tour-bot.hopping .bot-leg, .tour-bot.hopping .bot-arm { transition-duration: .15s; transition-timing-function: ease-out; }
+.tour-bot.crouch .bot-body { transform: translateY(16px) scaleY(.96); }
+.tour-bot.crouch .bot-leg { transform: scaleY(.76); }
+.tour-bot.crouch .bot-arm { transform: rotate(-18deg); }
+.tour-bot.air .bot-body { transform: rotate(7deg); }
+.tour-bot.air .bot-leg { transform: rotate(38deg) scaleY(.85); }
+.tour-bot.air .bot-arm-l { transform: rotate(150deg); }
+.tour-bot.air .bot-arm-r { transform: rotate(-150deg); }
+.tour-bot.land .bot-body { transform: translateY(8px) scale(1.06, .9); }
+.tour-bot.land .bot-leg { transform: scaleY(.82); }
+
+/* the floor under the robot: a shadow that shrinks mid-air, and a dust puff on landing */
+.tour-ground {
+  position: absolute; left: 0; bottom: 6vh; width: clamp(200px, 21vw, 300px);
+  aspect-ratio: 220 / 330; pointer-events: none; will-change: transform;
+}
+.tour-shadow, .tour-dust {
+  position: absolute; left: 22%; width: 56%; height: 14px; top: calc(96.4% - 7px);
+  border-radius: 50%;
+}
+.tour-shadow { background: rgba(0, 0, 0, .14); transform-origin: center; }
+.tour-dust { opacity: 0; background: radial-gradient(closest-side, rgba(0,0,0,.18), transparent); }
+.tour-dust.puff { animation: bot-dust .5s ease-out; }
+@keyframes bot-dust { 0% { opacity: 1; transform: scale(.6, .5); } 100% { opacity: 0; transform: scale(1.9, 1.4) translateY(-6px); } }
+.tour-bot.face-left .bot-sparks { transform: none; }
+
+@media (max-width: 899px) {
+  .tour-ground { top: 4px; bottom: auto; width: clamp(92px, 26vw, 140px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bot-body, .bot-leg, .bot-arm, .bot-torso, .bot-chest, .bot-headg, .bot-antenna { transition: none; }
+  .spark.pop, .tour-dust.puff, .tour-bot.power .bot-eyes circle { animation: none; }
 }

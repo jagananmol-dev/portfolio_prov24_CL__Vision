@@ -75,27 +75,15 @@
   // ---------- The robot ----------
   const ROBOT = `
 <svg class="bot-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 330" role="img" aria-label="A robot made from the pieces of Jagananmol's name">
-  <ellipse class="bot-shadow" cx="110" cy="318" rx="62" ry="7" fill="#000" opacity=".12"/>
   <g class="bot-body">
-    <g class="bot-antenna">
-      <line x1="110" y1="24" x2="110" y2="46" stroke="#000" stroke-width="5" stroke-linecap="round"/>
-      <circle class="bot-bulb" cx="110" cy="18" r="7" fill="#f2a93b"/>
+    <g class="bot-leg bot-leg-l">
+      <rect x="80" y="236" width="22" height="58" rx="10" fill="#000"/>
+      <rect x="70" y="290" width="38" height="16" rx="8" fill="#000"/>
     </g>
-    <rect x="45" y="68" width="11" height="30" rx="4" fill="#000"/>
-    <rect x="164" y="68" width="11" height="30" rx="4" fill="#000"/>
-    <rect class="bot-head" x="54" y="44" width="112" height="80" rx="24" fill="#000"/>
-    <path d="M70 52 L84 60 L80 70 M150 116 L140 108 L144 98" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="miter"/>
-    <rect x="70" y="62" width="80" height="34" rx="14" fill="#1b1f27"/>
-    <g class="bot-eyes">
-      <circle cx="93" cy="79" r="7.5" fill="#f2a93b"/>
-      <circle cx="127" cy="79" r="7.5" fill="#f2a93b"/>
+    <g class="bot-leg bot-leg-r">
+      <rect x="118" y="236" width="22" height="58" rx="10" fill="#000"/>
+      <rect x="112" y="290" width="38" height="16" rx="8" fill="#000"/>
     </g>
-    <g class="bot-mouth" fill="#fff">
-      <rect x="95" y="104" width="6" height="6" rx="2"/>
-      <rect x="107" y="104" width="6" height="6" rx="2"/>
-      <rect x="119" y="104" width="6" height="6" rx="2"/>
-    </g>
-    <rect x="101" y="124" width="18" height="10" fill="#000"/>
     <g class="bot-arm bot-arm-l">
       <rect x="36" y="138" width="20" height="66" rx="10" fill="#000"/>
       <circle cx="46" cy="210" r="11" fill="#000"/>
@@ -104,21 +92,46 @@
       <rect x="164" y="138" width="20" height="66" rx="10" fill="#000"/>
       <circle cx="174" cy="210" r="11" fill="#000"/>
     </g>
-    <rect x="58" y="132" width="104" height="94" rx="20" fill="#000"/>
-    <path d="M62 150 L80 158 L76 172 L92 182 M160 200 L144 196 L148 184 L136 178 M100 222 L104 212 L118 214 L122 224" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="miter"/>
-    <rect x="82" y="150" width="56" height="36" rx="7" fill="#fff"/>
-    <text class="bot-screen" x="110" y="175" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="17" font-weight="500" fill="#000">01</text>
-    <circle cx="92" cy="202" r="4" fill="#f2a93b"/>
-    <circle cx="106" cy="202" r="4" fill="#fff"/>
-    <circle cx="120" cy="202" r="4" fill="#fff"/>
-    <rect x="72" y="226" width="76" height="14" rx="7" fill="#000"/>
-    <g class="bot-leg bot-leg-l">
-      <rect x="80" y="236" width="22" height="58" rx="10" fill="#000"/>
-      <rect x="70" y="290" width="38" height="16" rx="8" fill="#000"/>
+    <g class="bot-torso">
+      <rect x="72" y="226" width="76" height="14" rx="7" fill="#000"/>
+      <rect x="58" y="132" width="104" height="94" rx="20" fill="#000"/>
+      <path d="M62 150 L80 158 L76 172 L92 182 M160 200 L144 196 L148 184 L136 178 M100 222 L104 212 L118 214 L122 224" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="miter"/>
+      <g class="bot-chest">
+        <rect x="82" y="150" width="56" height="36" rx="7" fill="#fff"/>
+        <text class="bot-screen" x="110" y="175" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="17" font-weight="500" fill="#000">01</text>
+      </g>
+      <circle class="bot-led" cx="92" cy="202" r="4" fill="#f2a93b"/>
+      <circle cx="106" cy="202" r="4" fill="#fff"/>
+      <circle cx="120" cy="202" r="4" fill="#fff"/>
     </g>
-    <g class="bot-leg bot-leg-r">
-      <rect x="118" y="236" width="22" height="58" rx="10" fill="#000"/>
-      <rect x="112" y="290" width="38" height="16" rx="8" fill="#000"/>
+    <g class="bot-headg">
+      <rect x="101" y="122" width="18" height="12" fill="#000"/>
+      <g class="bot-antenna">
+        <line x1="110" y1="24" x2="110" y2="46" stroke="#000" stroke-width="5" stroke-linecap="round"/>
+        <circle class="bot-bulb" cx="110" cy="18" r="7" fill="#f2a93b"/>
+      </g>
+      <rect x="45" y="68" width="11" height="30" rx="4" fill="#000"/>
+      <rect x="164" y="68" width="11" height="30" rx="4" fill="#000"/>
+      <rect class="bot-head" x="54" y="44" width="112" height="80" rx="24" fill="#000"/>
+      <path d="M70 52 L84 60 L80 70 M150 116 L140 108 L144 98" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="miter"/>
+      <rect x="70" y="62" width="80" height="34" rx="14" fill="#1b1f27"/>
+      <g class="bot-eyes">
+        <circle cx="93" cy="79" r="7.5" fill="#f2a93b"/>
+        <circle cx="127" cy="79" r="7.5" fill="#f2a93b"/>
+      </g>
+      <g class="bot-mouth" fill="#fff">
+        <rect x="95" y="104" width="6" height="6" rx="2"/>
+        <rect x="107" y="104" width="6" height="6" rx="2"/>
+        <rect x="119" y="104" width="6" height="6" rx="2"/>
+      </g>
+    </g>
+    <g class="bot-sparks" fill="none" stroke="#f2a93b" stroke-width="3" stroke-linecap="round">
+      <g class="spark sp-hips"><path d="M110 228 m-14 0 h-8 M110 228 m14 0 h8 M110 228 m0 -14 v-8 M110 228 m-10 10 l-6 6 M110 228 m10 10 l6 6"/></g>
+      <g class="spark sp-chest"><path d="M110 168 m-34 0 h-8 M110 168 m34 0 h8 M110 168 m-24 -24 l-6 -6 M110 168 m24 -24 l6 -6"/></g>
+      <g class="spark sp-arm-l"><path d="M46 142 m-12 0 h-8 M46 142 m0 -12 v-8 M46 142 m-9 -9 l-6 -6"/></g>
+      <g class="spark sp-arm-r"><path d="M174 142 m12 0 h8 M174 142 m0 -12 v-8 M174 142 m9 -9 l6 -6"/></g>
+      <g class="spark sp-neck"><path d="M110 128 m-16 0 h-8 M110 128 m16 0 h8 M110 128 m-12 -10 l-6 -6 M110 128 m12 -10 l6 -6"/></g>
+      <g class="spark sp-antenna"><path d="M110 18 m-12 0 h-7 M110 18 m12 0 h7 M110 18 m0 -12 v-7"/></g>
     </g>
   </g>
 </svg>`;
@@ -145,6 +158,7 @@
       </div>
     </div>
     <div class="tour-stage">
+      <div class="tour-ground" aria-hidden="true"><span class="tour-shadow"></span><span class="tour-dust"></span></div>
       <div class="tour-bot" aria-hidden="true">${ROBOT}</div>
       <article class="tour-card" aria-live="polite">
         <div class="tc-body">
@@ -166,6 +180,7 @@
   const $ = (s) => tour.querySelector(s);
   const canvas = $(".tour-canvas"), ctx = canvas.getContext("2d");
   const bot = $(".tour-bot"), botSvg = bot.querySelector("svg"), screen = bot.querySelector(".bot-screen");
+  const ground = $(".tour-ground"), shadow = $(".tour-shadow"), dust = $(".tour-dust");
   const card = $(".tour-card"), kicker = $(".tc-kicker"), title = $(".tc-title");
   const sayText = $(".tc-say-text"), points = $(".tc-points"), actions = $(".tc-actions");
   const backBtn = $("#tour-back"), nextBtn = $("#tour-next"), skipBtn = $("#tour-skip"), closeBtn = $("#tour-close"), openLink = $("#tour-open");
@@ -198,43 +213,25 @@
     return Array.from({ length: 24 }, (_, i) => ({ x: r.left + ((i % 8) + 0.5) * r.width / 8, y: r.top + (Math.floor(i / 8) + 0.5) * r.height / 3 }));
   }
 
-  // sample the robot drawing into a grid of target squares
-  function robotTargets() {
-    return new Promise((resolve) => {
-      const r = botSvg.getBoundingClientRect();
-      if (!r.width) return resolve([]);
-      const img = new Image();
-      img.onload = () => {
-        try {
-          const off = document.createElement("canvas");
-          off.width = Math.round(r.width); off.height = Math.round(r.height);
-          const o = off.getContext("2d", { willReadFrequently: true });
-          o.drawImage(img, 0, 0, off.width, off.height);
-          const d = o.getImageData(0, 0, off.width, off.height).data;
-          let cell = Math.max(4, Math.round(r.height / 72));
-          let out = [];
-          for (let tries = 0; tries < 4; tries++) {
-            out = [];
-            for (let y = cell / 2; y < off.height; y += cell) {
-              for (let x = cell / 2; x < off.width; x += cell) {
-                const i = (Math.floor(y) * off.width + Math.floor(x)) * 4;
-                if (d[i + 3] < 140) continue;
-                const R = d[i], G = d[i + 1], B = d[i + 2];
-                let c = null;
-                if (R > 200 && G > 120 && B < 120) c = "#f2a93b";
-                else if (R + G + B < 200) c = "#000";
-                if (c) out.push({ x: r.left + x, y: r.top + y, c });
-              }
-            }
-            if (out.length <= 1100) break;
-            cell += 1;
-          }
-          resolve({ pts: out, cell });
-        } catch (e) { resolve([]); }
-      };
-      img.onerror = () => resolve([]);
-      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(botSvg.outerHTML);
-    });
+  // the particles first gather into a compact block: the robot folded up,
+  // like a Transformer before it stands. Coordinates are in the robot's viewBox.
+  function blockTargets() {
+    const r = botSvg.getBoundingClientRect();
+    if (!r.width) return { pts: [], cell: 6 };
+    const sx = r.width / 220, sy = r.height / 330;
+    const cell = Math.max(4, Math.round(r.height / 70));
+    const x0 = 58, x1 = 162, y0 = 178, y1 = 306, round = 18;
+    const pts = [];
+    for (let y = y0 + cell / sy / 2; y < y1; y += cell / sy) {
+      for (let x = x0 + cell / sx / 2; x < x1; x += cell / sx) {
+        // rounded corners
+        const cx = Math.min(Math.max(x, x0 + round), x1 - round), cy = Math.min(Math.max(y, y0 + round), y1 - round);
+        if (Math.hypot(x - cx, y - cy) > round) continue;
+        const led = Math.hypot(x - 92, y - 248) < 7 || (y > 214 && y < 230 && Math.abs(x - 110) < 26);
+        pts.push({ x: r.left + x * sx, y: r.top + y * sy, c: led ? "#f2a93b" : "#000" });
+      }
+    }
+    return { pts, cell };
   }
 
   function seeded(seed) {
@@ -302,17 +299,101 @@
     card.classList.toggle("right", !isNarrow() && i % 2 === 0);
   }
 
-  async function walkTo(i) {
+  // position the robot; its shadow stays on the floor and shrinks in the air
+  function setPos(x, y = 0) {
+    bot.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+    ground.style.transform = `translateX(${x.toFixed(1)}px)`;
+    const lift = Math.min(1, -y / 140);
+    shadow.style.transform = `scale(${(1 - lift * 0.5).toFixed(3)})`;
+    shadow.style.opacity = (1 - lift * 0.6).toFixed(3);
+  }
+
+  function arc(a, b, height, ms) {
+    return new Promise((resolve) => {
+      const start = performance.now();
+      (function frame(now) {
+        const t = Math.min(1, (now - start) / ms);
+        setPos(a + (b - a) * t, -height * 4 * t * (1 - t));
+        if (t < 1) requestAnimationFrame(frame); else resolve();
+      })(start);
+    });
+  }
+
+  function puff() {
+    dust.classList.remove("puff");
+    void dust.offsetWidth;
+    dust.classList.add("puff");
+  }
+
+  // grasshopper hops: crouch, spring up in an arc with legs kicked back, land with a squash
+  async function hopTo(i) {
     const x = botX(i);
     const cur = parseFloat(bot.dataset.x || x);
-    bot.classList.toggle("face-left", x < cur - 2);
     bot.dataset.x = x;
-    if (Math.abs(x - cur) < 2 || reduceMotion) { bot.style.transform = `translateX(${x}px)`; return; }
-    bot.classList.add("walking");
-    bot.style.transition = "transform 1.3s cubic-bezier(.45,.05,.4,1)";
-    bot.style.transform = `translateX(${x}px)`;
-    await wait(1300);
-    bot.classList.remove("walking");
+    bot.style.transition = "none";
+    if (Math.abs(x - cur) < 2 || reduceMotion) { setPos(x); return; }
+    bot.classList.toggle("face-left", x < cur);
+    const w = bot.getBoundingClientRect().width || 200;
+    const hops = Math.max(1, Math.min(4, Math.round(Math.abs(x - cur) / (w * 0.95))));
+    bot.classList.add("hopping");
+    for (let k = 0; k < hops; k++) {
+      const a = cur + (x - cur) * (k / hops), b = cur + (x - cur) * ((k + 1) / hops);
+      bot.classList.add("crouch");
+      await wait(150);
+      bot.classList.remove("crouch");
+      bot.classList.add("air");
+      await arc(a, b, Math.min(150, 60 + Math.abs(b - a) * 0.35), 470);
+      bot.classList.remove("air");
+      bot.classList.add("land");
+      puff();
+      await wait(140);
+      bot.classList.remove("land");
+      await wait(60);
+    }
+    bot.classList.remove("hopping");
+  }
+
+  // ---------- Transformer: fold up and unfold, part by part ----------
+  const FOLD = [
+    ["f-legs", ["sp-hips"]],
+    ["f-torso", ["sp-hips"]],
+    ["f-chest", ["sp-chest"]],
+    ["f-arms", ["sp-arm-l", "sp-arm-r"]],
+    ["f-head", ["sp-neck"]],
+    ["f-antenna", ["sp-antenna"]],
+    ["f-eyes", []]
+  ];
+  function spark(names) {
+    names.forEach((n) => {
+      const s = bot.querySelector("." + n);
+      if (!s) return;
+      s.classList.remove("pop"); void s.getBoundingClientRect(); s.classList.add("pop");
+    });
+  }
+  function folded() {
+    bot.classList.add("booting", ...FOLD.map(([c]) => c));
+  }
+  async function unfold() {
+    bot.classList.add("booting");
+    screen.textContent = "....";
+    for (const [cls, sparks] of FOLD) {
+      bot.classList.remove(cls);
+      spark(sparks);
+      if (cls === "f-chest") screen.textContent = "BOOT";
+      if (cls === "f-eyes") { bot.classList.add("power"); screen.textContent = "OK"; }
+      await wait(cls === "f-legs" ? 380 : 300);
+    }
+    await wait(350);
+    bot.classList.remove("booting", "power");
+  }
+  async function fold() {
+    bot.classList.add("booting");
+    for (const [cls, sparks] of FOLD.slice().reverse()) {
+      bot.classList.add(cls);
+      spark(sparks);
+      await wait(120);
+    }
+    await wait(250);
   }
 
   // ---------- Chapter rendering ----------
@@ -352,7 +433,7 @@
     const c = CHAPTERS[i];
     setSteps(i);
     card.classList.add("out");
-    if (walk) { await wait(220); await walkTo(i); }
+    if (walk) { await wait(220); await hopTo(i); }
     placeCard(i);
     screen.textContent = String(i + 1).padStart(2, "0");
     kicker.textContent = `Chapter ${i + 1} of ${CHAPTERS.length}: ${c.nav}`;
@@ -402,27 +483,29 @@
     tour.hidden = false;
     document.body.classList.add("touring");
     pageParts.forEach((el) => el.setAttribute("inert", ""));
-    bot.classList.remove("ready", "walking", "face-left");
+    bot.classList.remove("ready", "hopping", "crouch", "air", "land", "face-left", "power");
     bot.style.transition = "none";
+    folded();
     placeCard(0);
     setSteps(0);
     card.classList.add("out");
     const x = botX(0);
     bot.dataset.x = x;
-    bot.style.transform = `translateX(${x}px)`;
+    setPos(x);
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-    const { pts = [], cell = 6 } = await robotTargets();
-    document.body.classList.add("name-flying");      // hide the real name pieces as they take off
+    const { pts, cell } = blockTargets();
+    document.body.classList.add("name-flying");      // the real name pieces take off
     tour.classList.add("show");                      // the page fades out behind the swarm
-    await fly(pairUp(froms, pts, false), cell, 1500);
-    bot.classList.add("ready");                      // crisp robot fades in over the particles
-    await wait(380);
+    await fly(pairUp(froms, pts, false), cell, 1400);
+    bot.classList.add("ready");                      // the folded robot replaces the block
+    await wait(260);
     canvas.classList.remove("on");
     ctx.clearRect(0, 0, innerWidth, innerHeight);
+    await unfold();                                  // and transforms, part by part
     closeBtn.focus({ preventScroll: true });
     busy = false;
-    await wait(250);
+    await wait(150);
     show(0, { walk: false });
   }
 
@@ -431,9 +514,11 @@
     typingToken++;
     busy = true;
     const froms = shardCentroids();
-    const { pts = [], cell = 6 } = await robotTargets();
-    bot.classList.remove("ready");
     card.classList.add("out");
+    if (!bot.dataset.x) setPos(botX(step));
+    await fold();
+    const { pts, cell } = blockTargets();
+    bot.classList.remove("ready");
     tour.classList.remove("show");
     await fly(pairUp(froms, pts, true), cell, 1000);
     canvas.classList.remove("on");
@@ -483,7 +568,7 @@
     rt = setTimeout(() => {
       bot.style.transition = "none";
       const x = botX(step); bot.dataset.x = x;
-      bot.style.transform = `translateX(${x}px)`;
+      setPos(x);
       placeCard(step);
     }, 120);
   });

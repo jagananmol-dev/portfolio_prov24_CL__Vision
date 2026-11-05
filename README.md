@@ -29,7 +29,9 @@ How visitors find it: it sits right next to my name in the hero, with the headin
 
 ### Surprise me: the robot tour
 
-Under the panel sits a **Surprise me** button with four blinking arrows pointing at it. Click it and every broken piece of my cracked name flies out from its centroid, and the swarm assembles into a robot while the rest of the page fades away. The robot then walks across the screen and explains my journey in five chapters that match the site's sections: About, Skills, Projects, Achievements and Contact. Each chapter's details appear one by one.
+Under the panel sits a **Surprise me** button with four blinking arrows pointing at it. Click it and every broken piece of my cracked name flies out from its centroid while the rest of the page fades away. The swarm packs into a compact block, then transforms like a Transformer, part by part with sparks at each joint: the legs extend, the torso spins into place, the chest plate flips open, the arms swing out, the head pops up, the antenna extends and the eyes power on. Between chapters the robot hops like a grasshopper: it crouches, springs in an arc with its legs kicked back, and lands with a squash and a dust puff. It explains my journey in five chapters that match the site's sections: About, Skills, Projects, Achievements and Contact. Each chapter's details appear one by one.
+
+The name itself is split into identical hexagonal pieces. Every crack follows the same jagged profile, which keeps all pieces exactly the same size, and every crack line is a fixed 1.5px.
 
 - **Skip section** jumps to the next chapter, and **Close** (or Esc) sends the robot back into my name.
 - The chapter bar at the top lets you jump to any chapter, and the arrow keys move back and forward.
