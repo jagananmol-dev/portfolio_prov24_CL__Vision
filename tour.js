@@ -408,7 +408,8 @@
       await r3.materialize();
     }
     await r3.driveIn();                         // the finished truck rolls in, headlights flashing
-    await wait(350);
+    await r3.showcase();                        // the camera shows off the truck's parts
+    await wait(250);
     await r3.toRobot(idleTurn(0));              // then transforms, stage by stage
   }
 

@@ -579,4 +579,7 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
 .r3-bar { display: inline-flex; gap: 3px; }
 .r3-bar i { width: 10px; height: 3px; border-radius: 2px; background: #444; }
 .r3-bar i.on { background: var(--packet, #f2a93b); }
-@media (max-width: 899px) { .r3-caption { font-size: 11px; gap: 7px; padding: 6px 10px; } .r3-bar i { width: 7px; } }
+@media (max-width: 899px) {
+  .r3-caption { font-size: 11px; line-height: 1.3; gap: 7px; padding: 6px 10px; white-space: normal; width: max-content; max-width: calc(100% - 20px); border-radius: 14px; }
+  .r3-bar { display: none; }
+}
