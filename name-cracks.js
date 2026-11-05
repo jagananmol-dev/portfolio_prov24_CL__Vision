@@ -1,6 +1,5 @@
-// Shatters the hero name like glass. Cracks radiate out from impact points on
-// the "J" and the "n"s, run in jagged, splintered lines (never straight), and
-// split the letters into pieces. Moving the pointer over a piece zooms it out.
+// Shatters the hero name into equal-sized pieces split by jagged, splintered
+// cracks (never straight lines). Moving the pointer over a piece zooms it out.
 (function () {
   const h1 = document.querySelector("h1.name");
   const base = h1 && h1.querySelector(".name-base");
@@ -49,56 +48,22 @@
     }).filter((p) => p.length >= 3);
   }
 
-  // the centre of each character we want to crack from, measured from the real text
-  function letterCentres(wanted) {
-    const origin = base.getBoundingClientRect();
-    const out = [];
-    const walker = document.createTreeWalker(base, NodeFilter.SHOW_TEXT);
-    let node, lineNo = 0;
-    while ((node = walker.nextNode())) {
-      const text = node.textContent;
-      for (let i = 0; i < text.length; i++) {
-        if (!wanted(text[i], i, lineNo)) continue;
-        const r = document.createRange();
-        r.setStart(node, i); r.setEnd(node, i + 1);
-        const b = r.getBoundingClientRect();
-        out.push({ x: b.left - origin.left + b.width / 2, y: b.top - origin.top + b.height * 0.55, size: b.height });
-      }
-      lineNo++;
-    }
-    return out;
-  }
-
+  // Equal-sized pieces: seeds sit on a regular honeycomb (hexagonal) grid, so
+  // every piece inside the name is the same hexagon. The jagged crack lines
+  // drawn along their edges keep it looking shattered rather than tiled.
   function makeSeeds(w, h, fontSize) {
-    const rand = rng(1509);
-    // impact points: the J, both n's in "Jagananmol", and the n in "Daneti"
-    const hits = letterCentres((ch) => ch === "J" || ch === "n");
+    const target = Math.max(18, Math.min(46, Math.round((w * h) / 2500)));
+    // hexagon spacing chosen so about `target` pieces cover the name
+    const d = Math.sqrt((w * h * 2) / (Math.sqrt(3) * target));
+    const rowH = d * Math.sqrt(3) / 2;
     const seeds = [];
-    const minGap = fontSize * 0.13;
-    const ok = (p) => p.x > 0 && p.y > 0 && p.x < w && p.y < h && !seeds.some((q) => Math.hypot(q.x - p.x, q.y - p.y) < minGap);
-
-    // around each impact, a ring of seeds makes wedge-shaped pieces that radiate outward
-    hits.forEach((c, k) => {
-      if (ok(c)) seeds.push({ x: c.x, y: c.y });
-      const spokes = k === 0 ? 6 : 5;
-      const turn = rand() * Math.PI * 2;
-      for (let s = 0; s < spokes; s++) {
-        const ang = turn + (s / spokes) * Math.PI * 2 + (rand() - 0.5) * 0.5;
-        const rad = fontSize * (0.24 + rand() * 0.12);
-        const p = { x: c.x + Math.cos(ang) * rad, y: c.y + Math.sin(ang) * rad };
-        if (ok(p)) seeds.push(p);
-      }
-    });
-
-    // a looser scatter across the rest of the name
-    const total = Math.max(18, Math.min(46, Math.round((w * h) / 2500)));
-    let guard = 0;
-    while (seeds.length < total && guard++ < 5000) {
-      const p = { x: rand() * w, y: rand() * h };
-      if (ok({ ...p }) && !seeds.some((q) => Math.hypot(q.x - p.x, q.y - p.y) < fontSize * 0.3)) seeds.push(p);
+    for (let r = 0, y = rowH / 2; y < h + rowH; r++, y += rowH) {
+      const shift = r % 2 ? d / 2 : 0;
+      for (let x = -d / 2 + shift; x < w + d; x += d) seeds.push({ x, y });
     }
     return seeds;
   }
+
 
   // turn a straight edge into a jagged crack. The same edge always gets the same
   // jagged line, so the two pieces on either side of it still fit together.
