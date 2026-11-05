@@ -21,7 +21,7 @@
         ["Education", "93% in the ICSE board exam (2020) and 93 percentile in MHT-CET, the engineering entrance exam."],
         ["How he learns", "By building something, then figuring out why it broke."],
         ["Languages", "Speaks English, Telugu, Hindi and Marathi."],
-        ["Right now", "Working with SEER Bharat Foundation on crop advice from satellite data, and looking for software engineering internships."]
+        ["Right now", "Forward Deployed Engineer (FDE) at Prodapt, working directly with client teams to build and deploy AI solutions in their real systems. Also working with SEER Bharat Foundation on crop advice from satellite data."]
       ]
     },
     {

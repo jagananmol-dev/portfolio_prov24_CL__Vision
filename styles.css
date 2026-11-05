@@ -685,3 +685,13 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
   .ax-panel.in { animation: none; }
   .ax-timeline li.now .ax-node::after, .ax-dot.live { animation: none; }
 }
+
+/* Right now: the current role, as a highlighted card */
+.ax-role { border: 1.5px solid var(--ink); border-left: 5px solid var(--packet); border-radius: 12px; padding: 16px 18px; margin: 4px 0 12px; background: var(--surface); }
+.ax-role-tag { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 6px; }
+.ax-role-tag .ax-dot { margin-top: 0; }
+.ax-role h4 { font-size: 20px; margin: 0 0 4px; }
+.ax-role h5 { font-size: 15px; margin: 14px 0 6px; }
+.ax-role p { margin: 0 0 6px; }
+.ax-duties { margin: 0; padding-left: 18px; }
+.ax-duties li { margin: 0 0 6px; max-width: 64ch; }

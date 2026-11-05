@@ -45,7 +45,7 @@ On laptops and desktops the whole front page, with my name, the panel and the Su
 
 | Required section | Where it lives |
 |---|---|
-| About Me | About me (#about): four headline stats (93% ICSE, 93 percentile MHT-CET, B.Tech CSE with Honours in AI and ML, graduating 2027) that count up, and an explorer with four tabs: Who I am, Education (a timeline), How I work and Right now. Use the mouse or the arrow keys |
+| About Me | About me (#about): four headline stats (93% ICSE, 93 percentile MHT-CET, B.Tech CSE with Honours in AI and ML, graduating 2027) that count up, and an explorer with four tabs: Who I am, Education (a timeline), How I work and Right now (my role as a Forward Deployed Engineer at Prodapt, SEER Bharat and my final year). Use the mouse or the arrow keys |
 | Skills | Tech superpowers (#skills), laid out as a routing table, since I trained on CCNA |
 | Projects / Achievements | Projects (#projects) and Achievements (#wins): G-One, SEER Bharat crop suitability from satellite data, 2 hackathon podium finishes (with certificates you can open), 3 more hackathon finals, 5 certifications (4 with certificates you can open) |
 
