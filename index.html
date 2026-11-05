@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
 </head>
 <body>
   <a class="skip" href="#about">Skip to content</a>
@@ -83,7 +83,20 @@
           <button data-q="What are his skills?">What are his skills?</button>
           <button data-q="How do I contact him?">How do I contact him?</button>
           <button data-q="Write my college essay for me">Write my essay</button>
-          <button data-q="Surprise me">Surprise me</button>
+        </div>
+
+        <div class="surprise-row">
+          <div class="surprise-target">
+            <span class="s-arrow s-up" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v13M6 12l6 6 6-6"/></svg></span>
+            <span class="s-arrow s-right" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12H7M12 6l-6 6 6 6"/></svg></span>
+            <span class="s-arrow s-down" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20V7M6 12l6-6 6 6"/></svg></span>
+            <span class="s-arrow s-left" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h13M12 6l6 6-6 6"/></svg></span>
+            <button class="surprise-btn" id="surprise" type="button" aria-haspopup="dialog">
+              <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg>
+              Surprise me
+            </button>
+          </div>
+          <p class="surprise-note">Watch my name turn into a robot that walks you through my journey.</p>
         </div>
 
         <form class="ask" id="ask">
@@ -313,8 +326,9 @@
     <p>Built by Jagananmol Daneti. Hosted on AWS Amplify.</p>
   </footer>
 
-  <script src="app.js?v=19"></script>
-  <script src="hero-grid.js?v=19"></script>
-  <script src="name-cracks.js?v=19"></script>
+  <script src="app.js?v=20"></script>
+  <script src="hero-grid.js?v=20"></script>
+  <script src="name-cracks.js?v=20"></script>
+  <script src="tour.js?v=20"></script>
 </body>
 </html>

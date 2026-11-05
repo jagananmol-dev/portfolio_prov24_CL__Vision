@@ -27,6 +27,14 @@ I tested the router with 46 different questions, including typos, plurals, empty
 
 How visitors find it: it sits right next to my name in the hero, with the heading "Ask my portfolio" and a one-line instruction. The navigation bar also has a highlighted "Ask my portfolio" link that scrolls straight to it.
 
+### Surprise me: the robot tour
+
+Under the panel sits a **Surprise me** button with four blinking arrows pointing at it. Click it and every broken piece of my cracked name flies out from its centroid, and the swarm assembles into a robot while the rest of the page fades away. The robot then walks across the screen and explains my journey in five chapters that match the site's sections: About, Skills, Projects, Achievements and Contact. Each chapter's details appear one by one.
+
+- **Skip section** jumps to the next chapter, and **Close** (or Esc) sends the robot back into my name.
+- The chapter bar at the top lets you jump to any chapter, and the arrow keys move back and forward.
+- It respects "reduce motion", traps keyboard focus while open, and works on phones.
+
 ## Portfolio sections
 
 | Required section | Where it lives |
