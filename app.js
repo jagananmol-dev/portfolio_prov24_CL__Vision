@@ -272,6 +272,15 @@ const TOPICS = [
     ],
     next: ["What is G-One?", "What are his skills?"] },
 
+  { id: "awshost", agent: "projects", title: "how this site runs on AWS",
+    keys: [["aws setup", 9], ["aws services", 9], ["which aws", 8], ["what aws", 8], ["aws hosting", 9], ["hosted", 7], ["hosted on aws", 10], ["site hosted", 9], ["how is this hosted", 10], ["how is it hosted", 10], ["how was this deployed", 10], ["deployed", 6], ["cloudfront", 9], ["cdn", 8], ["amplify hosting", 9], ["continuous deployment", 9], ["ci cd", 8], ["https", 6], ["ssl", 6], ["architecture", 9], ["infrastructure of this site", 10]],
+    answer: [
+      "This site runs on <b>AWS Amplify Hosting</b>. The code lives in a GitHub repository, and Amplify is connected to its <b>main</b> branch: every commit triggers a new build and deploy automatically, usually live within a minute.",
+      "Amplify serves the files over HTTPS from Amazon's global content delivery network (<b>Amazon CloudFront</b>), so the page loads quickly from anywhere. A small <b>amplify.yml</b> build file tells Amplify it's a static site with nothing to compile, and unknown addresses get a custom 404 page.",
+      "There's no server to manage: the chatbot and the 3D robot run entirely in your browser."
+    ],
+    next: ["How does this chatbot work?", "What AWS badges does he have?"] },
+
   // ---------- Achievements ----------
   { id: "wins", agent: "wins", title: "hackathon results",
     keys: [["win", 6], ["won", 6], ["wins", 6], ["winner", 6], ["winning", 6], ["achievement", 7], ["achievements", 7], ["accomplishment", 7], ["accomplishments", 7], ["award", 7], ["awards", 7], ["prize", 7], ["prizes", 7], ["podium", 7], ["hackathon", 6], ["hackathons", 6], ["competition", 6], ["competitions", 6], ["contest", 5], ["finalist", 6], ["finals", 5], ["runner up", 7], ["rank", 2], ["recognition", 5], ["proud", 4]],
@@ -299,6 +308,14 @@ const TOPICS = [
     ],
     next: ["What has he won?", "What networking and cloud skills does he have?"] },
 
+  { id: "badges", agent: "wins", title: "AWS Builder Center badges",
+    keys: [["badge", 9], ["badges", 9], ["builder center", 8], ["aws builder center", 9], ["digital badge", 9], ["first article", 9], ["first wish", 9], ["discussion debut", 9], ["knowledge seeker", 9], ["hello world", 7], ["photo finisher", 9], ["aws community", 7]],
+    answer: [
+      "He has six <b>AWS Builder Center</b> badges, all earned on 4 November 2026: <b>First Article</b> (published his first article), <b>First Wish</b> (posted his first wish on AWS Wishlist), <b>Discussion Debut</b> (left his first comment), <b>Knowledge Seeker</b> (read 10 different articles), <b>Hello, World!</b> (wrote his profile's About section) and <b>Photo Finisher</b> (added a profile photo).",
+      "They're shown in the Achievements section, and on his <a href=\"https://builder.aws.com/community/@quantumstack1509?tab=badges\" target=\"_blank\" rel=\"noopener\">AWS Builder profile</a>."
+    ],
+    next: ["How is this site hosted on AWS?", "What are his certifications?"] },
+
   // ---------- Contact ----------
   { id: "contact", agent: "contact", title: "contact",
     keys: [["contact", 8], ["email", 8], ["e mail", 8], ["mail", 6], ["gmail", 8], ["reach", 7], ["reach out", 8], ["get in touch", 9], ["touch", 4], ["connect", 6], ["message", 5], ["talk to him", 8], ["hire", 8], ["hiring", 8], ["recruit", 7], ["linkedin", 7], ["github", 5], ["resume", 6], ["cv", 6], ["phone", 6], ["number", 4], ["mobile", 5], ["call", 3], ["available", 6], ["availability", 6], ["opportunity", 6], ["opportunities", 6], ["internship", 7], ["internships", 7], ["intern", 6], ["looking for", 7], ["looking for a job", 9], ["collaborate", 7], ["collaboration", 7], ["team up", 7], ["freelance", 6], ["meeting", 5], ["social", 4], ["aws builder", 6]],
@@ -325,7 +342,7 @@ const AGENTS = {
   contact: { name: "Contact", checks: "email address matches CV", action: { label: "Open a draft email", email: true } }
 };
 // some topics are better served by a jump to a specific place
-const TOPIC_TARGETS = { prodapt: "#about", now: "#about", education: "#about", scores: "#about", seer: "#projects", gone: "#projects", health: "#wins", secure: "#wins", otherhacks: "#wins", certs: "#wins", site: "#dispatch" };
+const TOPIC_TARGETS = { prodapt: "#about", now: "#about", education: "#about", scores: "#about", seer: "#projects", gone: "#projects", health: "#wins", secure: "#wins", otherhacks: "#wins", certs: "#wins", badges: "#wins", site: "#dispatch" };
 
 let factIndex = 0;
 
