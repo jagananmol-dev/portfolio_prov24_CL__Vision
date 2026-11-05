@@ -216,6 +216,16 @@ h1.name.cracked .name-base { color: transparent; }
 .routes thead th { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--muted); border-bottom: 2px solid var(--ink); }
 .routes tbody th { font-weight: 700; width: 20%; }
 .routes td:last-child { color: var(--muted); }
+/* phones: each row becomes a small card, nothing is cut off at the side */
+@media (max-width: 600px) {
+  .routes { min-width: 0; }
+  .routes thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .routes tr { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .routes tbody th, .routes td { display: block; width: auto; padding: 0; border: 0; }
+  .routes tbody th { margin-bottom: 4px; }
+  .routes td + td { margin-top: 4px; font-size: 15px; }
+  .routes td + td::before { content: "Used in: "; font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--ink); }
+}
 
 .project { padding: 28px 0; border-top: 1px solid var(--line); }
 .project:first-of-type { border-top: 0; padding-top: 0; }
