@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=30">
+  <link rel="stylesheet" href="styles.css?v=31">
 </head>
 <body>
   <a class="skip" href="#about">Skip to content</a>
@@ -120,18 +120,87 @@
 
     <section id="about" class="section about">
       <h2>About me</h2>
-      <div class="about-grid">
-        <div class="prose">
-          <p>I'm a final-year B.Tech Computer Science student at SIT Pune, graduating in 2027. Most of what I know, I learned by building something and then figuring out why it broke.</p>
-          <p>The project I'm proudest of is G-One, a multi-agent assistant I built over the six-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava of Edunet Foundation. I completed the program successfully, and it taught me that useful AI is less about the model and more about the rules around it.</p>
-          <p>Right now I'm working with SEER Bharat Foundation, an NGO in India, on a tool that uses satellite data and rainfall to tell farmers which crop suits their land best. Outside of projects, you'll usually find me at a hackathon.</p>
+      <p class="about-lede">A student who learns by building. Pick a tab to explore who I am, where I studied, how I work and what I'm doing right now.</p>
+
+      <ul class="about-stats">
+        <li><span class="as-num" data-count="93" data-suffix="%">93%</span><span class="as-label">ICSE board exam</span></li>
+        <li><span class="as-num" data-count="93" data-suffix=" %ile">93 %ile</span><span class="as-label">MHT-CET entrance exam</span></li>
+        <li><span class="as-num">CSE<small> + AIML</small></span><span class="as-label">B.Tech with Honours in AI and ML</span></li>
+        <li><span class="as-num" data-count="2027" data-from="2020">2027</span><span class="as-label">Graduating, SIT Pune</span></li>
+      </ul>
+
+      <div class="about-explorer">
+        <div class="ax-tabs" role="tablist" aria-label="About me" aria-orientation="vertical">
+          <button class="ax-tab" role="tab" id="ax-tab-who" aria-controls="ax-who" aria-selected="true"><span class="ax-n">01</span>Who I am</button>
+          <button class="ax-tab" role="tab" id="ax-tab-edu" aria-controls="ax-edu" aria-selected="false" tabindex="-1"><span class="ax-n">02</span>Education</button>
+          <button class="ax-tab" role="tab" id="ax-tab-how" aria-controls="ax-how" aria-selected="false" tabindex="-1"><span class="ax-n">03</span>How I work</button>
+          <button class="ax-tab" role="tab" id="ax-tab-now" aria-controls="ax-now" aria-selected="false" tabindex="-1"><span class="ax-n">04</span>Right now</button>
+          <span class="ax-marker" aria-hidden="true"></span>
         </div>
-        <dl class="facts">
-          <div><dt>Based in</dt><dd>Pune, Maharashtra</dd></div>
-          <div><dt>Studying</dt><dd>B.Tech CSE, SIT Pune (2027)</dd></div>
-          <div><dt>Speaks</dt><dd>English, Telugu, Hindi, Marathi</dd></div>
-          <div><dt>Looking for</dt><dd>Software engineering internships</dd></div>
-        </dl>
+
+        <div class="ax-panels">
+          <div class="ax-panel" role="tabpanel" id="ax-who" aria-labelledby="ax-tab-who" tabindex="0">
+            <p class="ax-path" aria-hidden="true">about / who-i-am</p>
+            <h3>Who I am</h3>
+            <p>I'm Jagananmol Daneti, a final-year B.Tech student in Computer Science and Engineering with Honours in Artificial Intelligence and Machine Learning at Symbiosis Institute of Technology, Pune. I'm based in Pune and graduate in 2027.</p>
+            <p>I build software that does the work instead of just talking about it: full-stack apps with the MERN stack, multi-agent AI, and a soft spot for blockchain. Most of what I know, I learned by building something and then figuring out why it broke.</p>
+            <dl class="ax-facts">
+              <div><dt>Based in</dt><dd>Pune, Maharashtra</dd></div>
+              <div><dt>Speaks</dt><dd>English, Telugu, Hindi and Marathi. Telugu, Hindi and Marathi are all native to me.</dd></div>
+              <div><dt>Builds</dt><dd>Full-stack apps, multi-agent AI, blockchain projects</dd></div>
+            </dl>
+          </div>
+
+          <div class="ax-panel" role="tabpanel" id="ax-edu" aria-labelledby="ax-tab-edu" tabindex="0">
+            <p class="ax-path" aria-hidden="true">about / education</p>
+            <h3>Education</h3>
+            <ol class="ax-timeline">
+              <li class="now">
+                <span class="ax-node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7z"/></svg></span>
+                <p class="ax-when">Now, graduating in 2027</p>
+                <h4>B.Tech in Computer Science and Engineering, with Honours in AI and Machine Learning</h4>
+                <p class="ax-where">Symbiosis Institute of Technology, Pune</p>
+                <p>I'm in my final year. Alongside the core CSE degree, the Honours track in Artificial Intelligence and Machine Learning goes deeper into the AI side, which is what I use in projects like G-One and the SEER Bharat crop tool.</p>
+              </li>
+              <li>
+                <span class="ax-node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7z"/></svg></span>
+                <p class="ax-when">Entrance exam</p>
+                <h4>MHT-CET: 93 percentile</h4>
+                <p class="ax-where">Maharashtra's common entrance test for engineering</p>
+                <p>A 93 percentile means I scored higher than about 93% of everyone who took the exam.</p>
+              </li>
+              <li>
+                <span class="ax-node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7z"/></svg></span>
+                <p class="ax-when">2020</p>
+                <h4>ICSE board exam: 93%</h4>
+                <p class="ax-where">Saint Thomas English Medium School</p>
+                <p>Finished school with 93% in the ICSE board examination.</p>
+              </li>
+            </ol>
+            <p class="ax-note">Beyond the classroom: three CCNA courses, Nutanix Certified Associate 6 and the Deloitte cybersecurity virtual internship. The certificates are in <a href="#wins">Achievements</a>.</p>
+          </div>
+
+          <div class="ax-panel" role="tabpanel" id="ax-how" aria-labelledby="ax-tab-how" tabindex="0">
+            <p class="ax-path" aria-hidden="true">about / how-i-work</p>
+            <h3>How I work</h3>
+            <ul class="ax-cards">
+              <li><h4>Build first, then understand</h4><p>I learn fastest by making something real, breaking it and working out why, instead of only reading about it.</p></li>
+              <li><h4>Rules matter more than the model</h4><p>G-One, built over the six-month VOIS Innovation Marathon 2.0 with mentor Dr. Aman Srivastava of Edunet Foundation, taught me that useful AI is less about the model and more about the rules around it. A good system should refuse rather than guess.</p></li>
+              <li><h4>Calm under a deadline</h4><p>Hackathons are where I test ideas fast: 3rd Prize at Hack Your Path 6.0, 2nd Runner-up at AGTechathon 1.0, and the final round at HackRX 5.0, HackronyX and Hackzilla.</p></li>
+              <li><h4>Strong foundations</h4><p>CCNA training taught me how networks really move data, which is why my skills section is laid out like a routing table.</p></li>
+            </ul>
+          </div>
+
+          <div class="ax-panel" role="tabpanel" id="ax-now" aria-labelledby="ax-tab-now" tabindex="0">
+            <p class="ax-path" aria-hidden="true">about / right-now</p>
+            <h3>Right now</h3>
+            <ul class="ax-now">
+              <li><span class="ax-dot" aria-hidden="true"></span><div><h4>Building with SEER Bharat Foundation</h4><p>Full Stack Developer since March 2026, on a tool that uses satellite data and rainfall to tell farmers which crop suits their land best. <a href="#projects">Read about it</a>.</p></div></li>
+              <li><span class="ax-dot" aria-hidden="true"></span><div><h4>Final year of B.Tech</h4><p>Finishing Computer Science and Engineering with Honours in AI and Machine Learning, graduating in 2027.</p></div></li>
+              <li><span class="ax-dot live" aria-hidden="true"></span><div><h4>Looking for software engineering internships</h4><p>If you're hiring, I'd love to talk. <a href="#contact">Get in touch</a>.</p></div></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -351,6 +420,7 @@
   <script src="app.js?v=20"></script>
   <script src="hero-grid.js?v=20"></script>
   <script src="name-cracks.js?v=24"></script>
+  <script src="about.js?v=1"></script>
   <script src="robot3d.js?v=6"></script>
   <script src="tour.js?v=28"></script>
 </body>

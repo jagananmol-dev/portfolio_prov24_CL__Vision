@@ -17,7 +17,8 @@
       title: "Meet Jagananmol",
       say: "Hi! I'm built from the pieces of Jagananmol's name. Let me walk you through his journey, one chapter at a time.",
       points: [
-        ["Student", "Final-year B.Tech Computer Science student at Symbiosis Institute of Technology, Pune, graduating in 2027."],
+        ["Student", "Final-year B.Tech in Computer Science and Engineering, with Honours in AI and Machine Learning, at Symbiosis Institute of Technology, Pune. Graduating in 2027."],
+        ["Education", "93% in the ICSE board exam (2020) and 93 percentile in MHT-CET, the engineering entrance exam."],
         ["How he learns", "By building something, then figuring out why it broke."],
         ["Languages", "Speaks English, Telugu, Hindi and Marathi."],
         ["Right now", "Working with SEER Bharat Foundation on crop advice from satellite data, and looking for software engineering internships."]

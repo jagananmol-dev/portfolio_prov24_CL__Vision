@@ -48,11 +48,11 @@ if ("IntersectionObserver" in window) {
 // Rule-based on purpose: no model, no guessing. If nothing matches, the validator blocks it.
 const ABOUT = {
   who: [
-    "Jagananmol Daneti is a final-year B.Tech CSE student at Symbiosis Institute of Technology, Pune, graduating in 2027.",
+    "Jagananmol Daneti is a final-year B.Tech CSE student, with Honours in AI and Machine Learning, at Symbiosis Institute of Technology, Pune, graduating in 2027.",
     "He builds full-stack apps and multi-agent AI, and he's usually at a hackathon."
   ],
   education: [
-    "B.Tech in Computer Science and Engineering at Symbiosis Institute of Technology, Pune, expected June 2027.",
+    "B.Tech in Computer Science and Engineering, with Honours in Artificial Intelligence and Machine Learning, at Symbiosis Institute of Technology, Pune, expected June 2027.",
     "Before that: 93 percentile in MHT-CET and 93% in ICSE at Saint Thomas English Medium School (2020)."
   ],
   languages: [
@@ -83,9 +83,9 @@ const WINS = {
 const AGENTS = {
   about: {
     name: "About",
-    words: ["who", "about", "yourself", "himself", "background", "education", "study", "studied", "college", "university", "degree", "cgpa", "school", "language", "speak", "surprise", "fun", "fact", "secret", "random"],
+    words: ["who", "about", "yourself", "himself", "background", "education", "study", "studied", "college", "university", "degree", "cgpa", "school", "icse", "percentile", "marks", "score", "cet", "honours", "honors", "aiml", "language", "speak", "surprise", "fun", "fact", "secret", "random"],
     answer: (q) => {
-      if (/\b(education|study|studied|college|university|degree|cgpa|school)\b/.test(q)) return ABOUT.education;
+      if (/\b(education|study|studied|college|university|degree|cgpa|school|icse|percentile|marks|score|cet|honou?rs|aiml)\b/.test(q)) return ABOUT.education;
       if (/\b(languages?|speaks?)\b/.test(q)) return ABOUT.languages;
       if (/\b(who|about|yourself|himself|background)\b/.test(q)) return ABOUT.who;
       const fact = ABOUT.facts[factIndex % ABOUT.facts.length];
