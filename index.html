@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=29">
+  <link rel="stylesheet" href="styles.css?v=30">
 </head>
 <body>
   <a class="skip" href="#about">Skip to content</a>
@@ -193,16 +193,35 @@
         </aside>
       </article>
 
-      <article class="project">
-        <h3>Crop suitability from satellite data, with SEER Bharat Foundation</h3>
-        <p>Choosing what to plant is one of the biggest bets a farmer makes each season, and it's often based on habit or guesswork rather than data about their own land. Working with SEER Bharat Foundation, an NGO in India, we're building a tool that turns satellite data into a plain answer: which crop suits this piece of land best.</p>
-        <ul class="story-points">
-          <li><b>Pick a spot.</b> Enter coordinates or simply mark the location on a map.</li>
-          <li><b>Read the land from space.</b> The system pulls satellite imagery and environmental parameters such as rainfall for that area.</li>
-          <li><b>Get a recommendation.</b> A model predicts the crops best suited to those conditions, so farmers can plan with data instead of guesswork.</li>
-        </ul>
-        <ul class="stack"><li>Satellite imagery</li><li>Rainfall and climate data</li><li>ML prediction</li><li>Interactive map</li><li>Full-stack</li></ul>
-        <p class="small">Full Stack Developer, March 2026 to present.</p>
+      <article class="project feature">
+        <div class="feature-body">
+          <div class="project-meta">
+            <span class="tag">Ongoing, with SEER Bharat Foundation</span>
+          </div>
+          <h3>Crop suitability from satellite data</h3>
+          <dl class="event-facts">
+            <div><dt>Partner</dt><dd>SEER Bharat Foundation, an NGO in India</dd></div>
+            <div><dt>Role</dt><dd>Full Stack Developer</dd></div>
+            <div><dt>Since</dt><dd>March 2026, still in progress</dd></div>
+          </dl>
+          <div class="story">
+            <h4>The problem</h4>
+            <p>Choosing what to plant is one of the biggest bets a farmer makes each season. Get it right and the land pays off; get it wrong and a whole season's work, seed and water can go to waste. Yet that choice is often based on habit rather than on data about the farmer's own piece of land.</p>
+            <h4>The idea</h4>
+            <p>Satellites already observe farmland all the time, and rainfall and climate records exist for every region. The information a farmer needs is out there; it just isn't in a form they can use. Working with SEER Bharat Foundation, we're building a tool that turns that data into one plain answer: which crop suits this piece of land best.</p>
+            <h4>How it works</h4>
+            <ol class="story-steps">
+              <li><b>Pick a spot.</b> The user enters the coordinates of a field, or simply marks the location on an interactive map. No technical knowledge is needed to get started.</li>
+              <li><b>Read the land from space.</b> For that exact area, the system pulls satellite imagery along with environmental parameters such as rainfall, building a picture of the land's conditions.</li>
+              <li><b>Get a recommendation.</b> A machine learning model takes those conditions and predicts the crops best suited to them, so farmers can plan their season with data instead of guesswork.</li>
+            </ol>
+            <h4>My part</h4>
+            <p>I work on it as a Full Stack Developer: the map-based interface where a user picks their land, and the backend that brings the satellite and rainfall data together, passes it to the model and returns the crop recommendation through APIs.</p>
+            <h4>Why it matters</h4>
+            <p>A better crop choice means less wasted seed, water and effort, and a better chance of a good harvest. Putting satellite data in the hands of the people who work the land is the whole point of the project.</p>
+          </div>
+          <ul class="stack"><li>Satellite imagery</li><li>Rainfall and climate data</li><li>ML prediction</li><li>Interactive map</li><li>Crop recommendation APIs</li><li>Full-stack</li></ul>
+        </div>
       </article>
 
     </section>
