@@ -29,9 +29,11 @@ How visitors find it: it sits right next to my name in the hero, with the headin
 
 ### Surprise me: the robot tour
 
-Under the panel sits a **Surprise me** button with four blinking arrows pointing at it. Click it and every broken piece of my cracked name flies out from its centroid while the rest of the page fades away. The swarm packs into a compact block, then transforms like a Transformer, part by part with sparks at each joint: the legs extend, the torso spins into place, the chest plate flips open, the arms swing out, the head pops up, the antenna extends and the eyes power on. Between chapters the robot hops like a grasshopper: it crouches, springs in an arc with its legs kicked back, and lands with a squash and a dust puff. It explains my journey in five chapters that match the site's sections: About, Skills, Projects, Achievements and Contact. Each chapter's details appear one by one.
+Under the panel sits a **Surprise me** button with four blinking arrows pointing at it. Click it and the page fades away while every hexagonal piece of my cracked name flies out from its centroid, spinning, and locks into place as one tile of a robot. The robot is built from the name's actual pieces, at exactly the same size and shape, with the same 1.5px cracks between them: 43 pieces make 43 tiles. Its eyes then flicker on, and it walks you through my journey in five chapters that match the site's sections: About, Skills, Projects, Achievements and Contact. Between chapters it walks across the screen, swinging its legs from the hips and its arms the opposite way, with dust at each step. Each chapter's details appear one by one.
 
 The name itself is split into identical hexagonal pieces. Every crack follows the same jagged profile, which keeps all pieces exactly the same size, and every crack line is a fixed 1.5px.
+
+On laptops and desktops the whole front page, with my name, the panel and the Surprise me button, fits in one screen.
 
 - **Skip section** jumps to the next chapter, and **Close** (or Esc) sends the robot back into my name.
 - The chapter bar at the top lets you jump to any chapter, and the arrow keys move back and forward.

@@ -1,6 +1,7 @@
-// "Surprise me" tour. The pieces of the cracked name fly out from their
-// centroids and assemble into a robot, the page fades away, and the robot
-// walks through the five sections of the portfolio, one chapter at a time.
+// "Surprise me" tour. Every hexagon piece of the cracked name flies out from
+// its centroid and becomes one tile of a robot, keeping its exact shape and
+// size. The page fades away, and the robot walks through the five sections of
+// the portfolio, one chapter at a time.
 (function () {
   const trigger = document.getElementById("surprise");
   if (!trigger) return;
@@ -72,69 +73,25 @@
     }
   ];
 
-  // ---------- The robot ----------
-  const ROBOT = `
-<svg class="bot-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 330" role="img" aria-label="A robot made from the pieces of Jagananmol's name">
-  <g class="bot-body">
-    <g class="bot-leg bot-leg-l">
-      <rect x="80" y="236" width="22" height="58" rx="10" fill="#000"/>
-      <rect x="70" y="290" width="38" height="16" rx="8" fill="#000"/>
-    </g>
-    <g class="bot-leg bot-leg-r">
-      <rect x="118" y="236" width="22" height="58" rx="10" fill="#000"/>
-      <rect x="112" y="290" width="38" height="16" rx="8" fill="#000"/>
-    </g>
-    <g class="bot-arm bot-arm-l">
-      <rect x="36" y="138" width="20" height="66" rx="10" fill="#000"/>
-      <circle cx="46" cy="210" r="11" fill="#000"/>
-    </g>
-    <g class="bot-arm bot-arm-r">
-      <rect x="164" y="138" width="20" height="66" rx="10" fill="#000"/>
-      <circle cx="174" cy="210" r="11" fill="#000"/>
-    </g>
-    <g class="bot-torso">
-      <rect x="72" y="226" width="76" height="14" rx="7" fill="#000"/>
-      <rect x="58" y="132" width="104" height="94" rx="20" fill="#000"/>
-      <path d="M62 150 L80 158 L76 172 L92 182 M160 200 L144 196 L148 184 L136 178 M100 222 L104 212 L118 214 L122 224" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="miter"/>
-      <g class="bot-chest">
-        <rect x="82" y="150" width="56" height="36" rx="7" fill="#fff"/>
-        <text class="bot-screen" x="110" y="175" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="17" font-weight="500" fill="#000">01</text>
-      </g>
-      <circle class="bot-led" cx="92" cy="202" r="4" fill="#f2a93b"/>
-      <circle cx="106" cy="202" r="4" fill="#fff"/>
-      <circle cx="120" cy="202" r="4" fill="#fff"/>
-    </g>
-    <g class="bot-headg">
-      <rect x="101" y="122" width="18" height="12" fill="#000"/>
-      <g class="bot-antenna">
-        <line x1="110" y1="24" x2="110" y2="46" stroke="#000" stroke-width="5" stroke-linecap="round"/>
-        <circle class="bot-bulb" cx="110" cy="18" r="7" fill="#f2a93b"/>
-      </g>
-      <rect x="45" y="68" width="11" height="30" rx="4" fill="#000"/>
-      <rect x="164" y="68" width="11" height="30" rx="4" fill="#000"/>
-      <rect class="bot-head" x="54" y="44" width="112" height="80" rx="24" fill="#000"/>
-      <path d="M70 52 L84 60 L80 70 M150 116 L140 108 L144 98" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="miter"/>
-      <rect x="70" y="62" width="80" height="34" rx="14" fill="#1b1f27"/>
-      <g class="bot-eyes">
-        <circle cx="93" cy="79" r="7.5" fill="#f2a93b"/>
-        <circle cx="127" cy="79" r="7.5" fill="#f2a93b"/>
-      </g>
-      <g class="bot-mouth" fill="#fff">
-        <rect x="95" y="104" width="6" height="6" rx="2"/>
-        <rect x="107" y="104" width="6" height="6" rx="2"/>
-        <rect x="119" y="104" width="6" height="6" rx="2"/>
-      </g>
-    </g>
-    <g class="bot-sparks" fill="none" stroke="#f2a93b" stroke-width="3" stroke-linecap="round">
-      <g class="spark sp-hips"><path d="M110 228 m-14 0 h-8 M110 228 m14 0 h8 M110 228 m0 -14 v-8 M110 228 m-10 10 l-6 6 M110 228 m10 10 l6 6"/></g>
-      <g class="spark sp-chest"><path d="M110 168 m-34 0 h-8 M110 168 m34 0 h8 M110 168 m-24 -24 l-6 -6 M110 168 m24 -24 l6 -6"/></g>
-      <g class="spark sp-arm-l"><path d="M46 142 m-12 0 h-8 M46 142 m0 -12 v-8 M46 142 m-9 -9 l-6 -6"/></g>
-      <g class="spark sp-arm-r"><path d="M174 142 m12 0 h8 M174 142 m0 -12 v-8 M174 142 m9 -9 l6 -6"/></g>
-      <g class="spark sp-neck"><path d="M110 128 m-16 0 h-8 M110 128 m16 0 h8 M110 128 m-12 -10 l-6 -6 M110 128 m12 -10 l6 -6"/></g>
-      <g class="spark sp-antenna"><path d="M110 18 m-12 0 h-7 M110 18 m12 0 h7 M110 18 m0 -12 v-7"/></g>
-    </g>
-  </g>
-</svg>`;
+  // ---------- The robot: tiles on the same hexagon grid as the name ----------
+  // Each cell is [row, x, part, priority]. Even rows sit on whole x positions,
+  // odd rows on halves, exactly like the name's honeycomb. When the name has
+  // fewer pieces than cells, the highest priority numbers are left out first.
+  const CELLS = [
+    [0, 3, "antenna", 1],
+    [1, 1.5, "head", 4], [1, 2.5, "head", 1], [1, 3.5, "head", 1], [1, 4.5, "head", 4],
+    [2, 1, "head", 1], [2, 2, "eye", 1], [2, 3, "head", 1], [2, 4, "eye", 1], [2, 5, "head", 1],
+    [3, 1.5, "head", 5], [3, 2.5, "head", 1], [3, 3.5, "head", 1], [3, 4.5, "head", 5],
+    [4, 0, "arm-l", 1], [4, 1, "torso", 1], [4, 2, "torso", 1], [4, 3, "torso", 1], [4, 4, "torso", 1], [4, 5, "torso", 1], [4, 6, "arm-r", 1],
+    [5, 0.5, "arm-l", 1], [5, 1.5, "torso", 1], [5, 2.5, "torso", 1], [5, 3.5, "torso", 1], [5, 4.5, "torso", 1], [5, 5.5, "arm-r", 1],
+    [6, 0, "arm-l", 3], [6, 1, "torso", 7], [6, 2, "torso", 1], [6, 3, "torso", 1], [6, 4, "torso", 1], [6, 5, "torso", 7], [6, 6, "arm-r", 3],
+    [7, 1.5, "torso", 6], [7, 2.5, "torso", 1], [7, 3.5, "torso", 1], [7, 4.5, "torso", 6],
+    [8, 2, "leg-l", 1], [8, 4, "leg-r", 1],
+    [9, 1.5, "leg-l", 1], [9, 4.5, "leg-r", 1],
+    [10, 1, "leg-l", 2], [10, 2, "leg-l", 1], [10, 4, "leg-r", 1], [10, 5, "leg-r", 2]
+  ];
+  const ORANGE = "#f2a93b";
+  const ns = "http://www.w3.org/2000/svg";
 
   // ---------- Overlay markup ----------
   const tour = document.createElement("div");
@@ -145,7 +102,7 @@
   tour.setAttribute("aria-modal", "true");
   tour.setAttribute("aria-labelledby", "tour-title");
   tour.innerHTML = `
-    <canvas class="tour-canvas" aria-hidden="true"></canvas>
+    <div class="tour-pieces" aria-hidden="true"></div>
     <div class="tour-top">
       <ol class="tour-steps" aria-label="Tour chapters">
         ${CHAPTERS.map((c, i) => `<li><button type="button" data-step="${i}"><span class="ts-bar"></span><span class="ts-label">${c.nav}</span></button></li>`).join("")}
@@ -159,7 +116,7 @@
     </div>
     <div class="tour-stage">
       <div class="tour-ground" aria-hidden="true"><span class="tour-shadow"></span><span class="tour-dust"></span></div>
-      <div class="tour-bot" aria-hidden="true">${ROBOT}</div>
+      <div class="tour-bot" aria-hidden="true"><svg class="bot-svg" xmlns="${ns}"></svg></div>
       <article class="tour-card" aria-live="polite">
         <div class="tc-body">
         <p class="tc-kicker"></p>
@@ -178,8 +135,9 @@
   document.body.appendChild(tour);
 
   const $ = (s) => tour.querySelector(s);
-  const canvas = $(".tour-canvas"), ctx = canvas.getContext("2d");
-  const bot = $(".tour-bot"), botSvg = bot.querySelector("svg"), screen = bot.querySelector(".bot-screen");
+  const piecesLayer = $(".tour-pieces");
+  const stage = $(".tour-stage");
+  const bot = $(".tour-bot"), botSvg = bot.querySelector("svg");
   const ground = $(".tour-ground"), shadow = $(".tour-shadow"), dust = $(".tour-dust");
   const card = $(".tour-card"), kicker = $(".tc-kicker"), title = $(".tc-title");
   const sayText = $(".tc-say-text"), points = $(".tc-points"), actions = $(".tc-actions");
@@ -188,212 +146,270 @@
   const pageParts = [document.querySelector(".nav"), document.querySelector("main"), document.querySelector(".foot")].filter(Boolean);
 
   let step = 0, open = false, busy = false, typingToken = 0, lastFocus = null;
+  let robot = null;   // { cells: [{ cx, cy, el, color }], scale, w, h }
+  let screenText = null;
 
-  // ---------- Particles ----------
-  function sizeCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
-    canvas.style.width = innerWidth + "px"; canvas.style.height = innerHeight + "px";
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  // where each broken piece of the name sits on screen (its centroid)
-  function shardCentroids() {
-    const layer = document.querySelector(".name-layer");
-    const shards = [...document.querySelectorAll(".name-shard")];
-    if (layer && shards.length) {
-      const r = layer.getBoundingClientRect();
-      return shards.map((s) => {
-        const [x, y] = s.style.transformOrigin.split(" ").map(parseFloat);
-        return { x: r.left + x, y: r.top + y };
-      });
-    }
-    const n = document.querySelector("h1.name");
-    const r = n ? n.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 3, width: 1, height: 1 };
-    return Array.from({ length: 24 }, (_, i) => ({ x: r.left + ((i % 8) + 0.5) * r.width / 8, y: r.top + (Math.floor(i / 8) + 0.5) * r.height / 3 }));
-  }
-
-  // the particles first gather into a compact block: the robot folded up,
-  // like a Transformer before it stands. Coordinates are in the robot's viewBox.
-  function blockTargets() {
-    const r = botSvg.getBoundingClientRect();
-    if (!r.width) return { pts: [], cell: 6 };
-    const sx = r.width / 220, sy = r.height / 330;
-    const cell = Math.max(4, Math.round(r.height / 70));
-    const x0 = 58, x1 = 162, y0 = 178, y1 = 306, round = 18;
-    const pts = [];
-    for (let y = y0 + cell / sy / 2; y < y1; y += cell / sy) {
-      for (let x = x0 + cell / sx / 2; x < x1; x += cell / sx) {
-        // rounded corners
-        const cx = Math.min(Math.max(x, x0 + round), x1 - round), cy = Math.min(Math.max(y, y0 + round), y1 - round);
-        if (Math.hypot(x - cx, y - cy) > round) continue;
-        const led = Math.hypot(x - 92, y - 248) < 7 || (y > 214 && y < 230 && Math.abs(x - 110) < 26);
-        pts.push({ x: r.left + x * sx, y: r.top + y * sy, c: led ? "#f2a93b" : "#000" });
-      }
-    }
-    return { pts, cell };
-  }
-
-  function seeded(seed) {
-    return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
-  }
-
-  // fly particles from `from` points to `to` points; returns when done
-  function fly(pairs, cell, ms) {
-    return new Promise((resolve) => {
-      if (reduceMotion || !pairs.length) return resolve();
-      sizeCanvas();
-      canvas.classList.add("on");
-      const start = performance.now();
-      function frame(now) {
-        ctx.clearRect(0, 0, innerWidth, innerHeight);
-        let done = true;
-        for (const p of pairs) {
-          let t = (now - start - p.delay) / ms;
-          if (t < 1) done = false;
-          t = Math.max(0, Math.min(1, t));
-          const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-          const u = 1 - e;
-          const x = u * u * p.a.x + 2 * u * e * p.k.x + e * e * p.b.x;
-          const y = u * u * p.a.y + 2 * u * e * p.k.y + e * e * p.b.y;
-          const s = cell * (0.55 + 0.45 * (1 - Math.abs(0.5 - t) * 2) * 0.6 + 0.45 * e);
-          ctx.fillStyle = p.c;
-          ctx.fillRect(x - s / 2, y - s / 2, s - 1, s - 1);
-        }
-        if (!done) requestAnimationFrame(frame);
-        else resolve();
-      }
-      requestAnimationFrame(frame);
-    });
-  }
-
-  function pairUp(froms, tos, toName) {
-    const rand = seeded(1509);
-    return tos.map((b, i) => {
-      const a0 = froms[i % froms.length];
-      const jitter = 18;
-      const a = { x: a0.x + (rand() - 0.5) * jitter, y: a0.y + (rand() - 0.5) * jitter };
-      const from = toName ? b : a, to = toName ? a : b;
-      // curve each path through a swirl point so the swarm sweeps instead of sliding
-      const mx = (from.x + to.x) / 2, my = (from.y + to.y) / 2;
-      const dx = to.x - from.x, dy = to.y - from.y, len = Math.hypot(dx, dy) || 1;
-      const bend = (rand() - 0.5) * Math.min(260, len * 0.6);
-      return { a: from, b: to, k: { x: mx - (dy / len) * bend, y: my + (dx / len) * bend }, c: b.c || "#000", delay: rand() * 380 };
-    });
-  }
-
-  // ---------- Layout: robot and card trade sides each chapter ----------
   const isNarrow = () => innerWidth < 900;
+
+  // ---------- Build the robot from as many tiles as the name has pieces ----------
+  function buildRobot(count) {
+    const R = (window.nameCracks && window.nameCracks.R) || 30;
+    const hexW = Math.sqrt(3) * R, rowH = 1.5 * R;
+    const outline = window.nameCracks ? window.nameCracks.outline : null;
+    const chosen = CELLS.map((c, i) => ({ c, i })).sort((a, b) => a.c[3] - b.c[3] || a.i - b.i).slice(0, count).map((o) => o.c);
+    const W = 7 * hexW, H = 10 * rowH + 2 * R;
+    botSvg.setAttribute("viewBox", `0 0 ${W.toFixed(1)} ${H.toFixed(1)}`);
+    botSvg.innerHTML = "";
+
+    const center = (row, x) => ({ cx: (x + 0.5) * hexW, cy: row * rowH + R });
+    const groups = {};
+    const mk = (cls, parent) => { const g = document.createElementNS(ns, "g"); g.setAttribute("class", cls); (parent || botSvg).appendChild(g); return g; };
+    const body = mk("bot-body");
+    // draw order: legs and arms behind the torso, head on top
+    groups["leg-l"] = mk("bot-leg bot-leg-l", body);
+    groups["leg-r"] = mk("bot-leg bot-leg-r", body);
+    groups["arm-l"] = mk("bot-arm bot-arm-l", body);
+    groups["arm-r"] = mk("bot-arm bot-arm-r", body);
+    groups.torso = mk("bot-torso", body);
+    const head = mk("bot-headg", body);
+    groups.head = head; groups.eye = head;
+    groups.antenna = mk("bot-antenna", head);
+
+    // joints the parts swing around
+    const hip = (x) => ({ x: (x + 0.5) * hexW, y: 8 * rowH + R * 0.35 });
+    const shoulder = (x) => ({ x: (x + 0.5) * hexW, y: 4 * rowH + R * 0.2 });
+    const setOrigin = (g, p) => { g.style.transformOrigin = `${p.x.toFixed(1)}px ${p.y.toFixed(1)}px`; };
+    setOrigin(groups["leg-l"], hip(2)); setOrigin(groups["leg-r"], hip(4));
+    setOrigin(groups["arm-l"], shoulder(0)); setOrigin(groups["arm-r"], shoulder(6));
+    setOrigin(head, { x: W / 2, y: 4 * rowH });
+    setOrigin(body, { x: W / 2, y: H });
+    setOrigin(groups.antenna, { x: 3.5 * hexW, y: R * 1.6 });
+
+    const cells = chosen.map(([row, x, part]) => {
+      const { cx, cy } = center(row, x);
+      const color = part === "eye" || part === "antenna" ? ORANGE : "#000";
+      const el = document.createElementNS(ns, "polygon");
+      const pts = outline ? outline(cx, cy, R) : [-90, -30, 30, 90, 150, 210].map((d) => ({ x: cx + Math.cos(d * Math.PI / 180) * R, y: cy + Math.sin(d * Math.PI / 180) * R }));
+      el.setAttribute("points", pts.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" "));
+      el.setAttribute("fill", color);
+      el.setAttribute("class", "bot-tile" + (part === "eye" ? " bot-eye" : ""));
+      groups[part].appendChild(el);
+      return { cx, cy, el, color, part };
+    });
+
+    // white crack lines between tiles are the tiles' own outlines, always 1.5px
+    botSvg.style.setProperty("--crack", ((window.nameCracks && window.nameCracks.CRACK_WIDTH) || 1.5) + "px");
+
+    // face details drawn on top of the tiles
+    const mouth = mk("bot-mouth", head);
+    [-1, 0, 1].forEach((k) => {
+      const r = document.createElementNS(ns, "rect");
+      const s = R * 0.22;
+      r.setAttribute("x", (3.5 * hexW + k * R * 0.42 - s / 2).toFixed(1));
+      r.setAttribute("y", (3 * rowH + R - s / 2).toFixed(1));
+      r.setAttribute("width", s.toFixed(1)); r.setAttribute("height", s.toFixed(1)); r.setAttribute("rx", (s * 0.3).toFixed(1));
+      r.setAttribute("fill", "#fff");
+      mouth.appendChild(r);
+    });
+    const scr = mk("bot-chest", groups.torso);
+    const sw = hexW * 1.25, sh = R * 0.95;
+    const rect = document.createElementNS(ns, "rect");
+    rect.setAttribute("x", (3.5 * hexW - sw / 2).toFixed(1)); rect.setAttribute("y", (5 * rowH + R - sh / 2).toFixed(1));
+    rect.setAttribute("width", sw.toFixed(1)); rect.setAttribute("height", sh.toFixed(1)); rect.setAttribute("rx", (R * 0.18).toFixed(1));
+    rect.setAttribute("fill", "#fff");
+    screenText = document.createElementNS(ns, "text");
+    screenText.setAttribute("x", (3.5 * hexW).toFixed(1)); screenText.setAttribute("y", (5 * rowH + R + R * 0.18).toFixed(1));
+    screenText.setAttribute("text-anchor", "middle");
+    screenText.setAttribute("font-family", "IBM Plex Mono, monospace");
+    screenText.setAttribute("font-size", (R * 0.5).toFixed(1));
+    screenText.setAttribute("font-weight", "500");
+    screenText.textContent = "01";
+    scr.append(rect, screenText);
+
+    robot = { cells, W, H, R };
+    fitRobot();
+    return robot;
+  }
+
+  // Tiles keep the name's exact piece size. Only if the robot can't fit the
+  // screen at that size is the whole robot scaled down, evenly.
+  function fitRobot() {
+    if (!robot) return;
+    const st = stage.getBoundingClientRect();
+    let availW, availH;
+    if (isNarrow()) {
+      availH = Math.min(st.height * 0.42, 330);
+      availW = st.width * 0.6;
+    } else {
+      const cardW = Math.min(620, st.width * 0.54);
+      availW = (st.width - cardW - 64) * 0.9;
+      availH = st.height * 0.9;
+    }
+    const scale = Math.min(1, availW / robot.W, availH / robot.H);
+    robot.scale = scale;
+    const w = robot.W * scale, h = robot.H * scale;
+    bot.style.width = ground.style.width = w + "px";
+    bot.style.height = ground.style.height = h + "px";
+    tour.style.setProperty("--bot-h", h + "px");
+  }
+
+  // ---------- Positions ----------
   function botX(i) {
-    const stage = $(".tour-stage").getBoundingClientRect();
+    const st = stage.getBoundingClientRect();
     const w = bot.getBoundingClientRect().width || 200;
-    if (isNarrow()) return [0.08, 0.62, 0.3, 0.7, 0.4][i] * (stage.width - w);
-    // stand in the middle of whichever half the card leaves free
-    const cardW = card.getBoundingClientRect().width || Math.min(620, stage.width * 0.56);
-    const gutter = Math.max(16, Math.min(64, stage.width * 0.05));
-    const free = stage.width - cardW - gutter;
+    if (isNarrow()) return [0.06, 0.6, 0.3, 0.66, 0.4][i] * Math.max(0, st.width - w);
+    const cardW = card.getBoundingClientRect().width || Math.min(620, st.width * 0.54);
+    const gutter = Math.max(16, Math.min(64, st.width * 0.05));
+    const free = st.width - cardW - gutter;
     return i % 2 === 0 ? free / 2 - w / 2 : cardW + gutter + free / 2 - w / 2;
   }
   function placeCard(i) {
     card.classList.toggle("left", !isNarrow() && i % 2 === 1);
     card.classList.toggle("right", !isNarrow() && i % 2 === 0);
   }
-
-  // position the robot; its shadow stays on the floor and shrinks in the air
-  function setPos(x, y = 0) {
-    bot.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+  function setPos(x) {
+    bot.style.transform = `translateX(${x.toFixed(1)}px)`;
     ground.style.transform = `translateX(${x.toFixed(1)}px)`;
-    const lift = Math.min(1, -y / 140);
-    shadow.style.transform = `scale(${(1 - lift * 0.5).toFixed(3)})`;
-    shadow.style.opacity = (1 - lift * 0.6).toFixed(3);
+  }
+  function puff() {
+    dust.classList.remove("puff"); void dust.offsetWidth; dust.classList.add("puff");
   }
 
-  function arc(a, b, height, ms) {
+  // ---------- Walking: legs and arms swing in turn, the body bobs, feet kick up dust ----------
+  function walkTo(i) {
     return new Promise((resolve) => {
+      const x = botX(i);
+      const cur = parseFloat(bot.dataset.x || x);
+      bot.dataset.x = x;
+      if (Math.abs(x - cur) < 2 || reduceMotion) { setPos(x); return resolve(); }
+      bot.classList.toggle("face-left", x < cur);
+      const dist = Math.abs(x - cur);
+      const ms = Math.max(1100, Math.min(2800, dist / 0.32));
+      bot.classList.add("walking");
       const start = performance.now();
+      let lastStep = -1;
       (function frame(now) {
         const t = Math.min(1, (now - start) / ms);
-        setPos(a + (b - a) * t, -height * 4 * t * (1 - t));
-        if (t < 1) requestAnimationFrame(frame); else resolve();
+        const e = t < 0.12 ? (t / 0.12) * 0.12 * 0.5 : t > 0.88 ? 1 - ((1 - t) / 0.12) * 0.12 * 0.5 : t; // ease in and out of the stride
+        setPos(cur + (x - cur) * Math.min(1, Math.max(0, e)));
+        const stepNo = Math.floor((now - start) / 380);
+        if (stepNo !== lastStep) { lastStep = stepNo; puff(); }
+        if (t < 1) requestAnimationFrame(frame);
+        else { bot.classList.remove("walking"); resolve(); }
       })(start);
     });
   }
 
-  function puff() {
-    dust.classList.remove("puff");
-    void dust.offsetWidth;
-    dust.classList.add("puff");
+  // ---------- The name's pieces fly to the robot and back ----------
+  function namePieces() {
+    const layer = document.querySelector(".name-layer");
+    const h1 = document.querySelector("h1.name");
+    if (!layer || !h1) return { layer: null, list: [] };
+    const r = layer.getBoundingClientRect();
+    const list = [...layer.querySelectorAll(".name-shard")].map((s) => {
+      const [ox, oy] = s.style.transformOrigin.split(" ").map(parseFloat);
+      return { shard: s, ox, oy, x: r.left + ox, y: r.top + oy };
+    });
+    return { layer, rect: r, h1, list };
   }
 
-  // grasshopper hops: crouch, spring up in an arc with legs kicked back, land with a squash
-  async function hopTo(i) {
-    const x = botX(i);
-    const cur = parseFloat(bot.dataset.x || x);
-    bot.dataset.x = x;
-    bot.style.transition = "none";
-    if (Math.abs(x - cur) < 2 || reduceMotion) { setPos(x); return; }
-    bot.classList.toggle("face-left", x < cur);
-    const w = bot.getBoundingClientRect().width || 200;
-    const hops = Math.max(1, Math.min(4, Math.round(Math.abs(x - cur) / (w * 0.95))));
-    bot.classList.add("hopping");
-    for (let k = 0; k < hops; k++) {
-      const a = cur + (x - cur) * (k / hops), b = cur + (x - cur) * ((k + 1) / hops);
-      bot.classList.add("crouch");
-      await wait(150);
-      bot.classList.remove("crouch");
-      bot.classList.add("air");
-      await arc(a, b, Math.min(150, 60 + Math.abs(b - a) * 0.35), 470);
-      bot.classList.remove("air");
-      bot.classList.add("land");
-      puff();
-      await wait(140);
-      bot.classList.remove("land");
-      await wait(60);
-    }
-    bot.classList.remove("hopping");
-  }
-
-  // ---------- Transformer: fold up and unfold, part by part ----------
-  const FOLD = [
-    ["f-legs", ["sp-hips"]],
-    ["f-torso", ["sp-hips"]],
-    ["f-chest", ["sp-chest"]],
-    ["f-arms", ["sp-arm-l", "sp-arm-r"]],
-    ["f-head", ["sp-neck"]],
-    ["f-antenna", ["sp-antenna"]],
-    ["f-eyes", []]
-  ];
-  function spark(names) {
-    names.forEach((n) => {
-      const s = bot.querySelector("." + n);
-      if (!s) return;
-      s.classList.remove("pop"); void s.getBoundingClientRect(); s.classList.add("pop");
+  // copies of the real pieces, placed exactly over the name, that can fly
+  function makeFlyers(src) {
+    piecesLayer.innerHTML = "";
+    const cs = getComputedStyle(src.h1);
+    const wrap = document.createElement("div");
+    wrap.className = "fly-wrap";
+    Object.assign(wrap.style, {
+      left: src.rect.left + "px", top: src.rect.top + "px", width: src.rect.width + "px", height: src.rect.height + "px",
+      fontFamily: cs.fontFamily, fontSize: cs.fontSize, fontWeight: cs.fontWeight,
+      letterSpacing: cs.letterSpacing, lineHeight: cs.lineHeight, color: "#000"
+    });
+    piecesLayer.appendChild(wrap);
+    return src.list.map((p) => {
+      const el = p.shard.cloneNode(true);
+      el.className = "fly-piece";
+      wrap.appendChild(el);
+      return { ...p, el };
     });
   }
-  function folded() {
-    bot.classList.add("booting", ...FOLD.map(([c]) => c));
+
+  // match pieces to tiles left-to-right and top-to-bottom, so the swarm doesn't cross itself
+  function pairPiecesToTiles(pieces, cells) {
+    const ps = pieces.slice().sort((a, b) => a.x - b.x || a.y - b.y);
+    const cs = cells.slice().sort((a, b) => a.cx - b.cx || a.cy - b.cy);
+    return ps.map((p, i) => ({ p, c: cs[i] || null }));
   }
-  async function unfold() {
-    bot.classList.add("booting");
-    screen.textContent = "....";
-    for (const [cls, sparks] of FOLD) {
-      bot.classList.remove(cls);
-      spark(sparks);
-      if (cls === "f-chest") screen.textContent = "BOOT";
-      if (cls === "f-eyes") { bot.classList.add("power"); screen.textContent = "OK"; }
-      await wait(cls === "f-legs" ? 380 : 300);
-    }
-    await wait(350);
-    bot.classList.remove("booting", "power");
+
+  function tileScreen(c) {
+    const r = botSvg.getBoundingClientRect();
+    const s = r.width / robot.W;
+    return { x: r.left + c.cx * s, y: r.top + c.cy * s, s };
   }
-  async function fold() {
-    bot.classList.add("booting");
-    for (const [cls, sparks] of FOLD.slice().reverse()) {
-      bot.classList.add(cls);
-      spark(sparks);
-      await wait(120);
-    }
-    await wait(250);
+
+  function seeded(seed) {
+    return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  }
+
+  async function assemble() {
+    const src = namePieces();
+    buildRobot(src.list.length || 40);
+    const x = botX(0); bot.dataset.x = x; setPos(x);
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    robot.cells.forEach((c) => c.el.classList.add("hide"));
+    bot.classList.add("assembling");
+    if (!src.list.length || reduceMotion) { robot.cells.forEach((c) => c.el.classList.remove("hide")); bot.classList.remove("assembling"); return; }
+
+    const flyers = makeFlyers(src);
+    document.body.classList.add("name-flying");
+    const rand = seeded(1509);
+    const pairs = pairPiecesToTiles(flyers, robot.cells);
+    let longest = 0;
+    const jobs = pairs.map(({ p, c }) => {
+      const delay = rand() * 420;
+      const dur = 1250;
+      longest = Math.max(longest, delay + dur);
+      if (!c) {
+        return p.el.animate([{ opacity: 1 }, { opacity: 0, transform: "scale(.2)" }], { duration: 600, delay, fill: "forwards" }).finished;
+      }
+      const t = tileScreen(c);
+      const dx = t.x - p.x, dy = t.y - p.y;
+      const bend = (rand() - 0.5) * 220;
+      const len = Math.hypot(dx, dy) || 1;
+      const mx = dx / 2 - (dy / len) * bend, my = dy / 2 + (dx / len) * bend - 60;
+      const spin = rand() < 0.5 ? 360 : -360;
+      const a = p.el.animate([
+        { transform: "translate(0px, 0px) rotate(0deg) scale(1)" },
+        { transform: `translate(${mx.toFixed(1)}px, ${my.toFixed(1)}px) rotate(${spin / 2}deg) scale(${((1 + t.s) / 2).toFixed(3)})`, offset: 0.5 },
+        { transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(${spin}deg) scale(${t.s.toFixed(3)})` }
+      ], { duration: dur, delay, easing: "cubic-bezier(.55,0,.3,1)", fill: "forwards" });
+      // as each piece lands it locks in and turns solid
+      return a.finished.then(() => { c.el.classList.remove("hide"); c.el.classList.add("lock"); p.el.style.opacity = "0"; });
+    });
+    await Promise.all(jobs);
+    robot.cells.forEach((c) => c.el.classList.remove("hide"));
+    bot.classList.remove("assembling");
+    piecesLayer.innerHTML = "";
+  }
+
+  async function disassemble() {
+    const src = namePieces();
+    if (!src.list.length || reduceMotion || !robot) return;
+    const flyers = makeFlyers(src);
+    bot.classList.add("assembling");
+    const rand = seeded(77);
+    const pairs = pairPiecesToTiles(flyers, robot.cells);
+    const jobs = pairs.map(({ p, c }) => {
+      const delay = rand() * 300;
+      if (!c) return p.el.animate([{ opacity: 0, transform: "scale(.2)" }, { opacity: 1, transform: "scale(1)" }], { duration: 700, delay: 300, fill: "backwards" }).finished;
+      const t = tileScreen(c);
+      const dx = t.x - p.x, dy = t.y - p.y;
+      c.el.classList.add("hide");
+      return p.el.animate([
+        { transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(0deg) scale(${t.s.toFixed(3)})` },
+        { transform: "translate(0px, 0px) rotate(360deg) scale(1)" }
+      ], { duration: 1000, delay, easing: "cubic-bezier(.55,0,.3,1)", fill: "both" }).finished;
+    });
+    await Promise.all(jobs);
   }
 
   // ---------- Chapter rendering ----------
@@ -433,9 +449,9 @@
     const c = CHAPTERS[i];
     setSteps(i);
     card.classList.add("out");
-    if (walk) { await wait(220); await hopTo(i); }
+    if (walk) { await wait(220); await walkTo(i); }
     placeCard(i);
-    screen.textContent = String(i + 1).padStart(2, "0");
+    if (screenText) screenText.textContent = String(i + 1).padStart(2, "0");
     kicker.textContent = `Chapter ${i + 1} of ${CHAPTERS.length}: ${c.nav}`;
     title.textContent = c.title;
     points.innerHTML = c.points.map(([b, t]) => `<li><b>${b}</b><span>${t}</span></li>`).join("");
@@ -447,9 +463,7 @@
     const token = typingToken + 1;
     const finished = await type(c.say);
     if (!finished || token !== typingToken) return;
-    // then the details appear one by one
-    const items = [...points.children];
-    for (const li of items) {
+    for (const li of [...points.children]) {
       if (token !== typingToken) return;
       li.classList.add("in");
       await wait(260);
@@ -478,34 +492,22 @@
     open = true; busy = true;
     lastFocus = document.activeElement;
     step = 0;
-    const froms = shardCentroids();
-
     tour.hidden = false;
     document.body.classList.add("touring");
     pageParts.forEach((el) => el.setAttribute("inert", ""));
-    bot.classList.remove("ready", "hopping", "crouch", "air", "land", "face-left", "power");
-    bot.style.transition = "none";
-    folded();
+    bot.classList.remove("ready", "walking", "face-left", "power");
     placeCard(0);
     setSteps(0);
     card.classList.add("out");
-    const x = botX(0);
-    bot.dataset.x = x;
-    setPos(x);
-    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-
-    const { pts, cell } = blockTargets();
-    document.body.classList.add("name-flying");      // the real name pieces take off
-    tour.classList.add("show");                      // the page fades out behind the swarm
-    await fly(pairUp(froms, pts, false), cell, 1400);
-    bot.classList.add("ready");                      // the folded robot replaces the block
-    await wait(260);
-    canvas.classList.remove("on");
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    await unfold();                                  // and transforms, part by part
+    tour.classList.add("show");                 // the page fades away
+    bot.classList.add("ready");
+    await assemble();                           // the name's pieces become the robot
+    bot.classList.add("power");                 // eyes flicker on
+    if (screenText) screenText.textContent = "OK";
+    await wait(700);
+    bot.classList.remove("power");
     closeBtn.focus({ preventScroll: true });
     busy = false;
-    await wait(150);
     show(0, { walk: false });
   }
 
@@ -513,19 +515,14 @@
     if (!open) return;
     typingToken++;
     busy = true;
-    const froms = shardCentroids();
     card.classList.add("out");
-    if (!bot.dataset.x) setPos(botX(step));
-    await fold();
-    const { pts, cell } = blockTargets();
-    bot.classList.remove("ready");
     tour.classList.remove("show");
-    await fly(pairUp(froms, pts, true), cell, 1000);
-    canvas.classList.remove("on");
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    await disassemble();                        // the robot's tiles fly back into the name
+    piecesLayer.innerHTML = "";
     document.body.classList.remove("name-flying", "touring");
     pageParts.forEach((el) => el.removeAttribute("inert"));
     tour.hidden = true;
+    bot.classList.remove("ready", "assembling");
     open = false; busy = false;
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
@@ -552,7 +549,6 @@
     else if (e.key === "ArrowRight" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) go(step + 1);
     else if (e.key === "ArrowLeft" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) go(step - 1);
     else if (e.key === "Tab") {
-      // keep keyboard focus inside the tour
       const f = [...tour.querySelectorAll("button:not([disabled]):not([hidden]), a[href]")].filter((el) => el.offsetParent);
       if (!f.length) return;
       const first = f[0], last = f[f.length - 1];
@@ -566,12 +562,12 @@
     if (!open) return;
     clearTimeout(rt);
     rt = setTimeout(() => {
-      bot.style.transition = "none";
+      fitRobot();
       const x = botX(step); bot.dataset.x = x;
       setPos(x);
       placeCard(step);
     }, 120);
   });
 
-  window.portfolioTour = { open: openTour, close: closeTour, go, get step() { return step; }, get isOpen() { return open; } };
+  window.portfolioTour = { open: openTour, close: closeTour, go, get step() { return step; }, get isOpen() { return open; }, get robot() { return robot; } };
 })();

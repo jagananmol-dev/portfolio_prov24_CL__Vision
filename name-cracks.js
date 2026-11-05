@@ -48,6 +48,21 @@
     return boxes;
   }
 
+  // the exact outline of one piece, shared with the robot tour so its tiles
+  // are the same shape and size as the name's pieces
+  function outline(cx, cy, R) {
+    const poly = [-90, -30, 30, 90, 150, 210].map((d) => ({ x: cx + Math.cos(d * Math.PI / 180) * R, y: cy + Math.sin(d * Math.PI / 180) * R }));
+    const out = [];
+    for (let i = 0; i < 6; i++) {
+      const [a, b, flipped] = canonical(poly[i], poly[(i + 1) % 6]);
+      const mid = jagged(a, b);
+      out.push(poly[i], ...(flipped ? mid.reverse() : mid));
+    }
+    return out;
+  }
+  let currentR = 0;
+  window.nameCracks = { outline, get R() { return currentR; }, CRACK_WIDTH };
+
   let layer = null;
 
   function build() {
@@ -59,6 +74,7 @@
 
     // pointy-top hexagon grid
     const R = fontSize * PIECE_SIZE;
+    currentR = R;
     const hexW = Math.sqrt(3) * R, rowH = 1.5 * R;
     const corners = [-90, -30, 30, 90, 150, 210].map((d) => [Math.cos(d * Math.PI / 180) * R, Math.sin(d * Math.PI / 180) * R]);
     const boxes = letterBoxes();
