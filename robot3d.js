@@ -105,10 +105,26 @@
       parts.push(mesh);
       return mesh;
     }
+    // armour plates have rounded, bevelled edges (an extruded rounded rectangle)
+    function roundedBox(w, h, d) {
+      const b = Math.min(w, h, d) * 0.12;           // bevel
+      const r = Math.min(w, h) * 0.14;              // corner radius
+      const iw = w - 2 * b, ih = h - 2 * b, rr = Math.min(r, iw / 2, ih / 2);
+      const sh = new T.Shape();
+      sh.moveTo(-iw / 2 + rr, -ih / 2);
+      sh.lineTo(iw / 2 - rr, -ih / 2); sh.quadraticCurveTo(iw / 2, -ih / 2, iw / 2, -ih / 2 + rr);
+      sh.lineTo(iw / 2, ih / 2 - rr); sh.quadraticCurveTo(iw / 2, ih / 2, iw / 2 - rr, ih / 2);
+      sh.lineTo(-iw / 2 + rr, ih / 2); sh.quadraticCurveTo(-iw / 2, ih / 2, -iw / 2, ih / 2 - rr);
+      sh.lineTo(-iw / 2, -ih / 2 + rr); sh.quadraticCurveTo(-iw / 2, -ih / 2, -iw / 2 + rr, -ih / 2);
+      const g = new T.ExtrudeGeometry(sh, { depth: Math.max(0.001, d - 2 * b), bevelEnabled: true, bevelThickness: b, bevelSize: b, bevelSegments: 3, curveSegments: 5 });
+      g.center();
+      return g;
+    }
     function box(w, h, d, mat, x, y, z, parent) {
-      const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
+      const curved = mat === M.body;
+      const m = new T.Mesh(curved ? roundedBox(w, h, d) : new T.BoxGeometry(w, h, d), mat);
       m.position.set(x, y, z);
-      return add(m, parent, mat === M.body || mat === M.trim);
+      return add(m, parent, mat === M.trim);
     }
     // hexagon prism, the same shape as the pieces of the name
     function hex(r, h, mat, x, y, z, parent, faceForward = true) {
@@ -242,9 +258,31 @@
       hex(0.08, 0.44, M.glow, 0, -0.16, 0, fore);
       const hand = G();
       hand.position.set(0, -0.69, 0);
+      hand.rotation.y = s * 0.55;                    // turned a little toward you, so the fingers show
       fore.add(hand);
-      box(0.3, 0.26, 0.3, M.trim, 0, -0.12, 0, hand);
-      return { shoulder, upper, fore, hand };
+      // a hand with a palm, four two-jointed fingers and a thumb. The palm faces
+      // the body; fingers curl toward it.
+      box(0.3, 0.2, 0.3, M.trim, 0, -0.1, 0, hand);
+      box(0.04, 0.12, 0.2, M.glow, s * 0.155, -0.1, 0, hand);       // knuckle light on the back of the hand
+      const fingers = [];
+      for (const fz of [-0.105, -0.035, 0.035, 0.105]) {
+        const k1 = G(); k1.position.set(0, -0.2, fz); hand.add(k1);
+        box(0.075, 0.13, 0.06, M.body, 0, -0.065, 0, k1);
+        const k2 = G(); k2.position.set(0, -0.13, 0); k1.add(k2);
+        box(0.068, 0.11, 0.055, M.trim, 0, -0.055, 0, k2);
+        fingers.push(k1, k2);
+      }
+      const t1 = G(); t1.position.set(-s * 0.1, -0.12, 0.15); t1.rotation.x = -0.5; hand.add(t1);
+      box(0.075, 0.12, 0.07, M.body, 0, -0.06, 0, t1);
+      const t2 = G(); t2.position.set(0, -0.12, 0); t1.add(t2);
+      box(0.068, 0.1, 0.065, M.trim, 0, -0.05, 0, t2);
+      // 0 = open hand, 1 = closed fist
+      function curl(a) {
+        for (let i = 0; i < fingers.length; i++) fingers[i].rotation.z = -s * a * (i % 2 ? 1.5 : 1.25);
+        t1.rotation.z = -s * a * 0.9;
+        t2.rotation.z = -s * a * 0.8;
+      }
+      return { shoulder, upper, fore, hand, curl };
     }
     function leg(s) {
       const hip = G();
@@ -354,6 +392,9 @@
       // while the legs swing, lift the body so the feet never sink into the floor
       const legReach = 0.12 + 1.94 * Math.cos(legL.thigh.rotation.x);
       if (u < 1 && pelvis.position.y < legReach) pelvis.position.y = legReach;
+      // the hands are closed fists in truck mode and open as the wrists unfold
+      const open = clamp01((u - 0.7) / 0.08);
+      armL.curl(1 - open); armR.curl(1 - open);
       mode = u;
     }
 
@@ -515,15 +556,22 @@
         // idle: look around a little, wave now and then
         head.rotation.y = walkAmt ? 0 : Math.sin(state.time * 0.7) * 0.18;
         head.rotation.x = state.talking ? Math.sin(state.time * 9) * 0.05 : 0;
+        // fingers: loosely curled while walking, relaxed when standing, open to
+        // wave, and a small gesture while talking
+        const flex = 0.05 * Math.sin(state.time * 1.7);
+        if (walkAmt) { armL.curl(0.55); armR.curl(0.55); }
+        else { armL.curl(0.22 + flex + (state.talking ? 0.12 * Math.sin(state.time * 5) : 0)); }
         if (!walkAmt) {
           const w = (state.time % 6) / 6;
           const wave = w > 0.7 ? Math.sin((w - 0.7) / 0.3 * Math.PI) : 0;
+          armR.curl(wave > 0.05 ? 0.02 : 0.22 - flex);
+          armR.hand.rotation.y = 0.55 + wave * 1.0;  // the palm turns to face you as it waves
           armR.upper.rotation.z = wave * 2.4;
           armR.fore.rotation.z = wave * Math.sin(state.time * 12) * 0.35;
           armR.upper.rotation.x = 0; armL.upper.rotation.x = 0;
           armL.fore.rotation.x = 0; armR.fore.rotation.x = 0;
         } else {
-          armR.upper.rotation.z = 0; armR.fore.rotation.z = 0;
+          armR.upper.rotation.z = 0; armR.fore.rotation.z = 0; armR.hand.rotation.y = 0.55;
         }
       }
       M.visor.emissiveIntensity = state.talking ? 0.8 + Math.abs(Math.sin(state.time * 16)) * 0.9 : 1.0;

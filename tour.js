@@ -633,6 +633,16 @@
 
   // ---------- Wiring ----------
   trigger.addEventListener("click", openTour);
+  // the small Surprise me badge on the "Ask my portfolio" button opens the same tour
+  const navTrigger = document.querySelector(".nav-surprise");
+  if (navTrigger) {
+    navTrigger.addEventListener("pointerenter", preload, { once: true });
+    navTrigger.addEventListener("click", () => {
+      const menu = document.querySelector(".menu-toggle");
+      if (menu && menu.getAttribute("aria-expanded") === "true") menu.click();   // close the phone menu first
+      openTour();
+    });
+  }
   closeBtn.addEventListener("click", closeTour);
   nextBtn.addEventListener("click", () => (step === CHAPTERS.length - 1 ? closeTour() : go(step + 1)));
   backBtn.addEventListener("click", () => go(step - 1));

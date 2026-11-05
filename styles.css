@@ -59,6 +59,18 @@ a { color: var(--signal-ink); }
 }
 @keyframes blink { 50% { opacity: 0.25; } }
 .menu-toggle { display: none; }
+/* the Surprise me badge sitting on the "Ask my portfolio" button */
+.nav-try-wrap { position: relative; display: inline-flex; }
+.nav .nav-try-wrap .nav-try::before { display: none; }
+.nav-surprise {
+  position: absolute; top: -13px; right: -13px; width: 26px; height: 26px; padding: 0;
+  display: grid; place-items: center; border-radius: 50%; cursor: pointer;
+  background: #000; border: 2px solid #fff; animation: s-ping 1.6s ease-out infinite;
+}
+.nav-surprise svg { width: 14px; height: 14px; fill: var(--packet); animation: s-twinkle 1.2s ease-in-out infinite; }
+@media (hover: hover) { .nav-surprise:hover { background: var(--packet); } .nav-surprise:hover svg { fill: #000; } }
+.nav-surprise:focus-visible { outline: 2px solid var(--packet); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .nav-surprise, .nav-surprise svg { animation: none; } }
 
 /* Hero */
 .hero {
