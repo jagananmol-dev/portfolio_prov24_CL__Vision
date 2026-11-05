@@ -31,6 +31,8 @@ How visitors find it: it sits right next to my name in the hero, with the headin
 
 Under the panel sits a **Surprise me** button with four blinking arrows pointing at it. Click it and the page fades away while every hexagonal piece of my cracked name flies out from its centroid, spinning, and locks into place as one tile of a robot. The robot is built from the name's actual pieces, at exactly the same size and shape, with the same 1.5px cracks between them: 43 pieces make 43 tiles. Its eyes then flicker on, and it walks you through my journey in five chapters that match the site's sections: About, Skills, Projects, Achievements and Contact. Between chapters it walks across the screen, swinging its legs from the hips and its arms the opposite way, with dust at each step. Each chapter's details appear one by one.
 
+In browsers with WebGL, the robot is a **3D Transformer** built with Three.js. The name's pieces fly into a black car with white seam lines and orange hexagon lights, the car builds itself part by part, then transforms joint by joint into a robot: the body swings upright, the legs unfold, the arms swing out from the shoulders, and the head rises last, with sparks at each joint. It turns sideways to walk between chapters, swinging its legs and arms, its visor flickers while it talks, and its chest screen shows the chapter number. On Close it folds back into a car and the pieces fly home into my name. If WebGL isn't available or Three.js can't load, the flat tile robot runs instead.
+
 The name itself is split into identical hexagonal pieces. Every crack follows the same jagged profile, which keeps all pieces exactly the same size, and every crack line is a fixed 1.5px.
 
 On laptops and desktops the whole front page, with my name, the panel and the Surprise me button, fits in one screen.
@@ -58,7 +60,7 @@ The site works on phones too. Below 720px the navigation collapses into a menu, 
 - **Rewrites and redirects:** one rule, `/<*>` → `/404.html` with status 404, so a mistyped link shows my own "no route for this path" page instead of a blank error.
 - **Delivery:** Amplify serves the site over HTTPS through its managed CDN. I didn't set up an S3 bucket or a CloudFront distribution myself.
 
-The only thing loaded from outside AWS is Google Fonts.
+The only things loaded from outside AWS are Google Fonts and Three.js (from the cdnjs CDN, fetched only for the robot tour).
 
 ## What I learned and the challenges I hit
 

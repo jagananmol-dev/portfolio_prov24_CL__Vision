@@ -556,3 +556,12 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
   .surprise-note { font-size: 13px; }
   .console { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin-top: 8px; }
 }
+
+/* 3D Transformer: a WebGL strip where the flat robot would stand */
+.tour-3d { position: absolute; left: 0; right: 0; top: 2vh; bottom: 5vh; pointer-events: none; display: none; }
+.tour.is3d .tour-3d { display: block; }
+.tour.is3d .tour-bot, .tour.is3d .tour-ground { visibility: hidden; }
+.robot3d-canvas { display: block; }
+@media (max-width: 899px) {
+  .tour-3d { top: 6px; bottom: auto; height: var(--bot-h, 40vh); }
+}

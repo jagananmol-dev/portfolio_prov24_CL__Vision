@@ -117,6 +117,7 @@
     <div class="tour-stage">
       <div class="tour-ground" aria-hidden="true"><span class="tour-shadow"></span><span class="tour-dust"></span></div>
       <div class="tour-bot" aria-hidden="true"><svg class="bot-svg" xmlns="${ns}"></svg></div>
+      <div class="tour-3d" aria-hidden="true"></div>
       <article class="tour-card" aria-live="polite">
         <div class="tc-body">
         <p class="tc-kicker"></p>
@@ -148,6 +149,25 @@
   let step = 0, open = false, busy = false, typingToken = 0, lastFocus = null;
   let robot = null;   // { cells: [{ cx, cy, el, color }], scale, w, h }
   let screenText = null;
+
+  // ---------- The 3D Transformer (Three.js), with the flat tile robot as a fallback ----------
+  const box3d = $(".tour-3d");
+  let r3 = null, use3d = false;
+  const can3d = () => !!(window.Robot3D && window.Robot3D.supported());
+  async function prepare3d() {
+    if (!can3d()) return false;
+    try {
+      await Promise.race([window.Robot3D.load(), new Promise((_, no) => setTimeout(() => no(new Error("slow")), 5000))]);
+      if (!r3) r3 = window.Robot3D.create(box3d);
+      return true;
+    } catch (e) { return false; }
+  }
+  // fetch Three.js quietly once the page is idle, so the tour opens instantly
+  const preload = () => { if (can3d()) window.Robot3D.load().catch(() => {}); };
+  if ("requestIdleCallback" in window) requestIdleCallback(preload, { timeout: 4000 }); else setTimeout(preload, 2500);
+  trigger.addEventListener("pointerenter", preload, { once: true });
+  // where the robot stands, in pixels inside the stage: the middle of its spot
+  const centerX = (i) => botX(i) + (bot.getBoundingClientRect().width || 200) / 2;
 
   const isNarrow = () => innerWidth < 900;
 
@@ -263,11 +283,14 @@
     const free = st.width - cardW - gutter;
     return i % 2 === 0 ? free / 2 - w / 2 : cardW + gutter + free / 2 - w / 2;
   }
+  // after walking, the 3D robot turns a little toward the card it's explaining
+  const idleTurn = (i) => (isNarrow() ? 0 : i % 2 === 0 ? 0.35 : -0.35);
   function placeCard(i) {
     card.classList.toggle("left", !isNarrow() && i % 2 === 1);
     card.classList.toggle("right", !isNarrow() && i % 2 === 0);
   }
   function setPos(x) {
+    if (use3d && r3) r3.placeAt(x + (bot.getBoundingClientRect().width || 200) / 2);
     bot.style.transform = `translateX(${x.toFixed(1)}px)`;
     ground.style.transform = `translateX(${x.toFixed(1)}px)`;
   }
@@ -281,6 +304,7 @@
       const x = botX(i);
       const cur = parseFloat(bot.dataset.x || x);
       bot.dataset.x = x;
+      if (use3d && r3) { r3.walkTo(centerX(i), idleTurn(i)).then(resolve); return; }
       if (Math.abs(x - cur) < 2 || reduceMotion) { setPos(x); return resolve(); }
       bot.classList.toggle("face-left", x < cur);
       const dist = Math.abs(x - cur);
@@ -350,11 +374,79 @@
     return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
   }
 
+  // 3D: the name's pieces fly into a car, the car builds itself, then transforms
+  async function assemble3d(src) {
+    r3.resize();
+    r3.setCar();
+    r3.setFacing(r3.HALF);
+    r3.setScreen("");
+    const x = botX(0); bot.dataset.x = x; setPos(x);
+    const rect = r3.screenRect();
+    r3.hideAll();
+    r3.start();
+    if (src.list.length && !reduceMotion) {
+      const flyers = makeFlyers(src);
+      document.body.classList.add("name-flying");
+      const rand = seeded(1509);
+      const jobs = flyers.map((p) => {
+        const delay = rand() * 420, dur = 1150;
+        const tx = rect.left + (0.12 + rand() * 0.76) * (rect.right - rect.left);
+        const ty = rect.top + (0.2 + rand() * 0.6) * (rect.bottom - rect.top);
+        const dx = tx - p.x, dy = ty - p.y;
+        const spin = rand() < 0.5 ? 360 : -360;
+        return p.el.animate([
+          { transform: "translate(0px, 0px) rotate(0deg) scale(1)", opacity: 1 },
+          { transform: `translate(${(dx / 2).toFixed(1)}px, ${(dy / 2 - 80).toFixed(1)}px) rotate(${spin / 2}deg) scale(.7)`, opacity: 1, offset: 0.5 },
+          { transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(${spin}deg) scale(.25)`, opacity: 0 }
+        ], { duration: dur, delay, easing: "cubic-bezier(.55,0,.3,1)", fill: "forwards" }).finished;
+      });
+      await wait(900);
+      const built = r3.materialize();
+      await Promise.all(jobs);
+      await built;
+      piecesLayer.innerHTML = "";
+    } else {
+      await r3.materialize();
+    }
+    await wait(250);
+    r3.face(idleTurn(0));
+    await r3.toRobot();
+  }
+
+  async function disassemble3d(src) {
+    if (r3.mode > 0.01) { r3.setTalking(false); r3.face(r3.HALF); await r3.toCar(); }
+    const rect = r3.screenRect();
+    if (src.list.length && !reduceMotion) {
+      const flyers = makeFlyers(src);
+      const rand = seeded(77);
+      const jobs = flyers.map((p) => {
+        const tx = rect.left + (0.12 + rand() * 0.76) * (rect.right - rect.left);
+        const ty = rect.top + (0.2 + rand() * 0.6) * (rect.bottom - rect.top);
+        return p.el.animate([
+          { transform: `translate(${(tx - p.x).toFixed(1)}px, ${(ty - p.y).toFixed(1)}px) rotate(0deg) scale(.25)`, opacity: 0 },
+          { transform: `translate(${(tx - p.x).toFixed(1)}px, ${(ty - p.y).toFixed(1)}px) rotate(40deg) scale(.4)`, opacity: 1, offset: 0.15 },
+          { transform: "translate(0px, 0px) rotate(360deg) scale(1)", opacity: 1 }
+        ], { duration: 1000, delay: rand() * 300, easing: "cubic-bezier(.55,0,.3,1)", fill: "both" }).finished;
+      });
+      r3.dematerialize();
+      await Promise.all(jobs);
+    } else {
+      await r3.dematerialize();
+    }
+    r3.stop();
+  }
+
   async function assemble() {
     const src = namePieces();
     buildRobot(src.list.length || 40);
-    const x = botX(0); bot.dataset.x = x; setPos(x);
+    use3d = await prepare3d();
+    tour.classList.toggle("is3d", use3d);
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    if (use3d) {
+      try { return await assemble3d(src); }
+      catch (e) { use3d = false; tour.classList.remove("is3d"); if (r3) r3.stop(); piecesLayer.innerHTML = ""; }
+    }
+    const x = botX(0); bot.dataset.x = x; setPos(x);
     robot.cells.forEach((c) => c.el.classList.add("hide"));
     bot.classList.add("assembling");
     if (!src.list.length || reduceMotion) { robot.cells.forEach((c) => c.el.classList.remove("hide")); bot.classList.remove("assembling"); return; }
@@ -393,6 +485,7 @@
 
   async function disassemble() {
     const src = namePieces();
+    if (use3d && r3) { try { return await disassemble3d(src); } catch (e) { r3.stop(); return; } }
     if (!src.list.length || reduceMotion || !robot) return;
     const flyers = makeFlyers(src);
     bot.classList.add("assembling");
@@ -429,6 +522,7 @@
     const token = ++typingToken;
     sayText.textContent = "";
     bot.classList.add("talking");
+    if (r3) r3.setTalking(true);
     card.classList.add("typing");
     if (reduceMotion) { sayText.textContent = text; }
     else {
@@ -438,7 +532,7 @@
         await new Promise((r) => setTimeout(r, text[n - 1] === "," || text[n - 1] === "." ? 90 : 16));
       }
     }
-    if (token === typingToken) { bot.classList.remove("talking"); card.classList.remove("typing"); }
+    if (token === typingToken) { bot.classList.remove("talking"); card.classList.remove("typing"); if (r3) r3.setTalking(false); }
     return token === typingToken;
   }
 
@@ -452,6 +546,7 @@
     if (walk) { await wait(220); await walkTo(i); }
     placeCard(i);
     if (screenText) screenText.textContent = String(i + 1).padStart(2, "0");
+    if (use3d && r3) r3.setScreen(String(i + 1).padStart(2, "0"));
     kicker.textContent = `Chapter ${i + 1} of ${CHAPTERS.length}: ${c.nav}`;
     title.textContent = c.title;
     points.innerHTML = c.points.map(([b, t]) => `<li><b>${b}</b><span>${t}</span></li>`).join("");
@@ -475,6 +570,7 @@
     typingToken++;
     sayText.textContent = CHAPTERS[step].say;
     bot.classList.remove("talking"); card.classList.remove("typing");
+    if (r3) r3.setTalking(false);
     [...points.children].forEach((li) => li.classList.add("in"));
     actions.classList.add("in");
   }
@@ -504,6 +600,7 @@
     await assemble();                           // the name's pieces become the robot
     bot.classList.add("power");                 // eyes flicker on
     if (screenText) screenText.textContent = "OK";
+    if (use3d && r3) r3.setScreen("OK");
     await wait(700);
     bot.classList.remove("power");
     closeBtn.focus({ preventScroll: true });
@@ -516,6 +613,9 @@
     typingToken++;
     busy = true;
     card.classList.add("out");
+    if (use3d && r3) {                          // the robot folds back into a car while you watch
+      try { r3.setTalking(false); r3.face(r3.HALF); await r3.toCar(); } catch (e) {}
+    }
     tour.classList.remove("show");
     await disassemble();                        // the robot's tiles fly back into the name
     piecesLayer.innerHTML = "";
@@ -563,11 +663,12 @@
     clearTimeout(rt);
     rt = setTimeout(() => {
       fitRobot();
+      if (use3d && r3) r3.resize();
       const x = botX(step); bot.dataset.x = x;
       setPos(x);
       placeCard(step);
     }, 120);
   });
 
-  window.portfolioTour = { open: openTour, close: closeTour, go, get step() { return step; }, get isOpen() { return open; }, get robot() { return robot; } };
+  window.portfolioTour = { open: openTour, close: closeTour, go, get step() { return step; }, get isOpen() { return open; }, get robot() { return robot; }, get is3d() { return use3d; }, get robot3d() { return r3; } };
 })();
