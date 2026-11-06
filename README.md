@@ -59,11 +59,12 @@ The site works on phones too. Below 720px the navigation collapses into a menu, 
 - **Deployment:** Amplify is connected to this GitHub repository on the main branch, so every push to main publishes a new version.
 - **Build:** none needed. It's plain HTML, CSS and JavaScript. `amplify.yml` tells Amplify to publish the repo root as it is.
 - **Region:** US East (N. Virginia), us-east-1.
-- **Rewrites and redirects:** one rule, `/<*>` → `/404.html` with status 404, so a mistyped link shows my own "no route for this path" page instead of a blank error.
+- **Rewrites and redirects:** one rule, `/<*>` → `/404.html`, so a mistyped link shows my own "no route for this path" page instead of a blank error. The page is marked `noindex`, so search engines never list it.
 - **Delivery:** Amplify serves the site over HTTPS through its managed CDN, Amazon CloudFront. I didn't set up an S3 bucket or a CloudFront distribution myself; Amplify Hosting manages both.
 - **Custom headers:** `customHttp.yml` adds security headers to every response (HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, and a `Permissions-Policy` that only allows the microphone, for voice questions).
 - **Caching:** every CSS and JS file is linked with a version number (`app.js?v=24`), so a new deploy reaches visitors at once instead of waiting for the CDN cache to expire.
-- **Search and sharing:** `robots.txt`, `sitemap.xml`, a canonical URL and a link preview image (`og-image.png`).
+- **Search and sharing:** `robots.txt`, `sitemap.xml`, a canonical URL, a link preview image (`og-image.jpg`) with full Open Graph and Twitter card tags, and schema.org structured data (`Person`, `ProfilePage` and `WebSite` in JSON-LD) so search engines understand who the page is about.
+- **AI agents:** `llms.txt` is a plain Markdown guide to the site for AI assistants, and `ard.json` (linked with `<link rel="ard">`) is an Agentic Resource Discovery manifest pointing to it, which Lighthouse's new Agentic Browsing audit checks for.
 
 How a change goes live:
 
