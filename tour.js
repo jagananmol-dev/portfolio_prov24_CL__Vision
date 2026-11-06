@@ -17,23 +17,27 @@
       title: "Meet Jagananmol",
       say: "Hi! I'm built from the pieces of Jagananmol's name. Let me walk you through his journey, one chapter at a time.",
       points: [
-        ["Student", "Final-year B.Tech in Computer Science and Engineering, with Honours in AI and Machine Learning, at Symbiosis Institute of Technology, Pune. Graduating in 2027."],
-        ["Education", "93% in the ICSE board exam (2020) and 93 percentile in MHT-CET, the engineering entrance exam."],
-        ["How he learns", "By building something, then figuring out why it broke."],
-        ["Languages", "Speaks English, Telugu, Hindi and Marathi."],
-        ["Right now", "Forward Deployed Engineer (FDE) at Prodapt, working directly with client teams to build and deploy AI solutions in their real systems. Also working with SEER Bharat Foundation on crop advice from satellite data."]
+        ["Who he is", "A final-year B.Tech student in Computer Science and Engineering, with Honours in Artificial Intelligence and Machine Learning, at Symbiosis Institute of Technology, Pune. Based in Pune, graduating in 2027."],
+        ["What he builds", "Software that does the work instead of just talking about it: full-stack apps with the MERN stack, multi-agent AI, and blockchain projects."],
+        ["School", "93% in the ICSE board exam (2020) at Saint Thomas English Medium School."],
+        ["Entrance exam", "93 percentile in MHT-CET, Maharashtra's engineering entrance test, so he scored higher than about 93% of everyone who took it."],
+        ["How he learns", "By building something real, breaking it, and working out why it broke."],
+        ["Languages", "English, Telugu, Hindi and Marathi."],
+        ["Right now", "Forward Deployed Engineer (FDE) at Prodapt, an AI-first technology partner for telecom, media and digital companies. He works directly with client teams: turning their needs into requirements, building AI features like RAG and agent tools, deploying them in containers on the cloud, and monitoring them so they stay reliable."],
+        ["Also building", "Full Stack Developer with SEER Bharat Foundation since March 2026, on a crop suitability tool you'll see in Projects."]
       ]
     },
     {
       key: "skills", nav: "Skills", target: "#skills",
       title: "His tech superpowers",
-      say: "He builds across the whole stack, from the screen you tap to the model doing the thinking.",
+      say: "He files his skills like a routing table, because he trained on CCNA. Here's where each one is used.",
       points: [
-        ["Frontend", "React.js, Next.js, HTML and CSS. He built G-One's interface, with 3D visuals and voice input."],
-        ["Backend", "Node.js, Express.js and FastAPI, powering G-One's agents and SEER Bharat's crop APIs."],
-        ["Data", "MongoDB, PostgreSQL, MySQL and Firebase."],
-        ["AI", "Ollama, Mistral and LoRA adapters for local multi-agent inference, plus ML model integration."],
-        ["Networks and cloud", "Three CCNA courses, Nutanix NCA 6, and AWS Amplify, which hosts this site."]
+        ["Frontend", "React.js, Next.js, HTML and CSS. Used for G-One's interface, with 3D visuals and voice input."],
+        ["Backend", "Node.js, Express.js and FastAPI. Used for G-One's agents and SEER Bharat's crop recommendation APIs."],
+        ["Data", "MongoDB, PostgreSQL, MySQL and Firebase, for app data and agent memory."],
+        ["AI", "Ollama, Mistral, LoRA adapters and ML model integration, for local multi-agent inference and crop prediction from satellite data."],
+        ["Networks and cloud", "Three CCNA courses, Nutanix Certified Associate 6, and AWS Amplify, which hosts this site."],
+        ["How he works", "Git and GitHub, Agile and troubleshooting, tested in two hackathon podiums and three more finals."]
       ]
     },
     {
@@ -41,15 +45,14 @@
       title: "What he has built",
       say: "Two projects show how he thinks: make AI do real work, and put data in the hands of people who need it.",
       points: [
-        ["G-One", "Built over the six-month VOIS Innovation Marathon 2.0, mentored by Dr. Aman Srivastava of Edunet Foundation, and completed successfully."],
-        ["The orchestrator", "It reads each request and starts only the agents it needs: Email, Research, Wikipedia or DeepSearch. Idle agents never run, so it uses far fewer tokens."],
-        ["Safety first", "A validation layer checks every action, like an email's recipient, before it happens."],
-        ["SEER Bharat Foundation", "An NGO in India. He has been working with them as a Full Stack Developer since March 2026, building a crop suitability tool."],
-        ["The problem", "Choosing what to plant is one of the biggest bets a farmer makes each season, and it's often based on habit or guesswork rather than data about their own land."],
-        ["1. Pick a spot", "The farmer enters coordinates, or simply marks the location on a map."],
-        ["2. Read the land from space", "The system pulls satellite imagery for that area, along with environmental data such as rainfall."],
-        ["3. Get a recommendation", "A model predicts the crops best suited to those conditions, so farmers can plan with data instead of guesswork."],
-        ["Built with", "Satellite imagery, rainfall and climate data, an ML prediction model, an interactive map, and crop recommendation APIs on the backend."]
+        ["G-One", "A multi-agent assistant built over the six-month VOIS Innovation Marathon 2.0 by Vodafone Idea Foundation and Edunet Foundation (September 2025 to February 2026), mentored by Dr. Aman Srivastava. Completed."],
+        ["Four agents", "Email writes and sends a mail from one prompt or a voice chat. Research summarises papers in plain language. Wikipedia looks up quick background. DeepSearch goes deeper across several sources."],
+        ["The orchestrator", "It reads each request and starts only the agents it needs, side by side. Idle agents never run, so it spends far fewer tokens than one big prompt."],
+        ["Safety first", "A deterministic validation layer checks every action, like an email's recipient, before it happens. The Ask my portfolio panel on this site is a tiny version of the same idea."],
+        ["Built with", "React and Next.js, FastAPI, MongoDB, Ollama with Mistral, LoRA adapters and voice input."],
+        ["Crop suitability, with SEER Bharat Foundation", "An NGO in India. Full Stack Developer since March 2026, still in progress. Choosing what to plant is one of a farmer's biggest bets, and it's often based on habit, not data about their own land."],
+        ["How it works", "Pick a spot on a map or enter coordinates. The system pulls satellite imagery and rainfall data for that land. A machine learning model recommends the crops best suited to it."],
+        ["His part", "The map interface where users pick their land, and the backend that brings the satellite and rainfall data together, runs the model and returns the recommendation through APIs."]
       ]
     },
     {
@@ -57,16 +60,17 @@
       title: "Where he has proven it",
       say: "He's been on the podium twice, and every result here has a certificate you can open on the page.",
       points: [
-        ["3rd Prize, Hack Your Path 6.0", "HITAM, May 2025. Team DataWizard built a voice healthcare assistant that speaks many languages, works over a phone call or WhatsApp, and points people to the nearest health station."],
-        ["2nd Runner-up, AGTechathon 1.0", "A. G. Patil Institute of Technology, June 2025. After the NEET paper leak, a secure transfer platform that locks exam papers with AES-256 and RSA-2048, catches tampering and logs every step."],
-        ["More hackathons", "Finalist at HackRX 5.0 (Bajaj Finserv), HacKronyX (SVPCET Nagpur) and Hackzilla (IIIT Sonepat), and took part in the AI/ML Hackathon 2.0 at Parul University."],
-        ["Certified", "Three CCNA courses, Nutanix Certified Associate 6, and the Deloitte Cyber Job Simulation. Every certificate opens on the page."]
+        ["3rd Prize, Hack Your Path 6.0", "HITAM, Hyderabad, 9 to 10 May 2025, as Team DataWizard. A voice-first healthcare assistant that talks in your own language with ElevenLabs voices, works over a phone call or WhatsApp, and points you to the nearest health station."],
+        ["2nd Runner-up, AGTechathon 1.0 2k25", "A. G. Patil Institute of Technology, Solapur, 14 to 15 June 2025, a 24-hour national hackathon. After the NEET paper leak, a secure transfer platform: AES-256 locks each exam paper, RSA-2048 protects the key, tampering is caught before the file opens, and every step is logged."],
+        ["More hackathons", "Finalist at HackRX 5.0 (Bajaj Finserv), HacKronyX (SVPCET, Nagpur) and Hackzilla (IIIT Sonepat). Took part in the AI/ML Hackathon 2.0 at Parul University, Vadodara. Completed the VOIS Innovation Marathon 2.0."],
+        ["Certified", "Three CCNA courses from Cisco Networking Academy (August to October 2025), Nutanix Certified Associate 6 (March 2026), and the Deloitte Cyber Job Simulation (June 2025)."],
+        ["AWS Builder Center", "Six badges, all earned on 4 November 2026: First Article, First Wish, Discussion Debut, Knowledge Seeker, Hello, World! and Photo Finisher."]
       ]
     },
     {
       key: "contact", nav: "Contact", target: "#contact",
       title: "Let's build something",
-      say: "That's his journey so far. If you're hiring interns or building a hackathon team, he'd love to hear from you.",
+      say: "That's his journey so far. If you're hiring or building a hackathon team, he'd love to hear from you.",
       points: [
         ["Looking for", "Software engineering internships and good hackathon teams."],
         ["Fastest way to reach him", "Email: jagananmoldaneti@gmail.com"]
