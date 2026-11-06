@@ -1,0 +1,30 @@
+# Jagananmol Daneti
+
+> Portfolio of Jagananmol Daneti: B.Tech Computer Science and Engineering student with Honours in AI and Machine Learning at Symbiosis Institute of Technology, Pune (graduating 2027), and Forward Deployed Engineer at Prodapt. Full-stack (MERN), multi-agent AI and blockchain. Hosted on AWS Amplify Hosting.
+
+The site is a single page with five sections. Its creative feature, "Ask my portfolio", routes a visitor's question through a router and a validator to one of five agents, and refuses rather than guesses, like his multi-agent project G-One. A "Surprise me" button turns his name into a 3D robot that walks visitors through his journey.
+
+Key facts:
+- Education: 93% in the ICSE board exam (2020); 93 percentile in MHT-CET; B.Tech CSE with Honours in AI and ML at SIT Pune, graduating 2027.
+- Work: Forward Deployed Engineer at Prodapt, taking AI from demo to production with client teams.
+- Hackathons: 3rd Prize at Hack Your Path 6.0 (HITAM, Hyderabad, May 2025); 2nd Runner-up at AGTechathon 1.0 2k25 (A. G. Patil Institute of Technology, Solapur, June 2025).
+- Program: completed the six-month VOIS Innovation Marathon 2.0 with G-One, a multi-agent assistant.
+- Contact: jagananmoldaneti@gmail.com
+
+## Sections
+
+- [About me](https://main.dxr78ekpgci7i.amplifyapp.com/#about): who he is, education timeline, how he works, and his current role
+- [Tech superpowers](https://main.dxr78ekpgci7i.amplifyapp.com/#skills): frontend, backend, data, AI, networks and cloud, laid out as a routing table
+- [Projects](https://main.dxr78ekpgci7i.amplifyapp.com/#projects): G-One and a crop-suitability tool from satellite data with SEER Bharat Foundation
+- [Achievements](https://main.dxr78ekpgci7i.amplifyapp.com/#wins): hackathon results, certifications with certificates, and AWS Builder Center badges
+- [Contact](https://main.dxr78ekpgci7i.amplifyapp.com/#contact): email and GitHub
+
+## Source and profiles
+
+- [GitHub repository](https://github.com/jagananmol-dev/portfolio_prov24_CL__Vision): source code and README, including the AWS setup
+- [GitHub profile](https://github.com/jagananmol-dev)
+- [AWS Builder Center profile](https://builder.aws.com/community/@quantumstack1509)
+
+## Optional
+
+- [Sitemap](https://main.dxr78ekpgci7i.amplifyapp.com/sitemap.xml)

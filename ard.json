@@ -1,0 +1,24 @@
+{
+  "specVersion": "1.0",
+  "entries": [
+    {
+      "identifier": "urn:air:main.dxr78ekpgci7i.amplifyapp.com:portfolio:llms",
+      "displayName": "Jagananmol Daneti: portfolio guide for AI agents",
+      "type": "text/markdown",
+      "url": "https://main.dxr78ekpgci7i.amplifyapp.com/llms.txt",
+      "representativeQueries": [
+        "Who is Jagananmol Daneti?",
+        "What has Jagananmol Daneti built?",
+        "What hackathons has Jagananmol Daneti won?",
+        "How do I contact Jagananmol Daneti?"
+      ],
+      "capabilities": ["profile", "projects", "achievements", "contact"]
+    },
+    {
+      "identifier": "urn:air:main.dxr78ekpgci7i.amplifyapp.com:portfolio:sitemap",
+      "displayName": "Portfolio sitemap",
+      "type": "application/xml",
+      "url": "https://main.dxr78ekpgci7i.amplifyapp.com/sitemap.xml"
+    }
+  ]
+}
