@@ -32,9 +32,14 @@
       panels[k].classList.toggle("in", on);
     });
     moveMarker(tabs[i]);
-    if (focus) tabs[i].focus();
-    if (tabs[i].scrollIntoView && getComputedStyle(box.querySelector(".ax-tabs")).flexDirection !== "column") {
-      tabs[i].scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduce ? "auto" : "smooth" });
+    if (focus) tabs[i].focus({ preventScroll: true });
+    // when the tabs sit in a sideways-scrolling strip, bring the chosen tab
+    // into view by scrolling only the strip, never the page (scrollIntoView
+    // used to jump phones straight down to this section on load)
+    const strip = box.querySelector(".ax-tabs");
+    if (strip.scrollWidth > strip.clientWidth + 1) {
+      const left = tabs[i].offsetLeft - (strip.clientWidth - tabs[i].offsetWidth) / 2;
+      strip.scrollTo({ left: Math.max(0, left), behavior: reduce ? "auto" : "smooth" });
     }
   }
 

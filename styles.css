@@ -648,7 +648,8 @@ body.touring.name-flying .name-layer, body.touring.name-flying h1.name { opacity
 .ax-tab:hover { color: var(--ink); }
 .ax-tab[aria-selected="true"] { color: #fff; }
 .ax-tab:focus-visible { outline: 2px solid var(--packet); outline-offset: 2px; }
-.ax-n { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--packet); }
+.ax-n { font-family: var(--mono); font-size: 12px; font-weight: 500; color: #8a4b00; }   /* dark amber: 6:1 contrast on the light tab strip */
+.ax-tab[aria-selected="true"] .ax-n { color: var(--packet); }   /* bright amber on the dark selected tab */
 .ax-marker {
   position: absolute; left: 10px; right: 10px; top: 0; height: 46px; z-index: 0;
   background: var(--ink); border-radius: 10px; transition: transform .35s cubic-bezier(.3,.7,.2,1), height .35s, width .35s;
